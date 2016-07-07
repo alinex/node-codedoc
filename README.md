@@ -1,11 +1,11 @@
-Test Ddddd
+Alinex CodeDoc
 =================================================
 
-[![Build Status](https://travis-ci.org/alinex/xxx.svg?branch=master)](https://travis-ci.org/alinex/xxx)
-[![Coverage Status](https://coveralls.io/repos/alinex/xxx/badge.png?branch=master)](https://coveralls.io/r/alinex/xxx?branch=master)
-[![Dependency Status](https://gemnasium.com/alinex/xxx.png)](https://gemnasium.com/alinex/xxx)
+[![Build Status](https://travis-ci.org/alinex/node-codedoc.svg?branch=master)](https://travis-ci.org/alinex/node-codedoc)
+[![Coverage Status](https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master)](https://coveralls.io/r/alinex/node-codedoc?branch=master)
+[![Dependency Status](https://gemnasium.com/alinex/node-codedoc.png)](https://gemnasium.com/alinex/node-codedoc)
 
-This package contains...
+A general code documentation tool based on the concepts of docco or docker.js.
 
 > It is one of the modules of the [Alinex Universe](http://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](http://alinex.github.io/develop).
@@ -14,13 +14,16 @@ This package contains...
 Install
 -------------------------------------------------
 
-[![NPM](https://nodei.co/npm/test-ddddd.png?downloads=true&downloadRank=true&stars=true)
- ![Downloads](https://nodei.co/npm-dl/test-ddddd.png?months=9&height=3)
-](https://www.npmjs.com/package/test-ddddd)
+[![NPM](https://nodei.co/npm/alinex-codedoc.png?downloads=true&downloadRank=true&stars=true)
+ ![Downloads](https://nodei.co/npm-dl/alinex-codedoc.png?months=9&height=3)
+](https://www.npmjs.com/package/alinex-codedoc)
 
 
 Usage
 -------------------------------------------------
+
+
+
 
 
 License

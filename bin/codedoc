@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+process.title = 'codedoc';
+require(__dirname + '/../lib/cli.js');
