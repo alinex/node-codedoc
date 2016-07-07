@@ -14,10 +14,10 @@ fs = require 'alinex-fs'
 alinex = require 'alinex-core'
 util = require 'alinex-util'
 # include classes and helpers
-builder = require './index'
+codedoc = require './index'
 
-process.title = 'Builder'
-logo = alinex.logo 'Development Builder'
+process.title = 'CodeDoc'
+logo = alinex.logo 'Code Documentation Extractor'
 
 
 # Support quiet mode through switch
@@ -41,103 +41,90 @@ for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
   quiet = true if a in process.argv
 
 
-# Command Setup
-# -------------------------------------------------
-command = (name, file) ->
-  try
-    lib = require file
-  catch error
-    alinex.exit 1, error if error
-  # return builder and handler
-  builder: (yargs) ->
-    yargs
-    .usage "\nUsage: $0 #{name} [options] [dir]...\n\n#{lib.description ? ''}"
-    # add options
-    if lib.options
-      yargs.option key, def for key, def of lib.options
-      yargs.group Object.keys(lib.options), "#{util.string.ucFirst name} Command Options:"
-    # help
-    yargs.strict()
-    .help 'h'
-    .alias 'h', 'help'
-    .epilogue """
-      This is the description of the '#{name}' command. You may also look into the
-      general help or the man page.
-      """
-  handler: (args) ->
-    # implement some global switches
-    chalk.enabled = false if args.nocolors
-    # run command
-    builder.command name, lib, args, (err) ->
-      alinex.exit err if err
-      alinex.exit 0
-    return true
-
-
 # Main routine
 # -------------------------------------------------
 unless quiet
   console.log logo
   console.log chalk.grey "Initializing..."
 
-builder.setup (err) ->
-  alinex.exit 16, err if err
-  # Start argument parsing
-  yargs
-  .usage "\nUsage: $0 <command> [options] [dir]..."
-  .env 'BUILDER' # use environment arguments prefixed with SCRIPTER_
-  # examples
-  .example '$0 test -vb', 'to run the tests till first failure'
-  .example '$0 test -v --coverage --browser', 'to run all the tests and also show coverage info'
-  .example '$0 changes', 'show overview of changes'
-  .example '$0 publish --minor', 'to publish on npm new minor version'
-  # general options
-  .options
-    help:
-      alias: 'h',
-      description: 'display help message'
-    nocolors:
-      alias: 'C'
-      describe: 'turn of color output'
-      type: 'boolean'
-      global: true
-    verbose:
-      alias: 'v'
-      describe: 'run in verbose mode (multiple makes more verbose)'
-      count: true
-      global: true
-    quiet:
-      alias: 'q'
-      describe: "don't output header and footer"
-      type: 'boolean'
-      global: true
-  # add the commands
-  list = fs.findSync __dirname + '/command',
-    type: 'f'
-  for file in list
-    continue unless file.match /\.(coffee|js)$/
-    name = path.basename file, path.extname file
-    lib = require file
-    yargs.command name, lib.title, command name, file
-  # help
-  yargs.help 'help'
-  .updateStrings
-    'Options:': 'General Options:'
-  .epilogue """
-    You may use environment variables prefixed with 'BUILDER_' to set any of
-    the options like 'BUILDER_VERBOSE' to set the verbose level.
+# Start argument parsing
+yargs
+.usage "\nUsage: $0 [options]"
+.env 'CODEDOC' # use environment arguments prefixed with SCRIPTER_
+# examples
+.example '$0', 'to create the default documentation'
+# general options
+.options
+  help:
+    alias: 'h',
+    description: 'display help message'
+  nocolors:
+    alias: 'C'
+    description: 'turn of color output'
+    type: 'boolean'
+    global: true
+  verbose:
+    alias: 'v'
+    description: 'run in verbose mode (multiple makes more verbose)'
+    count: true
+    global: true
+  quiet:
+    alias: 'q'
+    description: "don't output header and footer"
+    type: 'boolean'
+    global: true
+  # add specific args
+  input:
+    alias: 'i'
+    description: "directory to analyse code"
+    type: 'string'
+  output:
+    alias: 'o'
+    description: "directory to write html site to"
+    type: 'string'
+    default: './doc'
+  style:
+    alias: 's'
+    description: "set layout style to use"
+    type: 'string'
+.group ['i', 'o', 's'], 'Document Options:'
+# help
+yargs.help 'help'
+.updateStrings
+  'Options:': 'General Options:'
+.epilogue """
+  You may use environment variables prefixed with 'CODEDOC_' to set any of
+  the options like 'CODEDOC_VERBOSE' to set the verbose level.
 
-    For more information, look into the man page.
-    """
-  .completion 'bashrc-script', false
-  # validation
-  .strict()
-  .fail (err) ->
-    err = new Error "CLI #{err}"
-    err.description = 'Specify --help for available options'
-    alinex.exit 2, err
-  # now parse the arguments
-  argv = yargs.argv
-  # check for corrct call
-  unless argv._.length
-    alinex.exit 2, new Error "Nothing to do specify --help for available options"
+  For more information, look into the man page.
+  """
+.completion 'bashrc-script', false
+# validation
+.strict()
+.fail (err) ->
+  err = new Error "CLI #{err}"
+  err.description = 'Specify --help for available options'
+  alinex.exit 2, err
+# now parse the arguments
+argv = yargs.argv
+
+find = {}
+fs.readFile "#{argv.input ? '.'}/.gitignore", 'utf8', (err, res) ->
+  console.log err, res
+  unless err
+    list = ".git\n#{res}".split /\s*\n\s*/
+    .filter (e) -> e.trim().length
+    .map (e) ->
+      e.replace /^\//, ''
+      .replace /\./, '\\.'
+      .replace /\*+/, '.*'
+    find.exclude = new RegExp "^(#{list.join '|'})"
+  codedoc.run
+    find:
+      source: argv.input
+      options: find
+    dir: argv.output
+    style: argv.style
+  , (err) ->
+    console.log '========'
+    alinex.exit err
