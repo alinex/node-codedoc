@@ -1,0 +1,73 @@
+{
+  "name": "",
+  "version": "0.0.0",
+  "description": "",
+  "copyright": "undefined 2016",
+  "keywords": [],
+  "homepage": "http://alinex.github.io/node-builder",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alinex/node-builder"
+  },
+  "bugs": "https://github.com/alinex/node-builder/issues",
+  "author": {
+    "name": "Alexander Schilling",
+    "email": "info@alinex.de",
+    "web": "http://alinex.de"
+  },
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bin": {
+    "builder": "./bin/builder"
+  },
+  "man": "./man/builder.1",
+  "scripts": {
+    "prepublish": "node_modules/.bin/coffee -c -m -o lib src",
+    "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec -c test/mocha",
+    "start": "bin/builder"
+  },
+  "directories": {
+    "bin": "./bin",
+    "lib": "./lib",
+    "man": "./man"
+  },
+  "dependencies": {
+    "alinex-async": "^1.0.0",
+    "alinex-config": "^1.1.0",
+    "alinex-core": "^0.2.0",
+    "alinex-exec": "^1.1.1",
+    "alinex-fs": "^2.0.0",
+    "alinex-util": "^2.0.3",
+    "chalk": "^1.1.3",
+    "coffee-coverage": "^1.0.1",
+    "coffee-script": "^1.10.0",
+    "coffeelint": "^1.15.7",
+    "coveralls": "^2.11.9",
+    "debounce": "^1.0.0",
+    "debug": "^2.2.0",
+    "docker": "^1.0.0-alpha.1",
+    "inquirer": "^1.0.2",
+    "istanbul": "^0.4.3",
+    "marked-man": "0.1.x",
+    "mocha": "^2.4.5",
+    "moment": "^2.13.0",
+    "node-sass": "^3.5.3",
+    "npm-check": "^5.2.1",
+    "plato": "^1.5.0",
+    "prompt": "^1.0.0",
+    "replace": ">=0.2.0 <0.4.0",
+    "request": "^2.72.0",
+    "typescript": "^1.8.10",
+    "uglify-js": "^2.6.2",
+    "yargs": "^4.6.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "optionalDependencies": {},
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=0.10"
+  },
+  "os": []
+}
