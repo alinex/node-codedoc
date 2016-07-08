@@ -13,6 +13,7 @@ async = require 'async'
 isBinaryFile = require 'isbinaryfile'
 # include alinex modules
 fs = require 'alinex-fs'
+Report = require 'alinex-report'
 # internal methods
 language = require './language'
 
@@ -32,29 +33,10 @@ exports.run = (setup, cb) ->
     return cb err if err
     # start
     debug "search files in #{setup.input}"
-    console.log setup
     fs.find setup.input, setup.find, (err, list) ->
       return cb err if err
       debug "convert files..."
-      async.mapLimit list, 10, processFile, cb
-
-#      (err, res) ->
-#        return cb err if err
-#        map = {}
-#        for i in [0..list.length-1]
-#          map[list[i]] =
-#            dir: path.dirname(list[i])[setup.input.length+1..]
-#            content: res[i]
-#        console.log "Write into #{setup.output}..."
-##        console.log map
-#        async.parallel [
-#          (cb) ->
-#            debug "write pages..."
-#            cb()
-#          (cb) ->
-#            debug "copy resources..."
-#            cb()
-#        ], cb
+      async.mapLimit list, 1, processFile, cb
 
 processFile = (file, cb) ->
   async.waterfall [
@@ -63,11 +45,24 @@ processFile = (file, cb) ->
       fs.readFile file, (err, buffer) ->
         return cb err if err
         isBinaryFile buffer, buffer.length, (err, binary) ->
-          return cb() if err or binary
+          return cb err ? 'BINARY' if err or binary
           cb null, buffer.toString 'utf8'
     (contents, cb) -> # analyze language
-      cb null, contents, language file, contents
+      lang = language file, contents
+      unless lang
+        debug chalk.magenta "could not detect language of #{file}"
+        return cb 'UNKNOWN'
+      debug chalk.grey "#{lang.name}: #{file}"
+      cb null, contents, lang
     (contents, lang, cb) -> # analyze language
-      console.log file, lang, contents.length, 'bytes'
+#      console.log file, lang, contents.length, 'bytes'
       cb()
-  ], cb
+  ], -> cb()
+
+# addFileToTree
+# markdown:
+  # renderMarkdownFile
+# code:
+  # parseSections
+  # highlight
+  # renderCodeFile

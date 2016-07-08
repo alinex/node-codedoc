@@ -4,6 +4,18 @@
 
 # Node Modules
 # -------------------------------------------------
+path = require 'path'
+
+
+shebangRegex = ///
+  ^                     # start of contents
+  \s*                   # not standard conform whitespace
+  \#!                   # this have to be the first two bytes
+  \s*(?:/usr/bin/env)?  # the call to search executable in path
+  \s*(?:[^\n]*/)*       # any path before the executable
+  ([^/\n]+)             # the executable
+  (?:\n|$)              # end of line
+  ///
 
 
 # Detection
@@ -14,34 +26,22 @@
 # @param {string} contents The contents of the file (to check for shebang)
 # @return {object} Object containing all of the language-specific params
 module.exports = (file, contents) ->
-  return '???'
   # First try to detect the language from the file extension
-  ext = path.extname(filename)
-  ext = ext.replace(/^\./, '')
-  # Bit of a hacky way of incorporating .C for C++
-  if ext == '.C'
-    return languages.cpp
+  ext = path.extname(file)[1..]
+  return languages.cpp if ext is 'C' # hacky of incorporating .C for C++
   ext = ext.toLowerCase()
-  base = path.basename(filename)
-  base = base.toLowerCase()
-  for i of languages
-    if !languages.hasOwnProperty(i)
-      continue
-    if languages[i].extensions and languages[i].extensions.indexOf(ext) != -1
-      return languages[i]
-    if languages[i].names and languages[i].names.indexOf(base) != -1
-      return languages[i]
+  base = path.basename(file).toLowerCase()
+  # search for match
+  for _, l of languages
+    return l if l.extensions? and ext in l.extensions
+    return l if l.names? and base in l.names
   # If that doesn't work, see if we can grab a shebang
-  shebangRegex = /^\n*#!\s*(?:\/usr\/bin\/env)?\s*(?:[^\n]*\/)*([^\/\n]+)(?:\n|$)/
   match = shebangRegex.exec(contents)
   if match
-    for j of languages
-      if !languages.hasOwnProperty(j)
-        continue
-      if languages[j].executables and languages[j].executables.indexOf(match[1]) != -1
-        return languages[j]
-  # If we still can't figure it out, give up and return false.
-  false
+    for _, l of languages
+      return l if l.executables? and match[1] in l.executables
+  # If we still can't figure it out, give up and return null.
+  null
 
 
 # Language definition
@@ -60,7 +60,7 @@ module.exports = (file, contents) ->
 # * `jsDoc`: whether to try and extract jsDoc-style comment data
 # * `literals`: Quoted strings are ignored when looking for comment delimiters. Any extra literals go here
 # * `highlightLanguage`: override for language to use with highlight.js
-langs =
+languages =
   javascript:
     extensions: [ 'js' ]
     executables: [ 'node' ]
@@ -233,6 +233,9 @@ langs =
       'zsh'
     ]
     comment: '#'
+  yaml:
+     extensions: [ 'yaml', 'yml' ]
+     comment: '#'
   markdown:
     extensions: [
       'md'
@@ -240,6 +243,14 @@ langs =
       'markdown'
     ]
     type: 'markdown'
+  # not supported by highlight.js
+  sass:
+    extensions: [ 'sass' ]
+    comment: '//'
+    multiLine: [
+      /\/\*/
+      /\*\//
+    ]
   scss:
     extensions: [ 'scss' ]
     comment: '//'
@@ -325,6 +336,5 @@ langs =
       /\/\*\*?/
       /\*\//
     ]
-Object.keys(langs).forEach (l) ->
-  langs[l].language = l
-  return
+# also add the language name within the definition
+l.name = name for name, l of languages

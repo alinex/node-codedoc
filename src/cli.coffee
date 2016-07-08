@@ -112,7 +112,7 @@ argv = yargs.argv
 # -----------------------------------------------------------
 
 readExcludes = (dir, cb) ->
-  async.detectSeries ["#{dir}/.docignor", "#{dir}/.gitignore"], (file, cb) ->
+  async.detectSeries ["#{dir}/.docignore", "#{dir}/.gitignore"], (file, cb) ->
     fs.exists file, (exists) -> cb null, exists
   , (err, file) ->
     return cb() unless file
