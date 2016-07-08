@@ -44,7 +44,10 @@
     "isbinaryfile": "^3.0.0",
     "yargs": "^4.7.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "alinex-builder": "^2.1.14",
+    "chai": "^3.5.0"
+  },
   "optionalDependencies": {},
   "peerDependencies": {},
   "engines": {
