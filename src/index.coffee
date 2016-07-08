@@ -14,47 +14,60 @@ isBinaryFile = require 'isbinaryfile'
 # include alinex modules
 fs = require 'alinex-fs'
 # internal methods
+language = require './language'
 
 
 # Initialize
 # -------------------------------------------------
 exports.run = (setup, cb) ->
-  setup.dir = path.resolve setup.dir ? '.'
-  setup.find.source = path.resolve setup.find.source ? '.'
-  setup.find.options ?= {}
-  setup.find.options.type = 'file'
-  console.log "Output to #{setup.dir}..."
-  fs.mkdirs setup.dir, (err) ->
+  # set up system
+  setup.input ?= '.'
+  setup.input = path.resolve setup.input ? '.'
+  setup.output = path.resolve setup.output ? '.'
+  setup.find ?= {}
+  setup.find.type = 'file'
+  # start converting
+  console.log "Output to #{setup.output}..."
+  fs.mkdirs setup.output, (err) ->
     return cb err if err
     # start
-    console.log "Analyze #{setup.find.source}..."
-    debug "search files in #{setup.find.source}"
+    debug "search files in #{setup.input}"
     console.log setup
-    fs.find setup.find.source, setup.find.options, (err, list) ->
+    fs.find setup.input, setup.find, (err, list) ->
       return cb err if err
-      list.shift() # fix because root dir is first
-      async.mapLimit list, 10, processFile, (err, res) ->
-        return cb err if err
-        map = {}
-        for i in [0..list.length-1]
-          map[list[i]] =
-            dir: path.dirname(list[i])[setup.find.source.length+1..]
-            content: res[i]
-        console.log "Write into #{setup.dir}..."
-#        console.log map
-        async.parallel [
-          (cb) ->
-            debug "write pages..."
-            cb()
-          (cb) ->
-            debug "copy resources..."
-            cb()
-        ], cb
+      debug "convert files..."
+      async.mapLimit list, 10, processFile, cb
+
+#      (err, res) ->
+#        return cb err if err
+#        map = {}
+#        for i in [0..list.length-1]
+#          map[list[i]] =
+#            dir: path.dirname(list[i])[setup.input.length+1..]
+#            content: res[i]
+#        console.log "Write into #{setup.output}..."
+##        console.log map
+#        async.parallel [
+#          (cb) ->
+#            debug "write pages..."
+#            cb()
+#          (cb) ->
+#            debug "copy resources..."
+#            cb()
+#        ], cb
 
 processFile = (file, cb) ->
-  debug "analyze #{file}"
-  fs.readFile file, (err, buffer) ->
-    return cb err if err
-    isBinaryFile buffer, buffer.length, (err, binary) ->
-      return cb() if err or binary
-      cb null, buffer.toString 'utf8'
+  async.waterfall [
+    (cb) -> # get file
+      debug "analyze #{file}"
+      fs.readFile file, (err, buffer) ->
+        return cb err if err
+        isBinaryFile buffer, buffer.length, (err, binary) ->
+          return cb() if err or binary
+          cb null, buffer.toString 'utf8'
+    (contents, cb) -> # analyze language
+      cb null, contents, language file, contents
+    (contents, lang, cb) -> # analyze language
+      console.log file, lang, contents.length, 'bytes'
+      cb()
+  ], cb

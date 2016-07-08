@@ -8,11 +8,10 @@
 # include base modules
 yargs = require 'yargs'
 chalk = require 'chalk'
-path = require 'path'
+async = require 'async'
 # include alinex modules
 fs = require 'alinex-fs'
 alinex = require 'alinex-core'
-util = require 'alinex-util'
 # include classes and helpers
 codedoc = require './index'
 
@@ -108,22 +107,39 @@ yargs.help 'help'
 # now parse the arguments
 argv = yargs.argv
 
-find = {}
-fs.readFile "#{argv.input ? '.'}/.gitignore", 'utf8', (err, res) ->
-  console.log err, res
-  unless err
-    list = ".git\n#{res}".split /\s*\n\s*/
-    .filter (e) -> e.trim().length
-    .map (e) ->
-      e.replace /^\//, ''
-      .replace /\./, '\\.'
-      .replace /\*+/, '.*'
-    find.exclude = new RegExp "^(#{list.join '|'})"
+
+# Helper Methods
+# -----------------------------------------------------------
+
+readExcludes = (dir, cb) ->
+  async.detectSeries ["#{dir}/.docignor", "#{dir}/.gitignore"], (file, cb) ->
+    fs.exists file, (exists) -> cb null, exists
+  , (err, file) ->
+    return cb() unless file
+    fs.readFile file, 'utf8', (err, res) ->
+      if err
+        console.error chalk.magenta "Could not read #{file} for excludes"
+        return cb()
+      list = ".git/\n#{res}".split /\s*\n\s*/
+      .filter (e) -> e.trim().length
+      .map (e) ->
+        e.replace /^\//, ''
+        .replace /\./, '\\.'
+        .replace /\*+/, '.*'
+      cb null, new RegExp "^(#{list.join '|'})"
+
+
+# Main routine
+# -----------------------------------------------------------
+
+argv.input ?= '.'
+readExcludes argv.input, (err, list) ->
+  alinex.exit err if err
   codedoc.run
+    input: argv.input
     find:
-      source: argv.input
-      options: find
-    dir: argv.output
+      exclude: list
+    output: argv.output
     style: argv.style
   , (err) ->
     console.log '========'
