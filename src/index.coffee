@@ -36,33 +36,47 @@ exports.run = (setup, cb) ->
     fs.find setup.input, setup.find, (err, list) ->
       return cb err if err
       debug "convert files..."
-      async.mapLimit list, 1, processFile, cb
+      async.mapLimit list, 1, (file, cb) ->
+        dest = "#{setup.output}#{file[setup.input.length..]}.html"
+        processFile file, dest, cb
+      , cb
 
-processFile = (file, cb) ->
+processFile = (file, dest, cb) ->
   async.waterfall [
-    (cb) -> # get file
+    # get file
+    (cb) ->
       debug "analyze #{file}"
       fs.readFile file, (err, buffer) ->
         return cb err if err
         isBinaryFile buffer, buffer.length, (err, binary) ->
           return cb err ? 'BINARY' if err or binary
           cb null, buffer.toString 'utf8'
-    (contents, cb) -> # analyze language
+    # analyze language
+    (contents, cb) ->
       lang = language file, contents
       unless lang
         debug chalk.magenta "could not detect language of #{file}"
         return cb 'UNKNOWN'
       debug chalk.grey "#{lang.name}: #{file}"
       cb null, contents, lang
-    (contents, lang, cb) -> # analyze language
-#      console.log file, lang, contents.length, 'bytes'
+    # create report
+    (contents, lang, cb) ->
+      report = new Report()
+      if lang.name is 'markdown'
+        report.raw contents
+      else
+        report.p 'Not parseable, yet'
+        # parseSections
+        # highlight
+        # renderCodeFile
+      cb null, report
+    # write file
+    (report, cb) ->
+      report.toHtml
+        style: 'codedoc'
+      , (err, html) ->
+        fs.writeFile dest, html, 'utf8', cb
+    # addFileToTree
+    (cb) ->
       cb()
   ], -> cb()
-
-# addFileToTree
-# markdown:
-  # renderMarkdownFile
-# code:
-  # parseSections
-  # highlight
-  # renderCodeFile

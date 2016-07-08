@@ -9,7 +9,6 @@ path = require 'path'
 
 shebangRegex = ///
   ^                     # start of contents
-  \s*                   # not standard conform whitespace
   \#!                   # this have to be the first two bytes
   \s*(?:/usr/bin/env)?  # the call to search executable in path
   \s*(?:[^\n]*/)*       # any path before the executable
