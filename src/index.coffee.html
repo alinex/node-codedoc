@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>index.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "src/index.coffee";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#main-controlling-class">Main controlling class</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#node-modules">Node Modules</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#initialize">Initialize</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-codedoc" title="Fork me on GitHub"></a>
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="main-controlling-class">
+  <h1>
+    <a href="#main-controlling-class" name="main-controlling-class" class="pilcrow"></a>
+Main controlling class
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight">
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="node-modules">
+  <h2>
+    <a href="#node-modules" name="node-modules" class="pilcrow"></a>
+Node Modules
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>include base modules</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">debug = <span class="hljs-built_in">require</span>(<span class="hljs-string">'debug'</span>) <span class="hljs-string">'codedoc'</span>
+chalk = <span class="hljs-built_in">require</span> <span class="hljs-string">'chalk'</span>
+path = <span class="hljs-built_in">require</span> <span class="hljs-string">'path'</span>
+async = <span class="hljs-built_in">require</span> <span class="hljs-string">'async'</span>
+isBinaryFile = <span class="hljs-built_in">require</span> <span class="hljs-string">'isbinaryfile'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<p>include alinex modules</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">fs = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-fs'</span>
+Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<p>internal methods</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">language = <span class="hljs-built_in">require</span> <span class="hljs-string">'./language'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="initialize">
+  <h2>
+    <a href="#initialize" name="initialize" class="pilcrow"></a>
+Initialize
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">exports.run = <span class="hljs-function"><span class="hljs-params">(setup, cb)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<p>set up system</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  setup.input ?= <span class="hljs-string">'.'</span>
+  setup.input = path.resolve setup.input ? <span class="hljs-string">'.'</span>
+  setup.output = path.resolve setup.output ? <span class="hljs-string">'.'</span>
+  setup.find ?= {}
+  setup.find.type = <span class="hljs-string">'file'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
+</div>
+<p>start converting</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Output to <span class="hljs-subst">#{setup.output}</span>..."</span>
+  fs.mkdirs setup.output, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
+</div>
+<p>start</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    debug <span class="hljs-string">"search files in <span class="hljs-subst">#{setup.input}</span>"</span>
+    fs.find setup.input, setup.find, <span class="hljs-function"><span class="hljs-params">(err, list)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+      debug <span class="hljs-string">"convert files..."</span>
+      async.mapLimit list, <span class="hljs-number">1</span>, <span class="hljs-function"><span class="hljs-params">(file, cb)</span> -&gt;</span>
+        dest = <span class="hljs-string">"<span class="hljs-subst">#{setup.output}</span><span class="hljs-subst">#{file[setup.input.length..]}</span>.html"</span>
+        processFile file, dest, cb
+      , cb
+<span class="hljs-function">
+<span class="hljs-title">processFile</span> = <span class="hljs-params">(file, dest, cb)</span> -&gt;</span>
+  async.waterfall [</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10"></a>
+</div>
+<p>get file</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    (cb) -&gt;
+      debug <span class="hljs-string">"analyze <span class="hljs-subst">#{file}</span>"</span>
+      fs.readFile file, <span class="hljs-function"><span class="hljs-params">(err, buffer)</span> -&gt;</span>
+        <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+        isBinaryFile buffer, buffer.length, <span class="hljs-function"><span class="hljs-params">(err, binary)</span> -&gt;</span>
+          <span class="hljs-keyword">return</span> cb err ? <span class="hljs-string">'BINARY'</span> <span class="hljs-keyword">if</span> err <span class="hljs-keyword">or</span> binary
+          cb <span class="hljs-literal">null</span>, buffer.toString <span class="hljs-string">'utf8'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11"></a>
+</div>
+<p>analyze language</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    (contents, cb) -&gt;
+      lang = language file, contents
+      <span class="hljs-keyword">unless</span> lang
+        debug chalk.magenta <span class="hljs-string">"could not detect language of <span class="hljs-subst">#{file}</span>"</span>
+        <span class="hljs-keyword">return</span> cb <span class="hljs-string">'UNKNOWN'</span>
+      debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{lang.name}</span>: <span class="hljs-subst">#{file}</span>"</span>
+      cb <span class="hljs-literal">null</span>, contents, lang</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12"></a>
+</div>
+<p>create report</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    (contents, lang, cb) -&gt;
+      report = <span class="hljs-keyword">new</span> Report()
+      <span class="hljs-keyword">if</span> lang.name <span class="hljs-keyword">is</span> <span class="hljs-string">'markdown'</span>
+        report.raw contents
+      <span class="hljs-keyword">else</span>
+        report.p <span class="hljs-string">'Not parseable, yet'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
+</div>
+<p>parseSections
+highlight
+renderCodeFile</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">      cb <span class="hljs-literal">null</span>, report</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
+</div>
+<p>write file</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    (report, cb) -&gt;
+      report.toHtml
+        style: <span class="hljs-string">'default'</span> <span class="hljs-comment">#'codedoc'</span>
+      , <span class="hljs-function"><span class="hljs-params">(err, html)</span> -&gt;</span>
+        fs.writeFile dest, html, <span class="hljs-string">'utf8'</span>, cb</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15"></a>
+</div>
+<p>addFileToTree</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    (cb) -&gt;
+      cb()
+  ], <span class="hljs-function">-&gt;</span> cb()</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

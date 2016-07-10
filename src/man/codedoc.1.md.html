@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>codedoc.1.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../";
+    var thisFile = "src/man/codedoc.1.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#alinex-development-utils">Alinex Development Utils</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#usage">Usage</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#commands-and-options">Commands and options</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#general-options">General options</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-create">Command create</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-push">Command push</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-pull">Command pull</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-link">Command link</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-compile">Command compile</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-test">Command test</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-doc">Command: doc</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-changes">Command changes</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-publish">Command publish</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#command-clean">Command: clean</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#configuration">Configuration</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#document-template">Document Template</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#license">License</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-codedoc" title="Fork me on GitHub"></a>
+    <div class="docs markdown"><div class="pilwrap" id="alinex-development-utils">
+  <h1>
+    <a href="#alinex-development-utils" name="alinex-development-utils" class="pilcrow"></a>
+Alinex Development Utils
+  </h1>
+</div>
+<p>The builder helps you to develop node modules.</p>
+<div class="pilwrap" id="usage">
+  <h2>
+    <a href="#usage" name="usage" class="pilcrow"></a>
+Usage
+  </h2>
+</div>
+<pre><code>builder &lt;command&gt; [options] [dir]...
+</code></pre>
+<p>You can give the following commands:</p>
+<pre><code>create   create a new package (interactive)  changes  show changes since last release
+clean    cleanup files
+compile  compile code
+doc      create api documentation
+link     replace released package with locally linked module
+publish  publish package in npm
+pull     pull newest version from repository
+push     push changes to remote repository
+test     run automatic tests
+</code></pre>
+<p>General Options:</p>
+<pre><code>--help, -h      Show help                                            [boolean]
+--nocolors, -C  turn of color output                                 [boolean]
+--verbose, -v   run in verbose mode (multiple makes more verbose)      [count]
+--quiet, -q     don't output header and footer                       [boolean]
+</code></pre>
+<p>Examples:</p>
+<pre><code>builder test -vb            to run the tests till first failure
+builder test -v --coverage  to run all the tests and also show
+--browser                   coverage info
+builder changes             show overview of changes
+builder publish --minor     to publish on npm new minor version
+</code></pre>
+<p>You may use environment variables prefixed with 'BUILDER_' to set any of
+the options like 'BUILDER_VERBOSE' to set the verbose level.</p>
+<p>For help for a specific command call:</p>
+<pre><code>builder &lt;command&gt; --help
+</code></pre>
+<p>This will show also the specific options, only available for this command.</p>
+<div class="pilwrap" id="commands-and-options">
+  <h2>
+    <a href="#commands-and-options" name="commands-and-options" class="pilcrow"></a>
+Commands and options
+  </h2>
+</div>
+<p>The tool will be called with</p>
+<pre><code>builder [dirs] [general options] &lt;command&gt; [command options]
+</code></pre>
+<p>With the option <code>--help</code> a screen explaining all commands and options will be
+displayed. The major commands will be described here.</p>
+<p>Multiple directory names can be given. They specify on which project to work on.
+It should point to the base package directory of a module. If not specified the
+command will run from the current directory.
+You may change the order of the options like you want but keep the directories
+before them. If you give a directory just behind a command it is interpreted
+as additional command instead as directory.</p>
+<div class="pilwrap" id="general-options">
+  <h3>
+    <a href="#general-options" name="general-options" class="pilcrow"></a>
+General options
+  </h3>
+</div>
+<p><code>-v</code> or <code>--verbose</code> will display a lot of information of what is going on.
+This information will sometimes look discarded because of the parallel
+processing of some tasks.</p>
+<p><code>-C</code> or <code>--no-colors</code> can be used to disable the colored output.</p>
+<div class="pilwrap" id="command-create">
+  <h3>
+    <a href="#command-create" name="command-create" class="pilcrow"></a>
+Command <code>create</code>
+  </h3>
+</div>
+<p>Create a new package from scratch. This will create:</p>
+<ul>
+<li>the directory</li>
+<li>make some initial files</li>
+<li>init git repository</li>
+<li>setup github repository</li>
+<li>add and commit everything</li>
+</ul>
+<p>The create task needs the <code>--password</code> setting to access github
+through the api. And you may specify the <code>--package</code> setting for the npm name
+of the package. The also mandatory path will be used as the github repository
+name, too.</p>
+<p>Some example calls will look like:</p>
+<pre><code>&gt; builder ./node-error create --package alinex-error
+&gt; builder ./private-module create --private
+</code></pre>
+<p>This process is interactive and will ask you some more details. After that you
+may directly start to add your code.</p>
+<div class="pilwrap" id="command-push">
+  <h3>
+    <a href="#command-push" name="command-push" class="pilcrow"></a>
+Command <code>push</code>
+  </h3>
+</div>
+<p>This will push the changes to the origin repository. With the <code>--message</code> option
+it will also add and commit all other changes before doing so.</p>
+<pre><code>&gt; builder push                  # from within the package directory
+&gt; builder ./node-error push     # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--message, -m  Commit message for local changes                       [string]
+</code></pre>
+<div class="pilwrap" id="command-pull">
+  <h3>
+    <a href="#command-pull" name="command-pull" class="pilcrow"></a>
+Command <code>pull</code>
+  </h3>
+</div>
+<p>Like <code>push</code> this will fetch the newest changes from git origin.</p>
+<pre><code>&gt; builder pull                  # from within the package directory
+&gt; builder ./node-error pull     # or from anywhere else
+
+Pull from origin
+Von https://github.com/alinex/node-make
+ * branch            master     -&gt; FETCH_HEAD
+</code></pre>
+<div class="pilwrap" id="command-link">
+  <h3>
+    <a href="#command-link" name="command-link" class="pilcrow"></a>
+Command <code>link</code>
+  </h3>
+</div>
+<p>This task will link a local package installed in a parallel directory into the
+packages node_modules directory.</p>
+<pre><code>&gt; builder link                  # link all node-... as alinex-...  packages
+&gt; builder link --locale config  # or link only the config package
+</code></pre>
+<p>Options:</p>
+<pre><code>--link, -l  package name to link                                      [string]
+--local     local path which is used                                  [string]
+</code></pre>
+<div class="pilwrap" id="command-compile">
+  <h3>
+    <a href="#command-compile" name="command-compile" class="pilcrow"></a>
+Command <code>compile</code>
+  </h3>
+</div>
+<p>This task is used to compile the sources into for runtime optimized library.</p>
+<pre><code>&gt; builder compile               # from within the package directory
+&gt; builder ./node-error compile  # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--uglify, -u  run uglify for each file                               [boolean]
+</code></pre>
+<p>Mostly this task will be added as prepublish script to the <code>package.json</code> like:</p>
+<pre><code>&quot;scripts&quot;: {
+  &quot;prepublish&quot;: &quot;node_modules/.bin/builder compile -u&quot;
+}
+</code></pre>
+<p>Also this will make man files from mardown documents in <code>src/man</code> if they
+are referenced in the package.json.</p>
+<div class="pilwrap" id="command-test">
+  <h3>
+    <a href="#command-test" name="command-test" class="pilcrow"></a>
+Command <code>test</code>
+  </h3>
+</div>
+<p>As a first test a coffeelint check will be run. Only if this won't have any
+errors the automatic tests will be run.</p>
+<p>If the <a href="http://gotwarlost.github.io/istanbul/">istanbul</a> module is installed
+a code coverage report will be build.</p>
+<pre><code>&gt; builder test                  # from within the package directory
+&gt; builder ./node-error test     # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--bail, -b   stop on first error in unit tests                        [string]
+--coverage   create coverage reports                                 [boolean]
+--coveralls  send coverage to coveralls                              [boolean]
+--browser    open results in browser                                 [boolean]
+</code></pre>
+<div class="pilwrap" id="command-doc">
+  <h3>
+    <a href="#command-doc" name="command-doc" class="pilcrow"></a>
+Command: <code>doc</code>
+  </h3>
+</div>
+<p>Generate the documentation this will create the documentation in the <code>doc</code>
+folder. It includes the API documentation with code. Each module will get his
+own documentation space with an auto generated index page.</p>
+<p>This tool will extract the documentation from the markup and code files in
+any language and generate HTML pages with the documentation beside the
+code.</p>
+<pre><code>&gt; builder doc                   # from within the package directory
+&gt; builder ./node-error doc      # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--publish  publish documentation                                     [boolean]
+--browser  open api in browser                                       [boolean]
+</code></pre>
+<div class="pilwrap" id="command-changes">
+  <h3>
+    <a href="#command-changes" name="command-changes" class="pilcrow"></a>
+Command <code>changes</code>
+  </h3>
+</div>
+<p>This will list all changes (checkins) which are done since the last publication.
+Use this to check if you should make a new publication or if it can wait.</p>
+<pre><code>&gt; builder changes
+</code></pre>
+<p>Options:</p>
+<pre><code>--skip-unused, -s  Skip check for unused packages                    [boolean]
+</code></pre>
+<div class="pilwrap" id="command-publish">
+  <h3>
+    <a href="#command-publish" name="command-publish" class="pilcrow"></a>
+Command <code>publish</code>
+  </h3>
+</div>
+<p>With the push command you can publish your newest changes to github and npm as a
+new version. The version can be set by signaling if it should be a <code>--major</code>,
+<code>--minor</code> or bugfix version if no switch given.</p>
+<p>To publish the next bugfix version only call:</p>
+<pre><code>&gt; builder publish               # from within the package directory
+&gt; builder ./node-error publish  # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--major    release next major version                                [boolean]
+--minor    release next minor version                                [boolean]
+--version  version to release                                         [string]
+--release  release message                                            [string]
+--force    force publish also on problems
+</code></pre>
+<p>And you may use the switches <code>--try</code> to not really publish but to check if it will
+be possible and <code>--force</code> to always publish also if it is not possible because of
+failed tests or not up-to-date dependent packages.</p>
+<div class="pilwrap" id="command-clean">
+  <h3>
+    <a href="#command-clean" name="command-clean" class="pilcrow"></a>
+Command: <code>clean</code>
+  </h3>
+</div>
+<p>Remove all automatically generated files. This will bring you to the initial
+state of the system. To create a usable system you have to build it again.</p>
+<p>To clean everything which you won't need for a production environment use
+<code>--dist</code> or <code>--auto</code> to remove all automatically generated files in the
+development environment.</p>
+<p>To cleanup all safe files:</p>
+<pre><code>&gt; builder clean                 # from within the package directory
+&gt; builder ./node-error clean    # or from anywhere else
+</code></pre>
+<p>Options:</p>
+<pre><code>--auto, -a  Remove all automatically generated folders               [boolean]
+--dist      Remove unneccessary folders for production               [boolean]
+</code></pre>
+<div class="pilwrap" id="configuration">
+  <h2>
+    <a href="#configuration" name="configuration" class="pilcrow"></a>
+Configuration
+  </h2>
+</div>
+<div class="pilwrap" id="document-template">
+  <h3>
+    <a href="#document-template" name="document-template" class="pilcrow"></a>
+Document Template
+  </h3>
+</div>
+<p>You may specify a different document layout by creating a file named like the
+main part of your package (name till the first hyphen). Use the file
+<code>/var/src/docstyle/default.css</code> as a default and store your own in
+<code>/var/local/docstyle/&lt;basename&gt;.css</code>.</p>
+<p>Also the javascript may be changed for each package basename in <code>&lt;basename&gt;.js</code>
+like done for the css.</p>
+<div class="pilwrap" id="license">
+  <h2>
+    <a href="#license" name="license" class="pilcrow"></a>
+License
+  </h2>
+</div>
+<p>Copyright 2013-2014 Alexander Schilling</p>
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</div>
+  </div>
+</body>
+</html>
