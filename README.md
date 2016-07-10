@@ -7,6 +7,7 @@ Alinex CodeDoc
 
 A general code documentation tool based on the concepts of docco or docker.js.
 
+
 > It is one of the modules of the [Alinex Universe](http://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](http://alinex.github.io/develop).
 
@@ -24,6 +25,25 @@ Usage
 
 
 
+Layout Planing
+-------------------------------------------------
+
+    <---------------------MENULINE------------------>
+    <--NAV--> <------------PAGE--------------------->
+    <--------------------FOOTER--------------------->
+
+Menuline
+- lOGO, Version selection, Top Links
+
+Navigation
+- Site Navigation
+
+Page
+- Contains html from file
+- TOC
+
+Footer
+- Copyright
 
 
 License
