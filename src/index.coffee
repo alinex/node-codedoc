@@ -73,7 +73,7 @@ processFile = (file, dest, cb) ->
     # write file
     (report, cb) ->
       report.toHtml
-        style: 'default' #'codedoc'
+        style: 'codedoc'
       , (err, html) ->
         fs.writeFile dest, html, 'utf8', cb
     # addFileToTree
