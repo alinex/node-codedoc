@@ -38,7 +38,6 @@
     "alinex-core": "^0.2.9",
     "alinex-fs": "^2.0.2",
     "alinex-report": "^2.1.0",
-    "alinex-util": "^2.3.1",
     "async": "^2.0.0-rc.6",
     "chalk": "^1.1.3",
     "debug": "^2.2.0",

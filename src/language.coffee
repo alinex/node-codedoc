@@ -57,7 +57,8 @@ module.exports = (file, contents) ->
 # * `multiLine`: Start and end delimiters for multi-line comments
 # * `commentsIgnore`: Regex for comments that shouldn't be interpreted as descriptive
 # * `jsDoc`: whether to try and extract jsDoc-style comment data
-# * `literals`: Quoted strings are ignored when looking for comment delimiters. Any extra literals go here
+# * `literals`: Quoted strings are ignored when looking for comment delimiters.
+#   Any extra literals go here
 # * `highlightLanguage`: override for language to use with highlight.js
 languages =
   javascript:
@@ -233,8 +234,8 @@ languages =
     ]
     comment: '#'
   yaml:
-     extensions: [ 'yaml', 'yml' ]
-     comment: '#'
+    extensions: [ 'yaml', 'yml' ]
+    comment: '#'
   markdown:
     extensions: [
       'md'
