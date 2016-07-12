@@ -59,6 +59,8 @@ exports.run = (setup, cb) ->
             context:
               current: name
               files: map
+            # uri
+            # name
           , (err, html) ->
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
