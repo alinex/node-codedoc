@@ -12,6 +12,7 @@ path = require 'path'
 async = require 'async'
 isBinaryFile = require 'isbinaryfile'
 # include alinex modules
+util = require 'alinex-util'
 fs = require 'alinex-fs'
 Report = require 'alinex-report'
 # internal methods
@@ -36,12 +37,35 @@ exports.run = (setup, cb) ->
     fs.find setup.input, setup.find, (err, list) ->
       return cb err if err
       debug "convert files..."
-      async.mapLimit list, 1, (file, cb) ->
-        dest = "#{setup.output}#{file[setup.input.length..]}.html"
-        processFile file, dest, cb
-      , cb
+      map = {}
+      async.eachLimit list, 1, (file, cb) ->
+        processFile file, (err, report) ->
+          if err
+            return cb err if err instanceof Error
+            return cb() # no real problem but abort
+          p = file[setup.input.length..]
+          map[p] =
+            level: p.split(/\//).length - 2
+            dest: "#{setup.output}#{p}.html"
+            report: report
+          cb()
+      , (err) ->
+        return cb err if err
+        map = sortMap map
+        async.eachLimit Object.keys(map), 1, (name, cb) ->
+          file = map[name]
+          file.report.toHtml
+            style: 'codedoc'
+            context:
+              current: name
+              files: map
+          , (err, html) ->
+            fs.mkdirs path.dirname(file.dest), (err) ->
+              return cb err if err
+              fs.writeFile file.dest, html, 'utf8', cb
+        , cb
 
-processFile = (file, dest, cb) ->
+processFile = (file, cb) ->
   async.waterfall [
     # get file
     (cb) ->
@@ -70,13 +94,41 @@ processFile = (file, dest, cb) ->
         # highlight
         # renderCodeFile
       cb null, report
-    # write file
-    (report, cb) ->
-      report.toHtml
-        style: 'codedoc'
-      , (err, html) ->
-        fs.writeFile dest, html, 'utf8', cb
-    # addFileToTree
-    (cb) ->
-      cb()
-  ], -> cb()
+  ], cb
+
+orderFirst = [
+  'index.*'
+  'readme.md'
+]
+orderLast = [
+  '/src'
+  '/lib'
+  '/bin'
+  '/var'
+  '.travis.yml'
+]
+sortMap = (map) ->
+  list = Object.keys(map).map (e) ->
+    parts = e[1..].toLowerCase().split /\//
+    last = parts.pop()
+    parts = parts.map (p) -> "/#{p}"
+    parts.push last
+    sortnum = parts.map (p) ->
+      check = [p]
+      if ~p.indexOf '.'
+        check.push "*#{path.extname p}"
+        check.push "#{path.basename p, path.extname p}.*"
+      for v, i in orderFirst
+        continue unless v in check
+        return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
+      for v, i in orderLast
+        continue unless v in check
+        return util.string.lpad(81 + i, 2, '0') + util.string.rpad(p, 10, '_')
+      80 + util.string.rpad(p, 10, '_')
+    .join ''
+    "#{sortnum} => #{e}"
+  list.sort()
+  list = list.map (e) -> e.split(/ => /)[1]
+  sorted = {}
+  sorted[k] = map[k] for k in list
+  sorted
