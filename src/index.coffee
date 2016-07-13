@@ -45,22 +45,30 @@ exports.run = (setup, cb) ->
             return cb() # no real problem but abort
           p = file[setup.input.length..]
           map[p] =
-            level: p.split(/\//).length - 2
-            dest: "#{setup.output}#{p}.html"
             report: report
+            dest: "#{setup.output}#{p}.html"
+            parts: p[1..].toLowerCase().split /\//
+            title: (report.getTitle() ? p[1..]).replace /^Alinex\s+/i, ''
           cb()
       , (err) ->
         return cb err if err
         map = sortMap map
         async.eachLimit Object.keys(map), 1, (name, cb) ->
+          files = []
+          for p, e of map
+            files.push
+              depth: e.parts.length - 1
+              title: e.title
+              path: p
+              link: path.relative path.dirname(name), p
+              active: p is name
+          console.log files if name.match /README/
+          #################################### make files with active
           file = map[name]
           file.report.toHtml
             style: 'codedoc'
             context:
-              current: name
-              files: map
-            # uri
-            # name
+              files: files
           , (err, html) ->
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
@@ -111,10 +119,8 @@ orderLast = [
 ]
 sortMap = (map) ->
   list = Object.keys(map).map (e) ->
-    parts = e[1..].toLowerCase().split /\//
-    last = parts.pop()
-    parts = parts.map (p) -> "/#{p}"
-    parts.push last
+    parts = map[e].parts[..-2].map (p) -> "/#{p}"
+    parts.push map[e].parts[map[e].parts.length-1]
     sortnum = parts.map (p) ->
       check = [p]
       if ~p.indexOf '.'
@@ -125,8 +131,8 @@ sortMap = (map) ->
         return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
       for v, i in orderLast
         continue unless v in check
-        return util.string.lpad(81 + i, 2, '0') + util.string.rpad(p, 10, '_')
-      80 + util.string.rpad(p, 10, '_')
+        return util.string.lpad(51 + i, 2, '0') + util.string.rpad(p, 10, '_')
+      50 + util.string.rpad(p, 10, '_')
     .join ''
     "#{sortnum} => #{e}"
   list.sort()
