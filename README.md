@@ -9,16 +9,22 @@ A general code documentation tool based on the concepts of
 [docco](http://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
 
 ::: warning
-At the moment this is under development and may be used on your own risk.
+At the moment this is under heavy development and may be used on your own risk.
 :::
 
 This tool should help you create browsable documentation out of the comments written
-in the code.
+in the code. At first it is no general tool for everybody but a helper for myself to
+get a documentation for my own projects.
 
-- for any language
+The main features are:
+
+- useable for any language
 - with easy markdown text
 - powerful options like graphs
 - additional support for javadoc like formatting
+
+To see what it will give you is shown here in this documentation which is completely
+made with it.
 
 > It is one of the modules of the [Alinex Universe](http://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](http://alinex.github.io/develop).
@@ -54,6 +60,49 @@ See the online help for now:
 ``` sh
 codedoc --help
 ```
+
+
+How it Works
+-------------------------------------------------
+
+The following graph will show you the basic steps in creating the documentation:
+
+$$$ plantuml
+  :CLI Call;
+  :codedoc|
+  :Find files]
+  note right
+    Includes and excludes
+    definable
+  end note
+  partition "parallel run" {
+    note right
+      for each
+      file
+    end note
+    :read file<
+    :analyze language]
+    if (is markdown) then (yes)
+      :add as report]
+    else (no)
+      :extract
+      block comments]
+      :interpret JsDoc]
+    endif
+    :report;
+  }
+  :sort documents]
+  partition "parallel run" {
+    :convert to html]
+    :write report>
+  }
+$$$
+
+### Sorting
+
+The file links are sorted in a natural way. This is from upper to lower directories
+and alphabetically but with some defined orders. This means that 'index.*' always
+comes before 'README.md' and the other files.
 
 
 Layout Planing
