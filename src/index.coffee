@@ -1,9 +1,13 @@
-# Main controlling class
-# =================================================
+###
+API: Main Controller
+=================================================
 
+This class is loaded by the CLI call or from other packages. This collects all
+accessible methods to use the package.
 
-# Node Modules
-# -------------------------------------------------
+Node Modules
+-------------------------------------------------
+###
 
 # include base modules
 debug = require('debug') 'codedoc'
@@ -19,8 +23,10 @@ Report = require 'alinex-report'
 language = require './language'
 
 
-# Initialize
-# -------------------------------------------------
+###
+Initialize
+-------------------------------------------------
+###
 exports.run = (setup, cb) ->
   # set up system
   setup.input ?= '.'
@@ -100,8 +106,22 @@ processFile = (file, cb) ->
       if lang.name is 'markdown'
         report.raw contents
       else
-        report.p 'Not parseable, yet'
         # parseSections
+        # document comments
+        docs = []
+        if lang.doc
+          for re in lang.doc
+            while match = re.exec contents
+              docs.push [match.index, match.index + match[0].length, match[1]]
+        docs.sort (a, b) ->
+          return -1 if a[0] < b[0]
+          return 1 if a[0] > b[0]
+          0
+        for doc in docs
+          report.raw doc[2]
+        console.log '->', report.getTitle()
+        console.log report.toString()
+        console.log '##########'
         # highlight
         # renderCodeFile
       cb null, report

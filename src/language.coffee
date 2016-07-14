@@ -75,20 +75,35 @@ languages =
       /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
       '/./'
     ] ]
+
   coffeescript:
     extensions: [ 'coffee' ]
     names: [ 'cakefile' ]
     executables: [ 'coffee' ]
-    comment: '#'
-    multiLine: [
-      /^\s*#{3}\s*$/m
-      /^\s*#{3}\s*$/m
+    comment: []
+    doc: [
+      ///
+        (?:^|\n)    # start of document or line
+        \s*         # with optional spaces
+        \#{3}       # then three hashes: ###
+        (           # content of the comment
+          [^\#]     # no more than the three hashes
+          [\s\S]*?  # other comment charactes
+        )           # end of comment
+        \#{3,}      # then three or more hashes
+        [ \t]*?\n   # only spaces till end of line
+      ///g
     ]
-    jsDoc: true
-    literals: [ [
-      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
-      '/./'
-    ] ]
+#    comment: '#'
+#    multiLine: [
+#      /^\s*#{3}\s*$/m
+#      /^\s*#{3}\s*$/m
+#    ]
+#    jsDoc: true
+#    literals: [ [
+#      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
+#      '/./'
+#    ] ]
   livescript:
     extensions: [ 'ls' ]
     executables: [ 'lsc' ]
