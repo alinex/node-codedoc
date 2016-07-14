@@ -54,16 +54,17 @@ exports.run = (setup, cb) ->
         return cb err if err
         map = sortMap map
         async.eachLimit Object.keys(map), 1, (name, cb) ->
+          # create link list
           files = []
           for p, e of map
             files.push
               depth: e.parts.length - 1
               title: e.title
               path: p
-              link: path.relative path.dirname(name), p
+              link: e.title.replace /^.*?[-:]\s+/, ''
+              url: "#{path.relative path.dirname(name), p}.html"
               active: p is name
-          console.log files if name.match /README/
-          #################################### make files with active
+          # convert to html
           file = map[name]
           file.report.toHtml
             style: 'codedoc'
@@ -109,11 +110,12 @@ processFile = (file, cb) ->
 orderFirst = [
   'index.*'
   'readme.md'
+  '/man'
+  '/src'
 ]
 orderLast = [
-  '/src'
-  '/lib'
   '/bin'
+  '/lib'
   '/var'
   '.travis.yml'
 ]
