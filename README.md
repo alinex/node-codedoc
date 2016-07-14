@@ -23,8 +23,8 @@ The main features are:
 - powerful options like graphs
 - additional support for javadoc like formatting
 
-To see what it will give you is shown here in this documentation which is completely
-made with it.
+To see what it will give you is shown here in [this documentation](http://alinex.github.io/node-codedoc)
+which is completely made with it.
 
 > It is one of the modules of the [Alinex Universe](http://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](http://alinex.github.io/develop).
@@ -105,34 +105,10 @@ and alphabetically but with some defined orders. This means that 'index.*' alway
 comes before 'README.md' and the other files.
 
 
-Layout Planing
--------------------------------------------------
-
-In the moment the layout is the single page layout of the report component, but
-this will change soon.
-
-    <---------------------MENULINE------------------>
-    <--NAV--> <------------PAGE--------------------->
-    <--------------------FOOTER--------------------->
-
-Menuline
-- lOGO, Version selection, Top Links
-
-Navigation
-- Site Navigation
-
-Page
-- Contains html from file
-- TOC
-
-Footer
-- Copyright
-
-
 License
 -------------------------------------------------
 
-Copyright 2016 Alexander Schilling
+(C) Copyright 2016 Alexander Schilling
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

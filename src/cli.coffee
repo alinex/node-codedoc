@@ -142,5 +142,5 @@ readExcludes argv.input, (err, list) ->
     output: argv.output
     style: argv.style
   , (err) ->
-    console.log '========'
+    console.log 'Everything done.'
     alinex.exit err

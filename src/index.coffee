@@ -108,9 +108,9 @@ processFile = (file, cb) ->
   ], cb
 
 orderFirst = [
-  'index.*'
-  'readme.md'
+  'readme.*'
   '/man'
+  'index.*'
   '/src'
 ]
 orderLast = [

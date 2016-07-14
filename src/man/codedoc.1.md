@@ -27,14 +27,14 @@ Examples:
 
     coffee src/cli.coffee  to create the default documentation
 
-You may use environment variables prefixed with 'CODEDOC_' to set any of
-the options like 'CODEDOC_VERBOSE' to set the verbose level.
+You may use environment variables prefixed with `CODEDOC_` to set any of
+the options like `CODEDOC_VERBOSE` to set the verbose level.
 
 
 License
 -------------------------------------------------
 
-Copyright 2016 Alexander Schilling
+(C) Copyright 2016 Alexander Schilling
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
