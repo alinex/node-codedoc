@@ -78,7 +78,6 @@ exports.run = (setup, cb) ->
         mapKeys = Object.keys map
         moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
         .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
-        console.log '===========>>>', moduleName, new RegExp("^#{setup.brand}\s+", 'i')
         async.eachLimit mapKeys, 1, (name, cb) ->
           # create link list
           files = []
@@ -127,24 +126,27 @@ processFile = (file, cb) ->
       if lang.name is 'markdown'
         report.raw contents
       else
-        # parseSections
         # document comments
         docs = []
         if lang.doc
           for re in lang.doc
             while match = re.exec contents
               docs.push [match.index, match.index + match[0].length, match[1]]
+        # sort found sections
         docs.sort (a, b) ->
           return -1 if a[0] < b[0]
           return 1 if a[0] > b[0]
           0
+        # create report
+        pos = 0
         for doc in docs
+          if pos < doc[0]
+            report.code trim(contents[pos..doc[0]]), lang.name
+            report.p Report.style 'code: style="counter-reset:line 11"'
           report.raw doc[2]
-        console.log '->', report.getTitle()
-        console.log report.toString()
-        console.log '##########'
-        # highlight
-        # renderCodeFile
+          pos = doc[1]
+        if pos < contents.length
+          report.code trim(contents[pos..]), lang.name
       cb null, report
   ], cb
 
@@ -183,3 +185,6 @@ sortMap = (map) ->
   sorted = {}
   sorted[k] = map[k] for k in list
   sorted
+
+trim = (code) ->
+  code

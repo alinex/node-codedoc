@@ -159,32 +159,39 @@ pre
   font-size: 85%;
   margin: 20px;
   padding: 10px;
+  counter-reset: line;
   code, tt
     background: none;
-  code.language header
-    color: black;
-    font-weight: bold;
-    display: block;
-    background: #fafafa;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    margin-bottom: 5px;
-    margin: -10px -10px 5px -10px;
-    padding: 5px;
-  code
+    &:before
+      counter-increment: line;
+      content: counter(line);
+      min-width: 35px;
+      display: block;
+      float: left;
+      text-align: right;
+      padding-right: 5px;
+      color: grey;
+      no-select();
+      -webkit-user-select: none;
+  &.language
+    max-height: 265px
+    padding-top: 30px
+    header
+      font-weight: bold;
+      background: #fafafa;
+      margin: -30px -10px 5px -10px;
+      padding: 5px 15px;
     &.bash
-    &.coffee
+    &.coffeescript
     &.js
     &.sh
     &.sql
       header
         background: #f0ad4e
-  code
     &.json
     &.yaml
       header
         background: #61b961;
-  code
     &.handlebars
     &.markdown
       header
