@@ -138,6 +138,9 @@ processFile = (file, cb) ->
           return 1 if a[0] > b[0]
           0
         # create report
+        unless docs.length
+          report.code trim(contents), lang.name
+          report.p Report.style 'code: style="max-height:none"'          
         pos = 0
         for doc in docs
           if pos < doc[0]
