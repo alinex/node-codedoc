@@ -8,10 +8,6 @@ Alinex CodeDoc: Readme
 A general code documentation tool based on the concepts of
 [docco](http://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
 
-::: warning
-At the moment this is under heavy development and may be used on your own risk.
-:::
-
 This tool should help you create browsable documentation out of the comments written
 in the code. At first it is no general tool for everybody but a helper for myself to
 get a documentation for my own projects.
@@ -22,12 +18,17 @@ The main features are:
 - with easy markdown text
 - powerful options like graphs
 - additional support for javadoc like formatting
+- responsive design through templates
 
 To see what it will give you is shown here in [this documentation](http://alinex.github.io/node-codedoc)
 which is completely made with it.
 
 > It is one of the modules of the [Alinex Namespace](http://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](http://alinex.github.io/develop).
+
+__Read the complete documentation under
+[http://alinex.github.io/node-codedoc](http://alinex.github.io/node-codedoc).__
+<!-- {p: .hide} -->
 
 
 Install
