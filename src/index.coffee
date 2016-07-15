@@ -2,6 +2,8 @@
 API: Main Controller
 =================================================
 
+> /src/index.coffee
+
 This class is loaded by the CLI call or from other packages. This collects all
 accessible methods to use the package.
 
@@ -61,11 +63,11 @@ exports.run = (setup, cb) ->
       debug "convert files..."
       map = {}
       async.eachLimit list, 1, (file, cb) ->
-        processFile file, (err, report) ->
+        p = file[setup.input.length..]
+        processFile file, p, (err, report) ->
           if err
             return cb err if err instanceof Error
             return cb() # no real problem but abort
-          p = file[setup.input.length..]
           map[p] =
             report: report
             dest: "#{setup.output}#{p}.html"
@@ -102,7 +104,7 @@ exports.run = (setup, cb) ->
               fs.writeFile file.dest, html, 'utf8', cb
         , cb
 
-processFile = (file, cb) ->
+processFile = (file, local, cb) ->
   async.waterfall [
     # get file
     (cb) ->
@@ -139,8 +141,11 @@ processFile = (file, cb) ->
           0
         # create report
         unless docs.length
+          report.h1 "File: #{path.basename local}"
+          report.quote local
           report.code trim(contents), lang.name
-          report.p Report.style 'code: style="max-height:none"'          
+          report.p Report.style 'code: style="max-height:none"'
+          return cb null, report
         pos = 0
         for doc in docs
           if pos < doc[0]

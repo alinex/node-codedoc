@@ -131,8 +131,8 @@ blockquote
   border: 1px solid #eee;
   border-radius: 3px;
   border-left: 5px solid $color-blue;
-  padding: 15px;
-  margin: 0
+  padding: 5px 15px;
+  margin: 10px 0
 
 /* tables */
 
@@ -172,23 +172,24 @@ pre
   font-size: 85%;
   margin: 20px;
   padding: 10px;
-  counter-reset: line;
   code, tt
     background: none;
-    &:before
-      counter-increment: line;
-      content: counter(line);
-      min-width: 35px;
-      display: block;
-      float: left;
-      text-align: right;
-      padding-right: 5px;
-      color: grey;
-      no-select();
-      -webkit-user-select: none;
   &.language
+    counter-reset: line;
     max-height: 265px
     padding-top: 30px
+    code, tt
+      &:before
+        counter-increment: line;
+        content: counter(line);
+        min-width: 35px;
+        display: block;
+        float: left;
+        text-align: right;
+        padding-right: 5px;
+        color: grey;
+        no-select();
+        -webkit-user-select: none;
     header
       font-weight: bold;
       background: #fafafa;
