@@ -44,6 +44,12 @@ $min-width = 300px
       gradient: $color-blue
       color: white;
   >li.active>a
+    gradient: lighten($color-blue, 15);
+    &:hover
+      gradient: $color-blue;
+      color: white;
+  >li.header>a
+    font-weight: bold;
     gradient: $color-orange;
     &:hover
       gradient: darken($color-orange, 15);

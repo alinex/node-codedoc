@@ -49,6 +49,7 @@ exports.run = (setup, cb) ->
   setup.output = path.resolve setup.output ? '.'
   setup.find ?= {}
   setup.find.type = 'file'
+  setup.brand ?= 'alinex'
   # start converting
   console.log "Output to #{setup.output}..."
   fs.mkdirs setup.output, (err) ->
@@ -69,12 +70,16 @@ exports.run = (setup, cb) ->
             report: report
             dest: "#{setup.output}#{p}.html"
             parts: p[1..].toLowerCase().split /\//
-            title: (report.getTitle() ? p[1..]).replace /^Alinex\s+/i, ''
+            title: report.getTitle() ? p[1..]
           cb()
       , (err) ->
         return cb err if err
         map = sortMap map
-        async.eachLimit Object.keys(map), 1, (name, cb) ->
+        mapKeys = Object.keys map
+        moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
+        .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
+        console.log '===========>>>', moduleName, new RegExp("^#{setup.brand}\s+", 'i')
+        async.eachLimit mapKeys, 1, (name, cb) ->
           # create link list
           files = []
           for p, e of map
@@ -90,6 +95,7 @@ exports.run = (setup, cb) ->
           file.report.toHtml
             style: 'codedoc'
             context:
+              moduleName: moduleName
               files: files
           , (err, html) ->
             fs.mkdirs path.dirname(file.dest), (err) ->
