@@ -7,6 +7,48 @@ API: Main Controller
 This class is loaded by the CLI call or from other packages. This collects all
 accessible methods to use the package.
 
+How it Works
+-------------------------------------------------
+
+The following graph will show you the basic steps in creating the documentation:
+
+$$$ plantuml
+  :CLI Call;
+  :codedoc|
+  :Find files]
+  note right
+    Includes and excludes
+    definable
+  end note
+  partition "parallel run" {
+    note right
+      for each
+      file
+    end note
+    :read file<
+    :analyze language]
+    if (is markdown) then (yes)
+      :add as report]
+    else (no)
+      :extract
+      block comments]
+      :interpret JsDoc]
+    endif
+    :report;
+  }
+  :sort documents]
+  partition "parallel run" {
+    :convert to html]
+    :write report>
+  }
+$$$
+
+### Sorting
+
+The file links are sorted in a natural way. This is from upper to lower directories
+and alphabetically but with some defined orders. This means that 'index.*' always
+comes before 'README.md' and the other files.
+
 Node Modules
 -------------------------------------------------
 ###
@@ -99,7 +141,7 @@ exports.run = (setup, cb) ->
               moduleName: moduleName
               files: files
           , (err, html) ->
-            html = html.replace ///href=\"(?!https?://|/)(.*?)\"///, 'href="$1.html"'	
+            html = html.replace ///href=\"(?!https?://|/)(.*?)\"///, 'href="$1.html"'
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
               fs.writeFile file.dest, html, 'utf8', cb

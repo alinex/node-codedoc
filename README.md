@@ -63,49 +63,6 @@ codedoc --help
 ```
 
 
-How it Works
--------------------------------------------------
-
-The following graph will show you the basic steps in creating the documentation:
-
-$$$ plantuml
-  :CLI Call;
-  :codedoc|
-  :Find files]
-  note right
-    Includes and excludes
-    definable
-  end note
-  partition "parallel run" {
-    note right
-      for each
-      file
-    end note
-    :read file<
-    :analyze language]
-    if (is markdown) then (yes)
-      :add as report]
-    else (no)
-      :extract
-      block comments]
-      :interpret JsDoc]
-    endif
-    :report;
-  }
-  :sort documents]
-  partition "parallel run" {
-    :convert to html]
-    :write report>
-  }
-$$$
-
-### Sorting
-
-The file links are sorted in a natural way. This is from upper to lower directories
-and alphabetically but with some defined orders. This means that 'index.*' always
-comes before 'README.md' and the other files.
-
-
 License
 -------------------------------------------------
 
