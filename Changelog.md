@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.2.1 (2016-07-15)
+-------------------------------------------------
+- upgraded alinex-report@2.1.4
+
 Version 0.2.0 (2016-07-15)
 -------------------------------------------------
 - 
