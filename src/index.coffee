@@ -19,6 +19,7 @@ isBinaryFile = require 'isbinaryfile'
 util = require 'alinex-util'
 fs = require 'alinex-fs'
 Report = require 'alinex-report'
+config = require 'alinex-config'
 # internal methods
 language = require './language'
 
@@ -27,6 +28,20 @@ language = require './language'
 Initialize
 -------------------------------------------------
 ###
+
+exports.setup = util.function.once this, (cb) ->
+  debug chalk.grey "setup codedoc component"
+  async.each [Report], (mod, cb) ->
+    mod.setup cb
+  , (err) ->
+    return cb err if err
+    # set module search path
+    config.register 'codedoc', path.dirname(__dirname),
+      folder: 'template'
+      type: 'template'
+    cb()
+
+
 exports.run = (setup, cb) ->
   # set up system
   setup.input ?= '.'

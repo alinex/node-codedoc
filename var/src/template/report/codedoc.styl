@@ -1,0 +1,276 @@
+// Page setup
+
+$topnav-height = 51px
+$color-orange = #f0ad4e
+$color-blue = #337ab7
+$min-width = 300px
+
+// bootstrap fix
+
+#topnav
+  .navbar-nav
+    margin-top: 8px;
+.navbar
+  min-width: $min-width
+.nav>li
+  padding: 2px 12px;
+.navbar-inverse
+  .navbar-nav>li>a
+    color: black;
+    font-weight: bold;
+.navbar-spacer
+  height: $topnav-height;
+.btn-warning
+.btn-primary
+  click-shrink()
+.btn-warning
+  gradient: $color-orange;
+.btn-primary
+  gradient: $color-blue;
+.navbar-inverse .navbar-nav>li>a
+  &:focus
+  &:hover
+    gradient: lighten($color-blue, 15);
+.navbar-inverse .navbar-nav>li>a.btn-warning
+  &:focus
+  &:hover
+    gradient: darken($color-orange, 15);
+
+.sidebar .nav
+  >li>a
+    color: black;
+    click-shadow()
+    &:hover
+      gradient: $color-blue
+      color: white;
+  >li.active>a
+    gradient: $color-orange;
+    &:hover
+      gradient: darken($color-orange, 15);
+      color: white;
+  li.level1>a
+    padding-left: 20px;
+  li.level2>a
+    padding-left: 25px;
+  li.level3>a
+  li.level4>a
+  li.level5>a
+    padding-left: 30px;
+
+@media (min-width: 768px)
+  #topnav
+    .nav>li
+      padding: 0 4px;
+  .navbar-right
+    margin-right: 0px;
+  .navbar-nav
+    >li>a
+      padding: 6px 10px;
+  .sidebar
+    overflow: auto;
+    position: fixed;
+    top: $topnav-height;
+    left: 0;
+    bottom: 0;
+    background: #ddd;
+    padding: 0;
+    h1, h2
+      display: none;
+    .nav>li
+      padding: 0;
+
+img.preload
+  display: none;
+
+// content
+
+body
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.2;
+  hyphenation()
+  min-width: $min-width;
+
+// headings
+h1
+  border-bottom: 3px solid black;
+  padding-bottom: 5px;
+h2
+  border-bottom: 2px dotted black;
+  padding-bottom: 3px;
+h3
+  border-bottom: 2px dotted gray;
+  padding-bottom: 2px;
+h4
+  border-bottom: 1px dotted gray;
+
+dt
+  font-weight: bold;
+  margin-top: 8px;
+
+blockquote
+  border: 1px solid #eee;
+  border-radius: 3px;
+  border-left: 5px solid $color-blue;
+  padding: 15px;
+  margin: 0
+
+/* tables */
+
+table
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+  th, td
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+  th
+    background-color: rgba(0, 0, 0, 0.04);
+    font-weight: bold;
+    border-bottom: 3px solid #999;
+  tr
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    &:nth-child(2n)
+      background-color: rgba(0, 0, 0, 0.04);
+
+/* code boxes */
+
+code, tt
+  background-color: #fafafa;
+  border-radius: 4px;
+  font-size: 85%;
+  margin: 0;
+  padding: 0.2em 0;
+pre
+  background-color: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #a4a4a4;
+  font-size: 85%;
+  margin: 20px;
+  padding: 10px;
+  code, tt
+    background: none;
+  code.language header
+    color: black;
+    font-weight: bold;
+    display: block;
+    background: #fafafa;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-bottom: 5px;
+    margin: -10px -10px 5px -10px;
+    padding: 5px;
+  code
+    &.bash
+    &.coffee
+    &.js
+    &.sh
+    &.sql
+      header
+        background: #f0ad4e
+  code
+    &.json
+    &.yaml
+      header
+        background: #61b961;
+  code
+    &.handlebars
+    &.markdown
+      header
+        background: #76abca;
+
+/* table of contents */
+
+.table-of-contents
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  float: right;
+  margin-top: 0;
+  padding: 10px 10px 10px 25px;
+  background: #fafafa;
+  font-size: 90%;
+  header
+    font-weight: bold;
+    font-size: 120%;
+    display: block;
+    background: #ddd;
+    margin: -10px -10px 4px -25px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 3px 10px;
+  ul
+    padding-left: 15px;
+  a
+    text-decoration: none;
+
+img
+  vertical-align: middle;
+.emoji
+  height: 1em;
+abbr
+acronym
+  border-bottom: dotted 1px;
+
+/* Possible box layouts */
+
+div
+  &.detail
+  &.info
+  &.warning
+  &.alert
+    padding: 30px 10px 6px 10px;
+    margin: 5px 0 8px 0;
+    border-radius: 3px
+    &>p
+      margin-bottom: 0;
+    header
+      font-weight: bold;
+      position: absolute;
+      margin-top: -30px;
+      margin-left: -10px;
+      padding: 3px 20px 3px 10px;
+      border-bottom-right-radius: 18px;
+div.detail
+  background-color: #fafafa;
+  border: 2px solid #ddd;
+  padding-top: 0;
+div.info
+  background-color: #99ff99;
+  border: 2px solid #66dd66;
+  header
+    background-color: #66dd66;
+div.warning
+  background-color: #ffcc99;
+  border: 2px solid #ee8866;
+  header
+    background-color: #ee8866;
+div.alert
+  background-color: #ff9999;
+  border: 2px solid #cc0000;
+  header
+    background-color: #cc0000;
+    color: white;
+
+/* Color styles for fontawesome and more */
+
+.text-red {color: red;}
+.text-green {color: green;}
+.text-yellow {color: yellow;}
+.text-blue {color: blue;}
+.text-magenta {color: magenta;}
+.text-cyan {color: cyan;}
+.text-gray {color: gray;}
+
+/* styles for decorate */
+
+.bg-white {background-color: white;}
+.center {text-align: center;}
+.left {float: left;}
+.right {float: right;}
+.hide {display: none;}
+.spacing {padding: 10px;}

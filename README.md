@@ -1,4 +1,4 @@
-Alinex CodeDoc
+Alinex CodeDoc: Readme
 =================================================
 
 [![Build Status](https://travis-ci.org/alinex/node-codedoc.svg?branch=master)](https://travis-ci.org/alinex/node-codedoc)
