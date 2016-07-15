@@ -99,6 +99,7 @@ exports.run = (setup, cb) ->
               moduleName: moduleName
               files: files
           , (err, html) ->
+            html = html.replace ///href=\"(?!https?://|/)(.*?)\"///, 'href="$1.html"'	
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
               fs.writeFile file.dest, html, 'utf8', cb
