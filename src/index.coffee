@@ -149,12 +149,18 @@ processFile = (file, local, cb) ->
         pos = 0
         for doc in docs
           if pos < doc[0]
-            report.code trim(contents[pos..doc[0]]), lang.name
-            report.p Report.style 'code: style="counter-reset:line 11"'
+            part = contents[pos..doc[0]]
+            report.code trim(part), lang.name
+            if pos # set correct line number
+              line = contents[0..pos].split('\n').length - 1
+              report.p Report.style "code: style=\"counter-reset:line #{line}\""
           report.raw doc[2]
           pos = doc[1]
         if pos < contents.length
           report.code trim(contents[pos..]), lang.name
+          if pos # set correct line number
+            line = contents[0..pos].split('\n').length - 1
+            report.p Report.style "code: style=\"counter-reset:line #{line}\""
       cb null, report
   ], cb
 
