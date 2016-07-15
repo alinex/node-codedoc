@@ -63,26 +63,36 @@ module.exports = (file, contents) ->
 languages =
   javascript:
     extensions: [ 'js' ]
-    executables: [ 'node' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
+    executables: [ 'node' ]#
+    doc: [
+      ///
+        \s*         # with optional spaces
+        /\*{2,}     # start with slash and at least two asterisk
+        (           # content of the comment
+          [\s\S]*?  # comment charactes
+        )           # end of comment
+        \*+/        # at least one asterisk and slash
+        \s*         # with optional spaces
+      ///g
     ]
-    commentsIgnore: /^\s*\/\/=/
-    jsDoc: true
-    literals: [ [
-      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
-      '/./'
-    ] ]
+#    comment: '//'
+#    multiLine: [
+#      /\/\*\*?/
+#      /\*\//
+#    ]
+#    commentsIgnore: /^\s*\/\/=/
+#    jsDoc: true
+#    literals: [ [
+#      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
+#      '/./'
+#    ] ]
 
   coffeescript:
     extensions: [ 'coffee' ]
     names: [ 'cakefile' ]
     executables: [ 'coffee' ]
-    comment: []
     doc: [
-      ///
+      ///           # ###\n ... \n###
         (?:^|\n)    # start of document or line
         \s*         # with optional spaces
         \#{3}       # then three hashes: ###

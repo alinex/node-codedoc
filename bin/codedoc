@@ -1,4 +1,14 @@
 #!/usr/bin/env node
 
+/**
+Start CLI
+=========================================================
+
+> /bin/createdoc
+
+This script will start the command line interface. See more at
+[/src/lib.coffee](../src/cli.coffee)
+*/
+
 process.title = 'codedoc';
 require(__dirname + '/../lib/cli.js');

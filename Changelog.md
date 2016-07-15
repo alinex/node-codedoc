@@ -10,12 +10,10 @@ Version 0.2.1 (2016-07-15)
 
 Version 0.2.0 (2016-07-15)
 -------------------------------------------------
-- 
+Enabled file tree with links.
 
 Version 0.1.2 (2016-07-15)
 -------------------------------------------------
-Enabled file tree with links.
-
 - Add alinex-util, alinex-config and upgrade alinex-report@2.1.2, alinex-builder@2.2.1, async@2.0.0
 - Allow line numbers in code view (but not correct, yet).
 - Rename links to Alinex Namespace.
