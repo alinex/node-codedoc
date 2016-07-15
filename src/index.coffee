@@ -43,7 +43,7 @@ $$$ plantuml
   }
 $$$
 
-### Sorting
+## Sorting
 
 The file links are sorted in a natural way. This is from upper to lower directories
 and alphabetically but with some defined orders. This means that 'index.*' always
