@@ -37,31 +37,38 @@ $min-width = 300px
     gradient: darken($color-orange, 15);
 
 .sidebar .nav
-  >li>a
-    color: black;
-    click-shadow()
-    &:hover
-      gradient: $color-blue
-      color: white;
-  >li.active>a
-    gradient: lighten($color-blue, 15);
-    &:hover
-      gradient: $color-blue;
-      color: white;
-  >li.header>a
-    font-weight: bold;
-    gradient: $color-orange;
-    &:hover
-      gradient: darken($color-orange, 15);
-      color: white;
-  li.level1>a
-    padding-left: 20px;
-  li.level2>a
-    padding-left: 25px;
-  li.level3>a
-  li.level4>a
-  li.level5>a
-    padding-left: 30px;
+  list-style: disc;
+  padding-left: 30px;
+  &>li
+    display: list-item;
+    &>a
+      color: black;
+      click-shadow()
+      &:hover
+        gradient: $color-blue
+        color: white;
+    &.header
+    &.active
+      display: none
+    &.active>a
+      gradient: lighten($color-blue, 15);
+      &:hover
+        gradient: $color-blue;
+        color: white;
+    &.header>a
+      font-weight: bold;
+      gradient: $color-orange;
+      &:hover
+        gradient: darken($color-orange, 15);
+        color: white;
+    &.level1>a
+      padding-left: 20px;
+    &.level2>a
+      padding-left: 25px;
+    &.level3>a
+    &.level4>a
+    &.level5>a
+      padding-left: 30px;
 
 @media (min-width: 768px)
   #topnav
@@ -82,8 +89,14 @@ $min-width = 300px
     padding: 0;
     h1, h2
       display: none;
-    .nav>li
-      padding: 0;
+    .nav
+      list-style: none;
+      padding-left: 0;
+      &>li
+        padding: 0;
+        &.header
+        &.active
+          display: block
 
 img.preload
   display: none;
