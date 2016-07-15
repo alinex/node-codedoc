@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Report</title>
+    <title>codedoc(1) - manpage</title>
     <meta name="HandheldFriendly" content="true" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -14,7 +14,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/8.5.0/styles/solarized_light.min.css" /><link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alinex/node-report/v2.1.2/var/src/template/report/codedoc.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alinex/node-report/v2.1.2/var/src/template/report/codedoc.css" />
   </head>
 
   <body>
@@ -57,11 +57,41 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <pre class="language yaml"><header>YAML Data</header><code><span class="hljs-attr">language:</span> node_js</code>
-<code><span class="hljs-attr">node_js:</span></code>
-<code><span class="hljs-bullet">   -</span> <span class="hljs-string">"0.12"</span> <span class="hljs-comment"># from 2015-02 maintenance till 2017-04</span></code>
-<code><span class="hljs-bullet">   -</span> <span class="hljs-string">"4"</span>  <span class="hljs-comment"># LTS from 2015-10  maintenance till 2018-04</span></code>
-<code><span class="hljs-bullet">   -</span> <span class="hljs-string">"5"</span>  <span class="hljs-comment"># current</span></code></pre>
+          <h1 id="codedoc1-manpage">codedoc(1) - manpage</h1>
+<p>A code documentation extractor used to create browsable documentation out of your inline
+documentation.</p>
+<h2 id="usage">Usage</h2>
+<pre><code>codedoc [options] [dir]
+</code></pre>
+<p>Document Options:</p>
+<pre><code>--input, -i   directory to analyse code                               [string]
+--output, -o  directory to write html site to      [string] [default: &quot;./doc&quot;]
+--style, -s   set layout style to use                                 [string]
+</code></pre>
+<p>General Options:</p>
+<pre><code>--help, -h      Show help                                            [boolean]
+--nocolors, -C  turn of color output                                 [boolean]
+--verbose, -v   run in verbose mode (multiple makes more verbose)      [count]
+--quiet, -q     don't output header and footer                       [boolean]
+</code></pre>
+<p>Examples:</p>
+<pre><code>coffee src/cli.coffee  to create the default documentation
+</code></pre>
+<p>You may use environment variables prefixed with <code>CODEDOC_</code> to set any of
+the options like <code>CODEDOC_VERBOSE</code> to set the verbose level.</p>
+<h2 id="license">License</h2>
+<p>© Copyright 2016 Alexander Schilling</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
 
         </div>
 
@@ -69,43 +99,43 @@
           <h1>Further pages</h1>
           <ul class="nav nav-sidebar">
             <li class="header">
-              <a href="README.md.html">CodeDoc</a>
+              <a href="../../README.md.html">CodeDoc</a>
             </li>
                 <li class="level0">
-                  <a href="README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
+                  <a href="../../README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
                 </li>
-                <li class="level2">
-                  <a href="src/man/codedoc.1.md.html" title="codedoc(1) - manpage (/src/man/codedoc.1.md)">manpage</a>
-                </li>
-                <li class="level1">
-                  <a href="src/index.coffee.html" title="API: Main Controller (/src/index.coffee)">Main Controller</a>
+                <li class="active level2">
+                  <a href="codedoc.1.md.html" title="codedoc(1) - manpage (/src/man/codedoc.1.md)">manpage <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="level1">
-                  <a href="src/cli.coffee.html" title="Startup script (/src/cli.coffee)">Startup script</a>
+                  <a href="../index.coffee.html" title="API: Main Controller (/src/index.coffee)">Main Controller</a>
                 </li>
                 <li class="level1">
-                  <a href="src/language.coffee.html" title="Startup script (/src/language.coffee)">Startup script</a>
+                  <a href="../cli.coffee.html" title="Startup script (/src/cli.coffee)">Startup script</a>
+                </li>
+                <li class="level1">
+                  <a href="../language.coffee.html" title="Startup script (/src/language.coffee)">Startup script</a>
                 </li>
                 <li class="level0">
-                  <a href="Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
+                  <a href="../../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
                 </li>
                 <li class="level0">
-                  <a href="coffeelint.json.html" title="coffeelint.json (/coffeelint.json)">coffeelint.json</a>
+                  <a href="../../coffeelint.json.html" title="coffeelint.json (/coffeelint.json)">coffeelint.json</a>
                 </li>
                 <li class="level0">
-                  <a href="package.json.html" title="package.json (/package.json)">package.json</a>
+                  <a href="../../package.json.html" title="package.json (/package.json)">package.json</a>
                 </li>
                 <li class="level1">
-                  <a href="bin/codedoc.html" title="bin/codedoc (/bin/codedoc)">bin/codedoc</a>
+                  <a href="../../bin/codedoc.html" title="bin/codedoc (/bin/codedoc)">bin/codedoc</a>
                 </li>
                 <li class="level4">
-                  <a href="var/src/template/report/codedoc.css.html" title="var/src/template/report/codedoc.css (/var/src/template/report/codedoc.css)">var/src/template/report/codedoc.css</a>
+                  <a href="../../var/src/template/report/codedoc.css.html" title="var/src/template/report/codedoc.css (/var/src/template/report/codedoc.css)">var/src/template/report/codedoc.css</a>
                 </li>
                 <li class="level4">
-                  <a href="var/src/template/report/codedoc.styl.html" title="var/src/template/report/codedoc.styl (/var/src/template/report/codedoc.styl)">var/src/template/report/codedoc.styl</a>
+                  <a href="../../var/src/template/report/codedoc.styl.html" title="var/src/template/report/codedoc.styl (/var/src/template/report/codedoc.styl)">var/src/template/report/codedoc.styl</a>
                 </li>
-                <li class="active level0">
-                  <a href=".travis.yml.html" title=".travis.yml (/.travis.yml)">.travis.yml <span class="sr-only">(current)</span></a>
+                <li class="level0">
+                  <a href="../../.travis.yml.html" title=".travis.yml (/.travis.yml)">.travis.yml</a>
                 </li>
           </ul>
         </div>

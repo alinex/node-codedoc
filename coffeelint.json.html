@@ -14,7 +14,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alinex/node-report/v2.1.1/var/src/template/report/codedoc.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/8.5.0/styles/solarized_light.min.css" /><link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alinex/node-report/v2.1.2/var/src/template/report/codedoc.css" />
   </head>
 
   <body>
@@ -28,7 +28,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="http://alinex.github.io/" onmouseover="logo.src='http://alinex.github.io/images/Alinex-200.png'" onmouseout="logo.src='http://alinex.github.io/images/Alinex-black-200.png'">
-            <img name="logo" src="http://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Universe Homepage">
+            <img name="logo" src="http://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Homepage">
           </a>
           <img class="preload" src="http://alinex.github.io/images/Alinex-200.png" aria-hidden="true">
         </div>
@@ -57,28 +57,215 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <p>Not parseable, yet</p>
+          <pre class="language json"><header>JSON Data</header><code>{</code>
+<code>    <span class="hljs-attr">"arrow_spacing"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"arrow_spacing"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"braces_spacing"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"braces_spacing"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"camel_case_classes"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"camel_case_classes"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"coffeescript_error"</span>: {</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"colon_assignment_spacing"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"colon_assignment_spacing"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span>,</code>
+<code>        <span class="hljs-attr">"spacing"</span>: {</code>
+<code>            <span class="hljs-attr">"left"</span>: <span class="hljs-number">0</span>,</code>
+<code>            <span class="hljs-attr">"right"</span>: <span class="hljs-number">1</span></code>
+<code>        }</code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"cyclomatic_complexity"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"cyclomatic_complexity"</span>,</code>
+<code>        <span class="hljs-attr">"value"</span>: <span class="hljs-number">15</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comment"</span>: <span class="hljs-string">"-----&gt; maybe set to warn but gives lots of warnings at the moment"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"duplicate_key"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"duplicate_key"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"empty_constructor_needs_parens"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"empty_constructor_needs_parens"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"ensure_comprehensions"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"ensure_comprehensions"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"eol_last"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"eol_last"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"indentation"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"indentation"</span>,</code>
+<code>        <span class="hljs-attr">"value"</span>: <span class="hljs-number">2</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"line_endings"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"line_endings"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span>,</code>
+<code>        <span class="hljs-attr">"value"</span>: <span class="hljs-string">"unix"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"max_line_length"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"max_line_length"</span>,</code>
+<code>        <span class="hljs-attr">"value"</span>: <span class="hljs-number">100</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span>,</code>
+<code>        <span class="hljs-attr">"limitComments"</span>: <span class="hljs-literal">true</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"missing_fat_arrows"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"missing_fat_arrows"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comment"</span>: <span class="hljs-string">"just now this is buggy in case of sending the instance itself to a method"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"newlines_after_classes"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"newlines_after_classes"</span>,</code>
+<code>        <span class="hljs-attr">"value"</span>: <span class="hljs-number">3</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_backticks"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_backticks"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_debugger"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_debugger"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_empty_functions"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_empty_functions"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comment"</span>: <span class="hljs-string">"used as default callback ( cb = -&gt; )"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_empty_param_list"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_empty_param_list"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_implicit_braces"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_implicit_braces"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span>,</code>
+<code>        <span class="hljs-attr">"strict"</span>: <span class="hljs-literal">false</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_implicit_parens"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_implicit_parens"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_interpolation_in_single_quotes"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_interpolation_in_single_quotes"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_plusplus"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_plusplus"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_stand_alone_at"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_stand_alone_at"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_tabs"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_tabs"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_this"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_this"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_throwing_strings"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_throwing_strings"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_trailing_semicolons"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_trailing_semicolons"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"error"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_trailing_whitespace"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_trailing_whitespace"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span>,</code>
+<code>        <span class="hljs-attr">"allowed_in_comments"</span>: <span class="hljs-literal">false</span>,</code>
+<code>        <span class="hljs-attr">"allowed_in_empty_lines"</span>: <span class="hljs-literal">false</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_unnecessary_double_quotes"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_unnecessary_double_quotes"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comments"</span>: <span class="hljs-string">"allowed for human messages which contain ' and maybe later get some interpolations into"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"no_unnecessary_fat_arrows"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"no_unnecessary_fat_arrows"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"non_empty_constructor_needs_parens"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"non_empty_constructor_needs_parens"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comment"</span>: <span class="hljs-string">"often used for generating error messages"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"prefer_english_operator"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"prefer_english_operator"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"space_operators"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"space_operators"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"ignore"</span>,</code>
+<code>        <span class="hljs-attr">"comment"</span>: <span class="hljs-string">"used as short form in index access like x.length-1"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"spacing_after_comma"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"spacing_after_comma"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    },</code>
+<code>    <span class="hljs-attr">"transform_messes_up_line_numbers"</span>: {</code>
+<code>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"transform_messes_up_line_numbers"</span>,</code>
+<code>        <span class="hljs-attr">"level"</span>: <span class="hljs-string">"warn"</span></code>
+<code>    }</code>
+<code>}</code></pre>
 
         </div>
 
         <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
+          <h1>Further pages</h1>
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
+            <li class="header">
+              <a href="README.md.html">CodeDoc</a>
+            </li>
+                <li class="level0">
+                  <a href="README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
+                </li>
+                <li class="level2">
+                  <a href="src/man/codedoc.1.md.html" title="codedoc(1) - manpage (/src/man/codedoc.1.md)">manpage</a>
+                </li>
+                <li class="level1">
+                  <a href="src/index.coffee.html" title="API: Main Controller (/src/index.coffee)">Main Controller</a>
+                </li>
+                <li class="level1">
+                  <a href="src/cli.coffee.html" title="Startup script (/src/cli.coffee)">Startup script</a>
+                </li>
+                <li class="level1">
+                  <a href="src/language.coffee.html" title="Startup script (/src/language.coffee)">Startup script</a>
+                </li>
+                <li class="level0">
+                  <a href="Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
+                </li>
+                <li class="active level0">
+                  <a href="coffeelint.json.html" title="coffeelint.json (/coffeelint.json)">coffeelint.json <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="level0">
+                  <a href="package.json.html" title="package.json (/package.json)">package.json</a>
+                </li>
+                <li class="level1">
+                  <a href="bin/codedoc.html" title="bin/codedoc (/bin/codedoc)">bin/codedoc</a>
+                </li>
+                <li class="level4">
+                  <a href="var/src/template/report/codedoc.css.html" title="var/src/template/report/codedoc.css (/var/src/template/report/codedoc.css)">var/src/template/report/codedoc.css</a>
+                </li>
+                <li class="level4">
+                  <a href="var/src/template/report/codedoc.styl.html" title="var/src/template/report/codedoc.styl (/var/src/template/report/codedoc.styl)">var/src/template/report/codedoc.styl</a>
+                </li>
+                <li class="level0">
+                  <a href=".travis.yml.html" title=".travis.yml (/.travis.yml)">.travis.yml</a>
+                </li>
           </ul>
         </div>
 
