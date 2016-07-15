@@ -178,22 +178,34 @@ pre
     counter-reset: line;
     max-height: 265px
     padding-top: 30px
+    padding-bottom: 0;
+    overflow-x: hidden;
     code, tt
+      display: block;
+      position: relative;
+      float: left;
+      border-left: 45px solid #ddd;
+      margin-left: -10px;
+      padding-left: 5px;
       &:before
         counter-increment: line;
         content: counter(line);
         min-width: 35px;
-        display: block;
         float: left;
         text-align: right;
         padding-right: 5px;
         color: grey;
         no-select();
         -webkit-user-select: none;
+        margin-left: -45px;
+      &:first-of-type
+        padding-top: 10px
+      &:last-child
+        padding-bottom: 10px
     header
       font-weight: bold;
       background: #fafafa;
-      margin: -30px -10px 5px -10px;
+      margin: -30px -10px 0 -10px;
       padding: 5px 15px;
     &.bash
     &.coffeescript
