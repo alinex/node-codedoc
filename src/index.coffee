@@ -210,6 +210,7 @@ processFile = (file, local, cb) ->
 orderFirst = [
   'readme.*'
   '/man'
+  '*.md'
   'index.*'
   '/src'
 ]

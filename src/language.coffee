@@ -46,6 +46,16 @@ module.exports = (file, contents) ->
 # Language definition
 # -------------------------------------------------
 
+C_DOC = ///
+    \s*         # with optional spaces
+    /\*{2,}     # start with slash and at least two asterisk
+    (           # content of the comment
+      [\s\S]*?  # comment charactes
+    )           # end of comment
+    \*+/        # at least one asterisk and slash
+    \s*         # with optional spaces
+  ///g
+
 # # Languages
 #
 # All the languages Docker can parse are in here.
@@ -61,32 +71,6 @@ module.exports = (file, contents) ->
 #   Any extra literals go here
 # * `highlightLanguage`: override for language to use with highlight.js
 languages =
-  javascript:
-    extensions: [ 'js' ]
-    executables: [ 'node' ]#
-    doc: [
-      ///
-        \s*         # with optional spaces
-        /\*{2,}     # start with slash and at least two asterisk
-        (           # content of the comment
-          [\s\S]*?  # comment charactes
-        )           # end of comment
-        \*+/        # at least one asterisk and slash
-        \s*         # with optional spaces
-      ///g
-    ]
-#    comment: '//'
-#    multiLine: [
-#      /\/\*\*?/
-#      /\*\//
-#    ]
-#    commentsIgnore: /^\s*\/\/=/
-#    jsDoc: true
-#    literals: [ [
-#      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
-#      '/./'
-#    ] ]
-
   coffeescript:
     extensions: [ 'coffee' ]
     names: [ 'cakefile' ]
@@ -104,25 +88,15 @@ languages =
         [ \t]*?\n   # only spaces till end of line
       ///g
     ]
-#    comment: '#'
-#    multiLine: [
-#      /^\s*#{3}\s*$/m
-#      /^\s*#{3}\s*$/m
-#    ]
-#    jsDoc: true
-#    literals: [ [
-#      /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g
-#      '/./'
-#    ] ]
+  javascript:
+    extensions: [ 'js' ]
+    executables: [ 'node' ]#
+    doc: [ C_DOC ]
   livescript:
     extensions: [ 'ls' ]
     executables: [ 'lsc' ]
-    comment: '#'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
+    doc: [ C_DOC ]
+
   ruby:
     extensions: [
       'rb'
