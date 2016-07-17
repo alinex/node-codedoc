@@ -294,6 +294,8 @@ languages =
       'apache2.conf'
     ]
     comment: '#'
+  handlebars:
+    extensions: [ 'hbs', 'handlebars' ]
   jade:
     extensions: [ 'jade' ]
     comment: '//-?'

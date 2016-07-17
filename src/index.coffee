@@ -43,7 +43,7 @@ $$$ plantuml
   }
 $$$
 
-## Sorting
+#3 Sorting
 
 The file links are sorted in a natural way. This is from upper to lower directories
 and alphabetically but with some defined orders. This means that 'index.*' always
@@ -197,7 +197,7 @@ processFile = (file, local, cb) ->
             if pos # set correct line number
               line = contents[0..pos].split('\n').length - 1
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
-          report.raw doc[2]
+          report.raw doc[2].replace /\n\s*#3\s+/, '\n### '
           pos = doc[1]
         if pos < contents.length
           report.code trim(contents[pos..]), lang.name
