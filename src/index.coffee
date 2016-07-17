@@ -106,7 +106,7 @@ exports.run = (setup, cb) ->
       map = {}
       async.eachLimit list, 1, (file, cb) ->
         p = file[setup.input.length..]
-        processFile file, p, (err, report) ->
+        processFile file, p, setup, (err, report) ->
           if err
             return cb err if err instanceof Error
             return cb() # no real problem but abort
@@ -147,7 +147,7 @@ exports.run = (setup, cb) ->
               fs.writeFile file.dest, html, 'utf8', cb
         , cb
 
-processFile = (file, local, cb) ->
+processFile = (file, local, setup, cb) ->
   async.waterfall [
     # get file
     (cb) ->
@@ -184,6 +184,7 @@ processFile = (file, local, cb) ->
           0
         # create report
         unless docs.length
+          return cb 'CODE_DISABLED' unless setup.code
           report.h1 "File: #{path.basename local}"
           report.quote local
           report.code trim(contents), lang.name
@@ -191,7 +192,7 @@ processFile = (file, local, cb) ->
           return cb null, report
         pos = 0
         for doc in docs
-          if pos < doc[0]
+          if pos < doc[0] and setup.code
             part = contents[pos..doc[0]]
             report.code trim(part), lang.name
             if pos # set correct line number
@@ -199,7 +200,7 @@ processFile = (file, local, cb) ->
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
           report.raw doc[2].replace /\n\s*#3\s+/, '\n### '
           pos = doc[1]
-        if pos < contents.length
+        if pos < contents.length and setup.code
           report.code trim(contents[pos..]), lang.name
           if pos # set correct line number
             line = contents[0..pos].split('\n').length - 1
@@ -209,6 +210,7 @@ processFile = (file, local, cb) ->
 
 orderFirst = [
   'readme.*'
+  'readme'
   '/man'
   '*.md'
   'index.*'
@@ -219,6 +221,8 @@ orderLast = [
   '/lib'
   '/var'
   '.travis.yml'
+  'changelog'
+  'changelog.*'
 ]
 sortMap = (map) ->
   list = Object.keys(map).map (e) ->
@@ -229,12 +233,12 @@ sortMap = (map) ->
       if ~p.indexOf '.'
         check.push "*#{path.extname p}"
         check.push "#{path.basename p, path.extname p}.*"
-      for v, i in orderFirst
-        continue unless v in check
-        return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
       for v, i in orderLast
         continue unless v in check
         return util.string.lpad(51 + i, 2, '0') + util.string.rpad(p, 10, '_')
+      for v, i in orderFirst
+        continue unless v in check
+        return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
       50 + util.string.rpad(p, 10, '_')
     .join ''
     "#{sortnum} => #{e}"

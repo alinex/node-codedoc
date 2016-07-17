@@ -108,7 +108,11 @@ codedoc.setup (err) ->
       alias: 's'
       description: "set layout style to use"
       type: 'string'
-  .group ['i', 'o', 's'], 'Document Options:'
+    code:
+      alias: 'c'
+      description: "add highlighted code"
+      type: 'boolean'
+  .group ['i', 'o', 's', 'c'], 'Document Options:'
   # help
   yargs.help 'help'
   .updateStrings
@@ -139,6 +143,7 @@ codedoc.setup (err) ->
         exclude: list
       output: argv.output
       style: argv.style
+      code: argv.code
     , (err) ->
       console.log 'Everything done.'
       alinex.exit err

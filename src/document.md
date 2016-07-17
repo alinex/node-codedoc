@@ -1,4 +1,4 @@
-Doumneting - How to write it?
+Writing Docs
 =================================================
 
 To use codedoc you have to write your documentation into documentation files
@@ -6,7 +6,7 @@ or/and within the code as comment blocks. The format should be simple or extende
 markdown maybe with jsDoc/JavaDoc like annotations.
 
 
-Files
+Documents
 -------------------------------------------------
 If you write some documents into separate files name them with a markdown extension
 of `*.md` like:
