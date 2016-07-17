@@ -55,6 +55,9 @@ See this documentation:
 - [without code](http://alinex.github.io/node-codedoc)
 - [with code](http://alinex.github.io/code-codedoc/)
 
+The links to the pages are also only indented based on the file level depth if
+code is enabled.
+
 
 Use other Styles
 -------------------------------------------------

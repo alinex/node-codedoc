@@ -127,7 +127,7 @@ exports.run = (setup, cb) ->
           files = []
           for p, e of map
             files.push
-              depth: e.parts.length - 1
+              depth: if setup.code then e.parts.length - 1 else 0
               title: e.title
               path: p
               link: e.title.replace /^.*?[-:]\s+/, ''
