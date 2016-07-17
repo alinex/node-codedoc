@@ -52,8 +52,8 @@ will be displayed.
 
 See this documentation:
 
-- [without code](http://alinex.github.io/node-codedoc)
-- [with code](http://alinex.github.io/code-codedoc/)
+- [without code](http://alinex.github.io/node-codedoc/src/man/codedoc.1.md.html)
+- [with code](http://alinex.github.io/code-codedoc/src/man/codedoc.1.md.html)
 
 The links to the pages are also only indented based on the file level depth if
 code is enabled.
