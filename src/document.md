@@ -50,6 +50,13 @@ Like in the above languages a lot of other ones are supported, too:
 | JavaScript   | /** ... */  | //... or /*..*/ |
 | LiveScript   | /** ... */  | //... or /*..*/ |
 
+### Fixtures
+
+In CoffeeScript block comments a triple hash '###' is the end of the doc comment
+so it cant be used as it's markdown format for a heading level 3. As workarround
+you may use '#3...' which is no standard markdown but works here. The same goes
+with the other deeper headings level 4, 5 and 6.
+
 
 Markdown
 -------------------------------------------------
