@@ -31,6 +31,10 @@ __Read the complete documentation under
 [http://alinex.github.io/node-codedoc](http://alinex.github.io/node-codedoc).__
 <!-- {p: .hide} -->
 
+As an example you can check this documentation:
+- [without code](http://alinex.github.io/node-codedoc/README.md.html)
+- [with code](http://alinex.github.io/code-codedoc/README.md.html)
+
 
 Install
 -------------------------------------------------
@@ -38,6 +42,8 @@ Install
 [![NPM](https://nodei.co/npm/alinex-codedoc.png?downloads=true&downloadRank=true&stars=true)
  ![Downloads](https://nodei.co/npm-dl/alinex-codedoc.png?months=9&height=3)
 ](https://www.npmjs.com/package/alinex-codedoc)
+
+### As Standalone Tool
 
 Install the package globally using npm:
 
@@ -47,11 +53,65 @@ codedoc --help
 ```
 
 After global installation you may directly call `codedoc` from anywhere to work
-in the current or defined directory:
+in the current or defined directory.
+
+See the [man page](src/man/codedoc1.md) for explanation of the command line use
+and options.
+
+### Integrate into your Node Project
+
+To do this you install it into your own module:
 
 ``` sh
-codedoc --help
+# from within your module directory
+sudo npm install --save alinex-codedoc
 ```
+
+Then you have to include it into your project:
+
+``` coffee
+codedoc = require 'alinex-codedoc'
+# setup the template search paths
+codedoc.setup (err) ->
+  # do something on error like exit or reporting
+  if err
+    console.error err.message
+    process.exit 1
+  # run documentation generation
+  codedoc.run
+    input: argv.input
+    find:
+      exclude: list
+    output: argv.output
+    style: argv.style
+    code: argv.code
+  , (err) ->
+    if err
+      console.error err.message
+      process.exit 16  
+    console.log 'Documents created.'
+```
+
+Find more information about calling the code documentation in the [API](src/index.coffee).
+
+If you want to use your own style templates within your app's config directory
+and your already using [alinex-config](http://alinex.github.io/node-config)
+you only have to register the template type on it by putting the following on top:
+
+``` coffee
+config = require 'alinex-config'
+# set module search path
+# (with paths for calling in the upper directory)
+config.register 'codedoc', __dirname,
+  folder: 'template'
+  type: 'template'
+```
+
+This allows you to put your templates also under:
+- var/src/template/report/...
+- var/local/template/report/...
+- /etc/<yourapp>/template/report/...
+- ~/.<yourapp>/template/report/...
 
 
 Usage

@@ -72,6 +72,14 @@ descriptions of the basic styles as well as extended formats like:
 - UML diagrams using (plantuml)
 - and more...
 
+### First Heading
+
+The first heading in each document will be the page title and also the name in the
+menu list. So think of a good headline at least for the first heading.
+
+To make menu entries more compact the heading will be split on ': ' and ' - ' in
+parts and only the last part is used as menu entry.
+
 
 JsDoc/JavaDoc
 -------------------------------------------------

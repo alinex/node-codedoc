@@ -51,7 +51,6 @@ switch to add them. If not only the files which contain doc comments and only th
 will be displayed.
 
 See this documentation:
-
 - [without code](http://alinex.github.io/node-codedoc/src/man/codedoc.1.md.html)
 - [with code](http://alinex.github.io/code-codedoc/src/man/codedoc.1.md.html)
 
@@ -63,7 +62,6 @@ Use other Styles
 -------------------------------------------------
 The standard 'codedoc' style used for this documentation can be found in the
 following files:
-
 - `var/src/template/report/codedoc.hbs`
 - `var/src/template/report/codedoc.css`
 
