@@ -53,12 +53,6 @@ sudo npm install -g alinex-codedoc --production
 codedoc --help
 ```
 
-After global installation you may directly call `codedoc` from anywhere to work
-in the current or defined directory.
-
-See the [man page](src/man/codedoc1.md) for explanation of the command line use
-and options.
-
 ### Integrate into your Node Project
 
 To do this you install it into your own module:
@@ -68,7 +62,21 @@ To do this you install it into your own module:
 sudo npm install --save alinex-codedoc
 ```
 
-Then you have to include it into your project:
+
+Usage
+-------------------------------------------------
+
+### As Standalone Tool
+
+After global installation you may directly call `codedoc` from anywhere to work
+in the current or defined directory.
+
+See the [man page](src/man/codedoc1.md) for explanation of the command line use
+and options.
+
+### Integrate into your Node Project
+
+You have to include it into your project:
 
 ``` coffee
 codedoc = require 'alinex-codedoc'
@@ -93,6 +101,32 @@ codedoc.setup (err) ->
     console.log 'Documents created.'
 ```
 
+``` js
+codedoc = require('alinex-codedoc');
+// setup the template search paths
+codedoc.setup(function(err) {
+  // do something on error like exit or reporting
+  if (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+  // run documentation generation
+  return codedoc.run({
+    input: argv.input,
+    find: { exclude: list },
+    output: argv.output,
+    style: argv.style,
+    code: argv.code
+  }, function(err) {
+    if (err) {
+      console.error(err.message);
+      process.exit(16);
+    }
+    return console.log('Documents created.');
+  });
+});
+```
+
 Find more information about calling the code documentation in the [API](src/index.coffee).
 
 If you want to use your own style templates within your app's config directory
@@ -108,21 +142,21 @@ config.register 'codedoc', __dirname,
   type: 'template'
 ```
 
+``` js
+config = require('alinex-config');
+// set module search path
+// (with paths for calling in the upper directory)
+config.register('codedoc', __dirname, {
+  folder: 'template',
+  type: 'template'
+});
+```
+
 This allows you to put your templates also under:
 - var/src/template/report/...
 - var/local/template/report/...
 - /etc/<yourapp>/template/report/...
 - ~/.<yourapp>/template/report/...
-
-
-Usage
--------------------------------------------------
-
-See the online help for now:
-
-``` sh
-codedoc --help
-```
 
 
 License

@@ -4,17 +4,17 @@ API: Main Controller
 
 > /src/index.coffee
 
-This class is loaded by the CLI call or from other packages. This collects all
-accessible methods to use the package.
+This class is loaded by the CLI call or from other packages and contains all
+accessible methods neccessary to use the package.
 
-How it Works
+Workflow
 -------------------------------------------------
 
 The following graph will show you the basic steps in creating the documentation:
 
 $$$ plantuml
-  :CLI Call;
-  :codedoc|
+  :API Call;
+  :run|
   :Find files]
   note right
     Includes and excludes
@@ -33,6 +33,13 @@ $$$ plantuml
       :extract
       block comments]
       :interpret JsDoc]
+      if (add code) then (no)
+      else (yes)
+        :add code]
+        note right
+          with highlights
+        end note
+      endif
     endif
     :report;
   }
@@ -48,10 +55,12 @@ $$$
 The file links are sorted in a natural way. This is from upper to lower directories
 and alphabetically but with some defined orders. This means that 'index.*' always
 comes before 'README.md' and the other files.
-
-Node Modules
--------------------------------------------------
 ###
+
+
+# Node Modules
+# -------------------------------------------------
+#
 
 # include base modules
 debug = require('debug') 'codedoc'
@@ -70,10 +79,15 @@ language = require './language'
 PARALLEL = 10
 
 ###
-Initialize
+Initialize Module - setup()
 -------------------------------------------------
-###
+To use the template search through the [alinex-config](http://alinex.github.io/node-config)
+path module you have to init the template type by calling this method once.
 
+This will setup the [alinex-report](http://alinex.github.io/node-report) component
+and register the template type to search for templates in the global, user and
+local path like known from the config module.
+###
 exports.setup = util.function.once this, (cb) ->
   debug chalk.grey "setup codedoc component"
   async.each [Report], (mod, cb) ->
@@ -86,7 +100,16 @@ exports.setup = util.function.once this, (cb) ->
       type: 'template'
     cb()
 
+###
+Create Documentation - run()
+-------------------------------------------------
+Like described in the workflow above this is the main routine and will do all the
+steps to make the documentation ready to browse in the local path.
 
+::: alert
+The method documentation in form of @tags will come soon.
+:::
+###
 exports.run = (setup, cb) ->
   # set up system
   setup.input ?= '.'
