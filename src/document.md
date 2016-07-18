@@ -47,11 +47,25 @@ will be displayed as code with highlights.
 
 Like in the above languages a lot of other ones are supported, too:
 
-|   Language   | Doc Comment | Other Comments  |
-| ------------ | ----------- | --------------- |
-| CoffeeScript | ### ... ### | #...            |
-| JavaScript   | /** ... */  | //... or /*..*/ |
-| LiveScript   | /** ... */  | //... or /*..*/ |
+|   Language   |    Doc Comment   | Other Comments   |
+| ------------ | ---------------- | ---------------- |
+| CoffeeScript | ### ... ###      | #...             |
+| JavaScript   | /** ... */       | //... or /*..*/  |
+| LiveScript   | /** ... */       | //... or /*..*/  |
+| Ruby         | =begin ... =end  | #...             |
+| Python       | ###,  #... lines | #...             |
+| Perl         | =pod ... =cut    | #...             |
+| C, C++, c#   | /** ... */       | //... or /*..*/  |
+| Java, JSP    | /** ... */       | //... or /*..*/  |
+| Groovy       | /** ... */       | //... or /*..*/  |
+| PHP          | /** ... */       | //... or /*..*/  |
+| Bash         | ###,  #... lines | #...             |
+| YAML         | ###,  #... lines | #...             |
+| SCSS         | /** ... */       | //... or /*..*/  |
+| Stylus, CSS, Less  | /** ... */       | //... or /*..*/  |
+| Makefile     | ###,  #... lines | #...             |
+| Apache       | ###,  #... lines | #...             |
+
 
 #### Fixtures
 

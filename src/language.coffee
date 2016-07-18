@@ -46,7 +46,8 @@ module.exports = (file, contents) ->
 # Language definition
 # -------------------------------------------------
 
-C_DOC = ///
+C_DOC =
+  ///
     \s*         # with optional spaces
     /\*{2,}     # start with slash and at least two asterisk
     (           # content of the comment
@@ -55,6 +56,20 @@ C_DOC = ///
     \*+/        # at least one asterisk and slash
     \s*         # with optional spaces
   ///g
+HASH_DOC =
+  ///           # ###\n ... \n###
+    (?:^|\n)    # start of document or line
+    \s*         # with optional spaces
+    \#{3}       # then three hashes: ###
+    (           # content of the comment
+      [^\#]     # no more than the three hashes
+      .*        # everything in that line
+      \n\s*\#   # each following line start with an hash
+      \s?.*     # and all in that line
+    )           # end of comment
+    \n          # end the match
+  ///g
+
 
 # # Languages
 #
@@ -96,246 +111,106 @@ languages =
     extensions: [ 'ls' ]
     executables: [ 'lsc' ]
     doc: [ C_DOC ]
-
   ruby:
-    extensions: [
-      'rb'
-      'rbw'
-      'rake'
-      'gemspec'
-    ]
+    extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ]
     executables: [ 'ruby' ]
     names: [ 'rakefile' ]
-    comment: '#'
-    multiLine: [
-      /\=begin/
-      /\=end/
+    doc: [
+      ///
+        \s*\n       # with optional spaces
+        =begin      # start the line with '=begin'
+        \s*\n       # and no more in this line
+        (           # content of the comment
+          [\s\S]*?  # comment charactes
+        )           # end of comment
+        \s*\n       # start a new line
+        =end        # with '=end' at the start
+        \s*\n       # with no more in this line
+      ///g
     ]
   python:
     extensions: [ 'py' ]
     executables: [ 'python' ]
-    comment: '#'
+    doc: [ HASH_DOC ]
   perl:
-    extensions: [
-      'pl'
-      'pm'
-    ]
+    extensions: [ 'pl', 'pm' ]
     executables: [ 'perl' ]
-    comment: '#'
+    doc: [
+      ///
+        \s*\n       # with optional spaces
+        =           # start the line with any allowed pod command
+          (pod|head[1-4]|over|item|back|begin|end|for|encoding)
+        \s*\n       # and no more in this line
+        (           # content of the comment
+          [\s\S]*?  # comment charactes
+        )           # end of comment
+        \s*\n       # start a new line
+        =cut        # with '=cut' at the start
+        \s*\n       # with no more in this line
+      ///g
+    ]
   c:
-    extensions: [
-      'c'
-      'h'
-    ]
+    extensions: [ 'c', 'h' ]
     executables: [ 'gcc' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
+    doc: [ C_DOC ]
   cpp:
-    extensions: [
-      'cc'
-      'cpp'
-    ]
+    extensions: [ 'cc', 'cpp' ]
     executables: [ 'g++' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
-  vbnet:
-    extensions: [
-      'vb'
-      'vbs'
-      'bas'
-    ]
-    comment: '\''
-  'aspx-vb':
-    extensions: [
-      'asp'
-      'aspx'
-      'asax'
-      'ascx'
-      'ashx'
-      'asmx'
-      'axd'
-    ]
-    comment: '\''
-  csharp:
+    doc: [ C_DOC ]
+  cs:
     extensions: [ 'cs' ]
     comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
-  'aspx-cs':
-    extensions: [
-      'aspx'
-      'asax'
-      'ascx'
-      'ashx'
-      'asmx'
-      'axd'
-    ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
+    doc: [ C_DOC ]
   java:
     extensions: [ 'java' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
+    doc: [ C_DOC ]
+  jsp:
+    extensions: [ 'jsp' ]
+    doc: [ C_DOC ]
   php:
-    extensions: [
-      'php'
-      'php3'
-      'php4'
-      'php5'
-    ]
+    extensions: [ 'php', 'phtml', 'php3', 'php4', 'php5', 'php7' ]
     executables: [ 'php' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
-  actionscript:
-    extensions: [ 'as' ]
-    comment: '//'
-    multiLine: [
-      /\/\*/
-      /\*\//
-    ]
-  sh:
-    extensions: [
-      'sh'
-      'kst'
-      'bash'
-    ]
-    names: [
-      '.bashrc'
-      'bashrc'
-    ]
-    executables: [
-      'bash'
-      'sh'
-      'zsh'
-    ]
-    comment: '#'
+    doc: [ C_DOC ]
+  bash:
+    extensions: [ 'sh', 'kst', 'bash' ]
+    names: [ '.bashrc', 'bashrc']
+    executables: [ 'bash', 'sh', 'zsh' ]
+    doc: [ HASH_DOC ]
   yaml:
     extensions: [ 'yaml', 'yml' ]
-    comment: '#'
+    doc: [ HASH_DOC ]
   markdown:
-    extensions: [
-      'md'
-      'mkd'
-      'markdown'
-    ]
+    extensions: [ 'md', 'mkd', 'markdown' ]
     type: 'markdown'
-  # not supported by highlight.js
-  sass:
-    extensions: [ 'sass' ]
-    comment: '//'
-    multiLine: [
-      /\/\*/
-      /\*\//
-    ]
   scss:
     extensions: [ 'scss' ]
     comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
+    doc: [ C_DOC ]
   makefile:
     names: [ 'makefile' ]
-    comment: '#'
+    doc: [ HASH_DOC ]
   apache:
-    names: [
-      '.htaccess'
-      'apache.conf'
-      'apache2.conf'
-    ]
-    comment: '#'
+    names: [ '.htaccess', 'apache.conf', 'apache2.conf' ]
+    doc: [ HASH_DOC ]
   handlebars:
     extensions: [ 'hbs', 'handlebars' ]
-  jade:
-    extensions: [ 'jade' ]
-    comment: '//-?'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
   groovy:
     extensions: [ 'groovy' ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
-    jsDoc: true
-  gsp:
-    extensions: [ 'gsp' ]
-    multiLine: [
-      /<%--/
-      /--%>/
-    ]
-    highlightLanguage: 'html'
+    doc: [ C_DOC ]
   stylus:
     extensions: [ 'styl' ]
-    comment: '//'
-    multiLine: [
-      /\/\*/
-      /\*\//
-    ]
+    doc: [ C_DOC ]
   css:
     extensions: [ 'css' ]
-    multiLine: [
-      /\/\*/
-      /\*\//
-    ]
-    commentStart: '/*'
-    commentEnd: '*/'
+    doc: [ C_DOC ]
   less:
     extensions: [ 'less' ]
-    comment: '//'
-    multiLine: [
-      /\/\*/
-      /\*\//
-    ]
+    doc: [ C_DOC ]
   html:
-    extensions: [
-      'html'
-      'htm'
-    ]
-    multiLine: [
-      /<!--/
-      /-->/
-    ]
-    commentStart: '<!--'
-    commentEnd: '-->'
+    extensions: [ 'html', 'htm' ]
   json:
     extensions: [ 'json' ]
-    names: [
-      '.eslintrc'
-      '.jshintrc'
-    ]
-    comment: '//'
-    multiLine: [
-      /\/\*\*?/
-      /\*\//
-    ]
+    names: [ '.eslintrc', '.jshintrc' ]
+
 # also add the language name within the definition
 l.name = name for name, l of languages
