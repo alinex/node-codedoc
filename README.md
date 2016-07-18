@@ -159,6 +159,24 @@ This allows you to put your templates also under:
 - ~/.<yourapp>/template/report/...
 
 
+Debugging
+-------------------------------------------------
+If you have any problems you may debug the code with the predefined flags. It uses
+the [debug](https://github.com/visionmedia/debug/blob/master/Readme.md) module to
+let you define what to debug.
+
+Call it with the `DEBUG` environment variable set to the types you want to debug.
+The most valueable flags will be:
+
+``` sh
+DEBUG=codedoc* codedoc  # more information what goes on
+DEBUG=config* codedoc   # registering paths for template search
+DEBUG=report* codedoc   # conversion into html
+```
+
+You can also combine them using comma or use only `DEBUG=*` to show all.
+
+
 License
 -------------------------------------------------
 

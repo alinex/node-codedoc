@@ -4,6 +4,10 @@ codedoc(1) - Manpage
 A code documentation extractor used to create browsable documentation out of your inline
 documentation.
 
+__Read the complete documentation under
+[http://alinex.github.io/node-codedoc](http://alinex.github.io/node-codedoc).__
+<!-- {p: .hide} -->
+
 
 Usage
 -------------------------------------------------
@@ -30,6 +34,61 @@ Examples:
 
 You may use environment variables prefixed with `CODEDOC_` to set any of
 the options like `CODEDOC_VERBOSE` to set the verbose level.
+
+
+Parameters
+-------------------------------------------------
+
+### Document Options
+
+--input, -i
+
+:   Defines the input directory to read as source for the documentation. If nothing
+    specified the current directory will be used.
+
+--output, -o  
+
+:   Defines the path where to write the html documentation. The directory will be
+    created if it didn't exist. But keep in mind that it won't alert but overwrite
+    maybe existing files. The default will be the subdirectory `doc` below the input
+    directory.
+
+--style, -s   
+
+:   Give a report layout name (basename of file without extension) to use for the
+    document pages. The default ones are 'default' for a content only page layout
+    or 'codedoc' (the default) as a responsive layout with header, sidebar. You
+    may also define your own, see the full documentation.
+
+--code, -c    
+
+:   Switch between normal mode and code view mode. If set to true the code view is
+    enabled in which the source is also output within the code. This makes the
+    documentation more appropriate for internal use and for the developer which also
+    wan't to extend or change the source.
+    But for all other the default view without code should be the more compact and
+    there fore better to read version. This is the default.
+
+### General Options
+
+--help, -h      
+
+:   Show the short usage information as a quick help.
+
+--nocolors, -C  
+
+:   Turn of color output. The color output will only be enabled if it is run
+    through a terminal and there you may disable it. If called through a cron or
+    other automatic process color display is already switched off.
+
+--verbose, -v   
+
+:   Show verbode output. This will show which files are detected and which have some
+    problems.
+
+--quiet, -q     
+
+:   Don't output header and footer. But output everything else like defined.
 
 
 Define Ignores
