@@ -67,6 +67,7 @@ config = require 'alinex-config'
 # internal methods
 language = require './language'
 
+PARALLEL = 10
 
 ###
 Initialize
@@ -104,7 +105,7 @@ exports.run = (setup, cb) ->
       return cb err if err
       debug "convert files..."
       map = {}
-      async.eachLimit list, 1, (file, cb) ->
+      async.eachLimit list, PARALLEL, (file, cb) ->
         p = file[setup.input.length..]
         processFile file, p, setup, (err, report) ->
           if err
@@ -122,7 +123,7 @@ exports.run = (setup, cb) ->
         mapKeys = Object.keys map
         moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
         .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
-        async.eachLimit mapKeys, 1, (name, cb) ->
+        async.eachLimit mapKeys, PARALLEL, (name, cb) ->
           # create link list
           files = []
           for p, e of map

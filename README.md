@@ -4,8 +4,9 @@ Alinex CodeDoc: Readme
 [![Build Status](https://travis-ci.org/alinex/node-codedoc.svg?branch=master)](https://travis-ci.org/alinex/node-codedoc)
 [![Coverage Status](https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master)](https://coveralls.io/r/alinex/node-codedoc?branch=master)
 [![Dependency Status](https://gemnasium.com/alinex/node-codedoc.png)](https://gemnasium.com/alinex/node-codedoc)
-[![GitHub](https://assets-cdn.github.com/favicon.ico)](https://github.com/alinex/node-codedoc)
+[![GitHub](https://assets-cdn.github.com/favicon.ico)](https://github.com/alinex/node-codedoc "Code on GitHub")
 <!-- {.right} -->
+
 A general code documentation tool based on the concepts of
 [docco](http://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
 
