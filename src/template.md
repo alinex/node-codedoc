@@ -53,3 +53,10 @@ Within the template you may use the following variables:
 
 CSS Stylesheet
 --------------------------------------------------
+The second part is the stylesheet which may get very complex. You can do everything
+here. But you need a normal stylesheet.
+
+### Preprocessor
+
+If you want you may use some preprocessor like styles, less or scssto create the
+stylesheets on your own. The default stylesheets are generated using stylus.
