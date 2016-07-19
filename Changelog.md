@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.3.1 (2016-07-19)
+-------------------------------------------------
+- Add missing main link in package.json.
+
 Version 0.3.0 (2016-07-19)
 -------------------------------------------------
 Now supporting the docuemntation and code view mode.
