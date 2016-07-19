@@ -57,7 +57,7 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <p><ul class="table-of-contents">
+          <p><ul class="table-of-contents" aria-hidden="true"><header>Index</header>
 <li><a href="#install">Install</a>
 <ul>
 <li><a href="#as-standalone-tool">As Standalone Tool</a></li>
@@ -111,11 +111,11 @@ following the code standards defined in the <a href="http://alinex.github.io/dev
 </a></p>
 <h3 id="as-standalone-tool">As Standalone Tool</h3>
 <p>Install the package globally using npm:</p>
-<pre class="language sh"><header>Shell Script Code</header><code>sudo npm install -g alinex-codedoc --production</code>
+<pre class="language bash"><header>Shell Script</header><code>sudo npm install -g alinex-codedoc --production</code>
 <code>codedoc --help</code></pre>
 <h3 id="integrate-into-your-node-project">Integrate into your Node Project</h3>
 <p>To do this you install it into your own module:</p>
-<pre class="language sh"><header>Shell Script Code</header><code><span class="hljs-comment"># from within your module directory</span></code>
+<pre class="language bash"><header>Shell Script</header><code><span class="hljs-comment"># from within your module directory</span></code>
 <code>sudo npm install --save alinex-codedoc</code></pre>
 <h2 id="usage">Usage</h2>
 <h3 id="as-standalone-tool-2">As Standalone Tool</h3>
@@ -125,7 +125,7 @@ in the current or defined directory.</p>
 and options.</p>
 <h3 id="integrate-into-your-node-project-2">Integrate into your Node Project</h3>
 <p>You have to include it into your project:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><header>CoffeeScript Code</header><code>codedoc = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-codedoc'</span></code>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code>codedoc = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-codedoc'</span></code>
 <code><span class="hljs-comment"># setup the template search paths</span></code>
 <code>codedoc.setup (err) -&gt;</code>
 <code>  <span class="hljs-comment"># do something on error like exit or reporting</span></code>
@@ -145,7 +145,7 @@ and options.</p>
 <code>      <span class="hljs-built_in">console</span>.error err.message</code>
 <code>      process.exit <span class="hljs-number">16</span>  </code>
 <code>    <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Documents created.'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><header>JavaScript Code</header><code>codedoc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-codedoc'</span>);</code>
+<pre class="language javascript"><header>JavaScript Code</header><code>codedoc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-codedoc'</span>);</code>
 <code><span class="hljs-comment">// setup the template search paths</span></code>
 <code>codedoc.setup(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</code>
 <code>  <span class="hljs-comment">// do something on error like exit or reporting</span></code>
@@ -172,13 +172,13 @@ and options.</p>
 <p>If you want to use your own style templates within your app’s config directory
 and your already using <a href="http://alinex.github.io/node-config">alinex-config</a>
 you only have to register the template type on it by putting the following on top:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><header>CoffeeScript Code</header><code>config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span></code>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code>config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span></code>
 <code><span class="hljs-comment"># set module search path</span></code>
 <code><span class="hljs-comment"># (with paths for calling in the upper directory)</span></code>
 <code>config.register <span class="hljs-string">'codedoc'</span>, __dirname,</code>
 <code>  folder: <span class="hljs-string">'template'</span></code>
 <code>  type: <span class="hljs-string">'template'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><header>JavaScript Code</header><code>config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-config'</span>);</code>
+<pre class="language javascript"><header>JavaScript Code</header><code>config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-config'</span>);</code>
 <code><span class="hljs-comment">// set module search path</span></code>
 <code><span class="hljs-comment">// (with paths for calling in the upper directory)</span></code>
 <code>config.register(<span class="hljs-string">'codedoc'</span>, __dirname, {</code>
@@ -198,7 +198,7 @@ the <a href="https://github.com/visionmedia/debug/blob/master/Readme.md">debug</
 let you define what to debug.</p>
 <p>Call it with the <code>DEBUG</code> environment variable set to the types you want to debug.
 The most valueable flags will be:</p>
-<pre class="language sh"><header>Shell Script Code</header><code>DEBUG=codedoc* codedoc  <span class="hljs-comment"># more information what goes on</span></code>
+<pre class="language bash"><header>Shell Script</header><code>DEBUG=codedoc* codedoc  <span class="hljs-comment"># more information what goes on</span></code>
 <code>DEBUG=config* codedoc   <span class="hljs-comment"># registering paths for template search</span></code>
 <code>DEBUG=report* codedoc   <span class="hljs-comment"># conversion into html</span></code></pre>
 <p>You can also combine them using comma or use only <code>DEBUG=*</code> to show all.</p>

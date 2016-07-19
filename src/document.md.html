@@ -57,7 +57,7 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <p><ul class="table-of-contents">
+          <p><ul class="table-of-contents" aria-hidden="true"><header>Index</header>
 <li><a href="#where-to-write-documentation">Where to write documentation?</a>
 <ul>
 <li><a href="#extra-documents">Extra Documents</a></li>
@@ -92,16 +92,16 @@ Changelog.md
 <p>Additionally you can document within the code. Here we decide between code comments
 and documentation comments. They differ in the used style for comment. Most languages
 know such different types for documentation code:</p>
-<pre class="language javascript"><header>JavaScript Code</header><header>JavaScript Code</header><code><span class="hljs-comment">/**</code>
-<code> *  Document comment for function</code>
-<code> */</span></code>
+<pre class="language javascript"><header>JavaScript Code</header><code><span class="hljs-comment">/**</span></code>
+<code><span class="hljs-comment"> *  Document comment for function</span></code>
+<code><span class="hljs-comment"> */</span></code>
 <code>x = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</code>
 <code>  <span class="hljs-comment">// inline code comment</span></code>
 <code>  <span class="hljs-comment">/* multiline code comment */</span></code>
 <code>}</code></pre>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><header>CoffeeScript Code</header><code><span class="hljs-comment">###</code>
-<code>Document comment for function</code>
-<code>###</span></code>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
+<code><span class="hljs-comment">Document comment for function</span></code>
+<code><span class="hljs-comment">###</span></code>
 <code><span class="hljs-function"><span class="hljs-title">x</span> = -&gt;</span></code>
 <code>  <span class="hljs-comment"># inline code comment</span></code></pre>
 <p>Only the documentation code is extracted and formated as markdown. All other lines
