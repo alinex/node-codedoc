@@ -165,10 +165,11 @@ exports.run = (setup, cb) ->
               moduleName: moduleName
               pages: pages
           , (err, html) ->
-            html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///i, (_, link, end) ->
-              if link.match /\.(html|gif|png|jpg)$/i
+            html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
+              if link.length is 0 or link.match /\.(html|gif|png|jpg)$/i
                 "href=\"#{link}#{end}" # keep link
               else
+                console.log link
                 "href=\"#{link}.html#{end}" # add .html
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err

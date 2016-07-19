@@ -115,6 +115,12 @@ body
 // headings
 h1, h2, h3, h4, h5, h6
   font-weight: bold
+  &:before /* move anchor pint up */
+    display: block;
+    content: " ";
+    margin-top: -66px;
+    height: 66px;
+    visibility: hidden;
 h1
   border-bottom: 3px solid black;
   padding-bottom: 5px;
