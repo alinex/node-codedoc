@@ -218,7 +218,8 @@ processFile = (file, local, setup, cb) ->
     # create report
     (contents, lang, cb) ->
       report = new Report()
-#      report.toc()
+      report.toc()
+      report.raw '\n' # needed in case raw adding will follow
       if lang.name is 'markdown'
         report.raw contents
       else

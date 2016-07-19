@@ -1,3 +1,5 @@
+@import 'nib'
+
 // Page setup
 
 $topnav-height = 51px
@@ -161,6 +163,16 @@ table
     &:nth-child(2n)
       background-color: rgba(0, 0, 0, 0.04);
 
+img
+  vertical-align: middle;
+
+.emoji
+  height: 1em;
+
+abbr
+acronym
+  border-bottom: dotted 1px;
+
 /* code boxes */
 
 code, tt
@@ -234,35 +246,33 @@ pre
 
 /* table of contents */
 
-.table-of-contents
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  float: right;
-  margin-top: 0;
-  padding: 10px 10px 10px 25px;
-  background: #fafafa;
-  font-size: 90%;
+ul.table-of-contents
+  max-width: 100px
+  max-height: 30px
+  overflow: hidden
+  position: fixed
+  top: $topnav-height
+  right: 0px;
+  background: #ddd;
+  padding: 5px 15px;
+  transition: max-width 100ms ease 1.2s, max-height 1s ease 200ms
+  border-left: 2px solid #999
+  border-bottom: 2px solid #999
+  border-bottom-left-radius: 10px;
+  list-style-type: none
+  &:hover
+    max-width: 300px
+    max-height: 200px
+    transition: max-width 100ms ease, max-height 1s ease 100ms
   header
-    font-weight: bold;
-    font-size: 120%;
-    display: block;
-    background: #ddd;
-    margin: -10px -10px 4px -25px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding: 3px 10px;
-  ul
-    padding-left: 15px;
+    background: #999
+    font-weight: bold
+    margin: -5px -15px
+    padding: 5px 15px
+  &>li:first-of-type
+    padding-top: 8px
   a
-    text-decoration: none;
-
-img
-  vertical-align: middle;
-.emoji
-  height: 1em;
-abbr
-acronym
-  border-bottom: dotted 1px;
+    color: black
 
 /* Possible box layouts */
 
