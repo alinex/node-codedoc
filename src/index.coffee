@@ -169,7 +169,29 @@ exports.run = (setup, cb) ->
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
               fs.writeFile file.dest, html, 'utf8', cb
-        , cb
+        , (err) ->
+          return cb err if err
+          createIndex setup.output, mapKeys[0][1..], cb
+
+createIndex = (dir, link, cb) ->
+  file = path.join dir, 'index.html'
+  fs.exists file, (exists) ->
+    return cb() if exists
+    fs.writeFile file, """
+      <html>
+      <head>
+        <meta http-equiv="refresh" content="0; url=#{link}" />
+        <script type="text/javascript">
+            window.location.href = "#{link}"
+        </script>
+        <title>Page Redirection</title>
+      </head>
+      <body>
+        If you are not redirected automatically, follow the link to the
+        <a href='#{link}'>README</a>.
+      </body>
+      </html>
+      """, cb
 
 processFile = (file, local, setup, cb) ->
   async.waterfall [
