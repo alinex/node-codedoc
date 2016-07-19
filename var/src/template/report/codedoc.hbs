@@ -45,7 +45,7 @@
               </a></li>
           </ul>
           <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
+            <input name="q" type="text" class="form-control" placeholder="Search...">
           </form>
         </div>
       </div>
@@ -57,9 +57,20 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
+          <script>
+            (function() {
+              var cx = '010539487162786288372:chxqbheanxc';
+              var gcse = document.createElement('script');
+              gcse.type = 'text/javascript';
+              gcse.async = true;
+              gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(gcse, s);
+            })();
+          </script>
+          <gcse:searchresults-only></gcse:searchresults-only>
           {{{content}}}
         </div>
-
         <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
           <h1>Further pages</h1>
           <ul class="nav nav-sidebar">
