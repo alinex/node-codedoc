@@ -166,7 +166,10 @@ exports.run = (setup, cb) ->
               pages: pages
           , (err, html) ->
             html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///i, (_, link, end) ->
-              if link.match /\.html$/i then "href=\"#{link}#{end}" else "href=\"#{link}.html#{end}"
+              if link.match /\.(html|gif|png|jpg)$/i
+                "href=\"#{link}#{end}" # keep link
+              else
+                "href=\"#{link}.html#{end}" # add .html
             fs.mkdirs path.dirname(file.dest), (err) ->
               return cb err if err
               fs.writeFile file.dest, html, 'utf8', cb
