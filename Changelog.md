@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.3.3 (2016-07-19)
+-------------------------------------------------
+- Fix package.
+
 Version 0.3.2 (2016-07-19)
 -------------------------------------------------
 - Upgraded alinex-builder@2.3.0
