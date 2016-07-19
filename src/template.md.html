@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>template.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "src/template.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#templates">Templates</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#html-template">HTML Template</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#css-stylesheet">CSS Stylesheet</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#preprocessor">Preprocessor</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-codedoc" title="Fork me on GitHub"></a>
+    <div class="docs markdown"><div class="pilwrap" id="templates">
+  <h1>
+    <a href="#templates" name="templates" class="pilcrow"></a>
+Templates
+  </h1>
+</div>
+<p>As described in the <a href="../README.md#Usage.html">Usage</a> and <a href="man/codedoc1.md.html">Manpage</a>
+you may not only select a predefined template but also add your own.</p>
+<p>The template consists of two parts:</p>
+<ul>
+<li>the HTML Template - defining the page structure</li>
+<li>the CSS Stylesheet - style up everything to your liking</li>
+</ul>
+<p>Maybe you need also some third party resources like Bootstrap or jQuery. This won't
+be included in your documentation. Often you can use them from some CDN (Content
+Delivery Network) which will be faster.</p>
+<div class="pilwrap" id="html-template">
+  <h2>
+    <a href="#html-template" name="html-template" class="pilcrow"></a>
+HTML Template
+  </h2>
+</div>
+<p>The template is a basic HTML with <a href="http://alinex.github.io/develop/lang/handlebars.html">Handlebars</a>
+markup language and the <a href="http://alinex.github.io/node-handlebars/README.md.html">alinex-handlebars</a>
+extension.</p>
+<p>Within the template you may use the following variables:</p>
+<ul>
+<li><strong>title</strong> - page title
+This is meant for the header within the title: <code>&lt;title&gt;{{title}}&lt;/title</code>.</li>
+<li><strong>locale</strong> - language setting
+You may use this in the html-tag: <code>&lt;html lang=&quot;{{locale}}&quot;&gt;</code></li>
+<li><strong>header</strong>  - additional header tags
+This is a collection of tags for the header like scripts or style includes. They
+are collected while creating the html, add them in the head-tag as: <code>{{{join header &quot;&quot;}}}</code></li>
+<li><strong>content</strong> - the main part
+The content is a string of html therefore you have to use triple braces to
+include: <code>{{{content}}}</code></li>
+<li><strong>moduleName</strong> - name of the module itself
+Use <code>{{moduleName}}</code> as a heading or name tag within your layout.</li>
+<li><strong>pages</strong> - all pages in sorted order
+The list contains different information for each displayable page. Best is to
+iterate over it using <code>{{#iterate pages}}...{{/iterate}}</code>. Provides the following fields:
+<ul>
+<li><strong>depth</strong> - of file in tree
+This goes from 0 (main directory) to the number of subdirectories but is only
+set in code view.</li>
+<li><strong>title</strong> - title of the page
+This contains the title from the first heading within the page.</li>
+<li><strong>path</strong> - absolute file path
+Not really useful within the browser but already there because used internally.</li>
+<li><strong>link</strong> - short text (short version of title)
+This is the text you should use in your menu or sidebar because it is mostly
+shorter than the title.</li>
+<li><strong>url</strong> - relative link to it
+The link you have to use to get to this page.</li>
+<li><strong>active</strong> - flag
+Set to <code>true</code> if this is the actual page.</li>
+</ul>
+</li>
+</ul>
+<div class="pilwrap" id="css-stylesheet">
+  <h2>
+    <a href="#css-stylesheet" name="css-stylesheet" class="pilcrow"></a>
+CSS Stylesheet
+  </h2>
+</div>
+<p>The second part is the stylesheet which may get very complex. You can do everything
+here. But you need a normal stylesheet.</p>
+<div class="pilwrap" id="preprocessor">
+  <h3>
+    <a href="#preprocessor" name="preprocessor" class="pilcrow"></a>
+Preprocessor
+  </h3>
+</div>
+<p>If you want you may use some preprocessor like styles, less or scssto create the
+stylesheets on your own. The default stylesheets are generated using stylus.</p>
+</div>
+  </div>
+</body>
+</html>

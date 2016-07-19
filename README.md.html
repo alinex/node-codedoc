@@ -1,67 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alinex CodeDoc: Readme</title>
-    <meta name="HandheldFriendly" content="true" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/8.5.0/styles/solarized_light.min.css" /><style type="text/css">#topnav .navbar-nav{margin-top:8px}.navbar{min-width:300px}.nav>li{padding:2px 12px}.navbar-inverse .navbar-nav>li>a{color:#222;font-weight:bold}.navbar-spacer{height:51px}.btn-warning:active,.btn-primary:active{transform:scale(.92)}.btn-warning{background:#f2b560;background:#ee9f31 linear-gradient(180deg,#f2b560,#ee9f31) repeat-x}.btn-primary{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x}.navbar-inverse .navbar-nav>li>a:focus,.navbar-inverse .navbar-nav>li>a:hover{background:#73aad8;background:#4b91cd linear-gradient(180deg,#73aad8,#4b91cd) repeat-x}.navbar-inverse .navbar-nav>li>a.btn-warning:focus,.navbar-inverse .navbar-nav>li>a.btn-warning:hover{background:#ec9721;background:#c97c11 linear-gradient(180deg,#ec9721,#c97c11) repeat-x}.sidebar .nav{list-style:disc;padding-left:30px;}.sidebar .nav>li{display:list-item;}.sidebar .nav>li>a{color:#222;}.sidebar .nav>li>a:active{box-shadow:0 2px 10px 2px rgba(0,0,0,0.25)}.sidebar .nav>li>a:hover{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x;color:#fff}.sidebar .nav>li.header,.sidebar .nav>li.active{display:none}.sidebar .nav>li.active>a{background:#73aad8;background:#4b91cd linear-gradient(180deg,#73aad8,#4b91cd) repeat-x;}.sidebar .nav>li.active>a:hover{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x;color:#fff}.sidebar .nav>li.header>a{font-weight:bold;background:#f2b560;background:#ee9f31 linear-gradient(180deg,#f2b560,#ee9f31) repeat-x;}.sidebar .nav>li.header>a:hover{background:#ec9721;background:#c97c11 linear-gradient(180deg,#ec9721,#c97c11) repeat-x;color:#fff}.sidebar .nav>li.level1>a{padding-left:20px}.sidebar .nav>li.level2>a{padding-left:25px}.sidebar .nav>li.level3>a,.sidebar .nav>li.level4>a,.sidebar .nav>li.level5>a{padding-left:30px}@media (min-width:768px){#topnav .nav>li{padding:0 4px}.navbar-right{margin-right:0}.navbar-nav >li>a{padding:6px 10px}.sidebar{overflow:auto;position:fixed;top:51px;left:0;bottom:0;background:#ddd;padding:0;}.sidebar h1,.sidebar h2{display:none}.sidebar .nav{list-style:none;padding-left:0;}.sidebar .nav>li{padding:0;}.sidebar .nav>li.header,.sidebar .nav>li.active{display:block}}img.preload{display:none}body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-size:16px;line-height:1.2;-ms-word-break:break-all;word-break:break-all;word-break:break-word;hyphens:auto;-webkit-hyphenate-before:2;-webkit-hyphenate-after:3;hyphenate-lines:3;min-width:300px}h1,h2,h3,h4,h5,h6{font-weight:bold}h1{border-bottom:3px solid #222;padding-bottom:5px}h2{border-bottom:2px dotted #222;padding-bottom:3px}h3{border-bottom:2px dotted #aaa;padding-bottom:2px}h4{border-bottom:1px dotted #aaa}dt{font-weight:bold;margin-top:8px}blockquote{border:1px solid #eee;border-radius:3px;border-left:5px solid #337ab7;padding:5px 15px;margin:10px 0}table{border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;}table th,table td{padding:6px 13px;border:1px solid #ddd}table th{background-color:rgba(0,0,0,0.04);font-weight:bold;border-bottom:3px solid #999}table tr{background-color:#fff;border-top:1px solid #ccc;}table tr:nth-child(2n){background-color:rgba(0,0,0,0.04)}code,tt{background-color:#fafafa;border-radius:4px;font-size:85%;margin:0;padding:.2em 0}pre{background-color:#fafafa;border-radius:10px;border:1px solid #a4a4a4;font-size:85%;margin:20px;padding:10px;}pre code,pre tt{background:none}pre.language{counter-reset:line;max-height:265px;padding-top:30px;padding-bottom:0;overflow-x:hidden;}pre.language code,pre.language tt{display:block;position:relative;float:left;width:100%;border-left:45px solid #ddd;margin-left:-10px;padding-left:5px;}pre.language code:before,pre.language tt:before{counter-increment:line;content:counter(line);min-width:35px;float:left;text-align:right;padding-right:5px;color:#808080;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;margin-left:-45px}pre.language code:first-of-type,pre.language tt:first-of-type{padding-top:10px}pre.language code:last-child,pre.language tt:last-child{padding-bottom:10px}pre.language header{font-weight:bold;background:#fafafa;margin:-30px -10px 0 -10px;padding:5px 15px}pre.language.coffeescript header,pre.language.javascript header,pre.language.ruby header,pre.language.python header,pre.language.perl header,pre.language.cc header,pre.language.cpp header,pre.language.cs header,pre.language.java header,pre.language.jsp header,pre.language.groovy header,pre.language.php header,pre.language.bash header,pre.language.sql header,pre.language.makefile header{background:#f0ad4e}pre.language.json header,pre.language.cson header,pre.language.yaml header{background:#61b961}pre.language.handlebars header,pre.language.css header,pre.language.stylus header,pre.language.scss header,pre.language.less header,pre.language.markdown header{background:#76abca}.table-of-contents{border:2px solid #ddd;border-radius:10px;float:right;margin-top:0;padding:10px 10px 10px 25px;background:#fafafa;font-size:90%;}.table-of-contents header{font-weight:bold;font-size:120%;display:block;background:#ddd;margin:-10px -10px 4px -25px;border-top-left-radius:10px;border-top-right-radius:10px;padding:3px 10px}.table-of-contents ul{padding-left:15px}.table-of-contents a{text-decoration:none}img{vertical-align:middle}.emoji{height:1em}abbr,acronym{border-bottom:dotted 1px}div.detail,div.info,div.warning,div.alert{padding:30px 10px 6px 10px;margin:5px 0 8px 0;border-radius:3px;}div.detail>p,div.info>p,div.warning>p,div.alert>p{margin-bottom:0}div.detail header,div.info header,div.warning header,div.alert header{font-weight:bold;position:absolute;margin-top:-30px;margin-left:-10px;padding:3px 20px 3px 10px;border-bottom-right-radius:18px}div.detail{background-color:#fafafa;border:2px solid #ddd;padding-top:0}div.info{background-color:#9f9;border:2px solid #6d6;}div.info header{background-color:#6d6}div.warning{background-color:#fc9;border:2px solid #e86;}div.warning header{background-color:#e86}div.alert{background-color:#f99;border:2px solid #c00;}div.alert header{background-color:#c00;color:#fff}.text-red{color:#d13f19}.text-green{color:#2ecc40}.text-yellow{color:#ffdc00}.text-blue{color:#0074d9}.text-magenta{color:#f0f}.text-cyan{color:#0ff}.text-gray{color:#aaa}.bg-white{background-color:#fff}.center{text-align:center}.left{float:left}.right{float:right}.hide{display:none}.spacing{padding:10px}</style>
-  </head>
+<html>
+<head>
+  <title>README.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "README.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
 
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://alinex.github.io/" onmouseover="logo.src='http://alinex.github.io/images/Alinex-200.png'" onmouseout="logo.src='http://alinex.github.io/images/Alinex-black-200.png'">
-            <img name="logo" src="http://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Homepage">
-          </a>
-          <img class="preload" src="http://alinex.github.io/images/Alinex-200.png" aria-hidden="true">
-        </div>
-        <div id="topnav" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://alinex.github.io/blog" class="btn btn-primary">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Blog
-              </a></li>
-            <li><a href="http://alinex.github.io/develop" class="btn btn-primary">
-                <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Develop
-              </a></li>
-            <li><a href="http://alinex.github.io/code.html" class="btn btn-warning">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Code
-              </a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#alinex-codedoc-readme">Alinex CodeDoc: Readme</a>
       </div>
-    </nav>
 
-    <div class="navbar-spacer"></div>
+      <div class="heading h2">
+        <a href="#install">Install</a>
+      </div>
 
-    <div class="container-fluid">
-      <div class="row">
+      <div class="heading h3">
+        <a href="#as-standalone-tool">As Standalone Tool</a>
+      </div>
 
-        <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <h1 id="alinex-codedoc-readme">Alinex CodeDoc: Readme</h1>
-<p><a href="https://travis-ci.org/alinex/node-codedoc"><img src="https://travis-ci.org/alinex/node-codedoc.svg?branch=master" alt="Build Status" /></a>
-<a href="https://coveralls.io/r/alinex/node-codedoc?branch=master"><img src="https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master" alt="Coverage Status" /></a>
-<a href="https://gemnasium.com/alinex/node-codedoc"><img src="https://gemnasium.com/alinex/node-codedoc.png" alt="Dependency Status" /></a>
-<a href="https://github.com/alinex/node-codedoc" title="Code on GitHub"><img src="https://assets-cdn.github.com/favicon.ico" alt="GitHub" class="right" /></a></p>
+      <div class="heading h3">
+        <a href="#integrate-into-your-node-project">Integrate into your Node Project</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#usage">Usage</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#as-standalone-tool-1">As Standalone Tool</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#integrate-into-your-node-project-1">Integrate into your Node Project</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#debugging">Debugging</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#license">License</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-codedoc" title="Fork me on GitHub"></a>
+    <div class="docs markdown"><div class="pilwrap" id="alinex-codedoc-readme">
+  <h1>
+    <a href="#alinex-codedoc-readme" name="alinex-codedoc-readme" class="pilcrow"></a>
+Alinex CodeDoc: Readme
+  </h1>
+</div>
+<p><a href="https://travis-ci.org/alinex/node-codedoc"><img src="https://travis-ci.org/alinex/node-codedoc.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/alinex/node-codedoc?branch=master"><img src="https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="https://gemnasium.com/alinex/node-codedoc"><img src="https://gemnasium.com/alinex/node-codedoc.png" alt="Dependency Status"></a>
+<a href="https://github.com/alinex/node-codedoc" title="Code on GitHub"><img src="https://assets-cdn.github.com/favicon.ico" alt="GitHub"></a></p>
+<!-- {.right} -->
 <p>A general code documentation tool based on the concepts of
 <a href="http://jashkenas.github.io/docco/">docco</a> or <a href="https://jbt.github.io/docker/src/docker.js.html">docker.js</a>.</p>
 <p>This tool should help you create browsable documentation out of the comments written
@@ -81,148 +110,172 @@ which is completely made with it.</p>
 <p>It is one of the modules of the <a href="http://alinex.github.io/code.html">Alinex Namespace</a>
 following the code standards defined in the <a href="http://alinex.github.io/develop">General Docs</a>.</p>
 </blockquote>
-<p class="hide"><strong>Read the complete documentation under
+<p><strong>Read the complete documentation under
 <a href="http://alinex.github.io/node-codedoc">http://alinex.github.io/node-codedoc</a>.</strong></p>
+<!-- {p: .hide} -->
 <p>As an example you can check this documentation:</p>
 <ul>
 <li><a href="http://alinex.github.io/node-codedoc/README.md.html">without code</a></li>
 <li><a href="http://alinex.github.io/code-codedoc/README.md.html">with code</a></li>
 </ul>
-<h2 id="install">Install</h2>
-<p><a href="https://www.npmjs.com/package/alinex-codedoc"><img src="https://nodei.co/npm/alinex-codedoc.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM" />
-<img src="https://nodei.co/npm-dl/alinex-codedoc.png?months=9&amp;height=3" alt="Downloads" />
+<div class="pilwrap" id="install">
+  <h2>
+    <a href="#install" name="install" class="pilcrow"></a>
+Install
+  </h2>
+</div>
+<p><a href="https://www.npmjs.com/package/alinex-codedoc"><img src="https://nodei.co/npm/alinex-codedoc.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM">
+<img src="https://nodei.co/npm-dl/alinex-codedoc.png?months=9&amp;height=3" alt="Downloads">
 </a></p>
-<h3 id="as-standalone-tool">As Standalone Tool</h3>
+<div class="pilwrap" id="as-standalone-tool">
+  <h3>
+    <a href="#as-standalone-tool" name="as-standalone-tool" class="pilcrow"></a>
+As Standalone Tool
+  </h3>
+</div>
 <p>Install the package globally using npm:</p>
-<pre class="language bash"><header>Shell Script</header><code>sudo npm install -g alinex-codedoc --production</code>
-<code>codedoc --help</code></pre>
-<h3 id="integrate-into-your-node-project">Integrate into your Node Project</h3>
+<pre><code class="sh">sudo npm install -g alinex-codedoc --production
+codedoc --help
+</code></pre>
+<div class="pilwrap" id="integrate-into-your-node-project">
+  <h3>
+    <a href="#integrate-into-your-node-project" name="integrate-into-your-node-project" class="pilcrow"></a>
+Integrate into your Node Project
+  </h3>
+</div>
 <p>To do this you install it into your own module:</p>
-<pre class="language bash"><header>Shell Script</header><code><span class="hljs-comment"># from within your module directory</span></code>
-<code>sudo npm install --save alinex-codedoc</code></pre>
-<h2 id="usage">Usage</h2>
-<h3 id="as-standalone-tool-2">As Standalone Tool</h3>
+<pre><code class="sh"><span class="hljs-comment"># from within your module directory</span>
+sudo npm install --save alinex-codedoc
+</code></pre>
+<div class="pilwrap" id="usage">
+  <h2>
+    <a href="#usage" name="usage" class="pilcrow"></a>
+Usage
+  </h2>
+</div>
+<div class="pilwrap" id="as-standalone-tool-1">
+  <h3>
+    <a href="#as-standalone-tool-1" name="as-standalone-tool-1" class="pilcrow"></a>
+As Standalone Tool
+  </h3>
+</div>
 <p>After global installation you may directly call <code>codedoc</code> from anywhere to work
 in the current or defined directory.</p>
 <p>See the <a href="src/man/codedoc1.md.html">man page</a> for explanation of the command line use
 and options.</p>
-<h3 id="integrate-into-your-node-project-2">Integrate into your Node Project</h3>
+<div class="pilwrap" id="integrate-into-your-node-project-1">
+  <h3>
+    <a href="#integrate-into-your-node-project-1" name="integrate-into-your-node-project-1" class="pilcrow"></a>
+Integrate into your Node Project
+  </h3>
+</div>
 <p>You have to include it into your project:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><code>codedoc = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-codedoc'</span></code>
-<code><span class="hljs-comment"># setup the template search paths</span></code>
-<code>codedoc.setup (err) -&gt;</code>
-<code>  <span class="hljs-comment"># do something on error like exit or reporting</span></code>
-<code>  <span class="hljs-keyword">if</span> err</code>
-<code>    <span class="hljs-built_in">console</span>.error err.message</code>
-<code>    process.exit <span class="hljs-number">1</span></code>
-<code>  <span class="hljs-comment"># run documentation generation</span></code>
-<code>  codedoc.run</code>
-<code>    input: argv.input</code>
-<code>    find:</code>
-<code>      exclude: list</code>
-<code>    output: argv.output</code>
-<code>    style: argv.style</code>
-<code>    code: argv.code</code>
-<code>  , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span></code>
-<code>    <span class="hljs-keyword">if</span> err</code>
-<code>      <span class="hljs-built_in">console</span>.error err.message</code>
-<code>      process.exit <span class="hljs-number">16</span>  </code>
-<code>    <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Documents created.'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><code>codedoc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-codedoc'</span>);</code>
-<code><span class="hljs-comment">// setup the template search paths</span></code>
-<code>codedoc.setup(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</code>
-<code>  <span class="hljs-comment">// do something on error like exit or reporting</span></code>
-<code>  <span class="hljs-keyword">if</span> (err) {</code>
-<code>    <span class="hljs-built_in">console</span>.error(err.message);</code>
-<code>    process.exit(<span class="hljs-number">1</span>);</code>
-<code>  }</code>
-<code>  <span class="hljs-comment">// run documentation generation</span></code>
-<code>  <span class="hljs-keyword">return</span> codedoc.run({</code>
-<code>    input: argv.input,</code>
-<code>    find: { exclude: list },</code>
-<code>    output: argv.output,</code>
-<code>    style: argv.style,</code>
-<code>    code: argv.code</code>
-<code>  }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</code>
-<code>    <span class="hljs-keyword">if</span> (err) {</code>
-<code>      <span class="hljs-built_in">console</span>.error(err.message);</code>
-<code>      process.exit(<span class="hljs-number">16</span>);</code>
-<code>    }</code>
-<code>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Documents created.'</span>);</code>
-<code>  });</code>
-<code>});</code></pre>
-<p>Find more information about calling the code documentation in the <a href="src/index.coffee">API</a>.</p>
-<p>If you want to use your own style templates within your app’s config directory
+<pre><code class="coffee">codedoc = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-codedoc'</span>
+<span class="hljs-comment"># setup the template search paths</span>
+codedoc.setup (err) -&gt;
+  <span class="hljs-comment"># do something on error like exit or reporting</span>
+  <span class="hljs-keyword">if</span> err
+    <span class="hljs-built_in">console</span>.error err.message
+    process.exit <span class="hljs-number">1</span>
+  <span class="hljs-comment"># run documentation generation</span>
+  codedoc.run
+    input: argv.input
+    find:
+      exclude: list
+    output: argv.output
+    style: argv.style
+    code: argv.code
+  , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> err
+      <span class="hljs-built_in">console</span>.error err.message
+      process.exit <span class="hljs-number">16</span>  
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Documents created.'</span>
+</code></pre>
+<pre><code class="js">codedoc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-codedoc'</span>);
+<span class="hljs-comment">// setup the template search paths</span>
+codedoc.setup(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+  <span class="hljs-comment">// do something on error like exit or reporting</span>
+  <span class="hljs-keyword">if</span> (err) {
+    <span class="hljs-built_in">console</span>.error(err.message);
+    process.exit(<span class="hljs-number">1</span>);
+  }
+  <span class="hljs-comment">// run documentation generation</span>
+  <span class="hljs-keyword">return</span> codedoc.run({
+    input: argv.input,
+    find: { exclude: list },
+    output: argv.output,
+    style: argv.style,
+    code: argv.code
+  }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+    <span class="hljs-keyword">if</span> (err) {
+      <span class="hljs-built_in">console</span>.error(err.message);
+      process.exit(<span class="hljs-number">16</span>);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Documents created.'</span>);
+  });
+});
+</code></pre>
+<p>Find more information about calling the code documentation in the <a href="src/index.coffee.html">API</a>.</p>
+<p>If you want to use your own style templates within your app's config directory
 and your already using <a href="http://alinex.github.io/node-config">alinex-config</a>
 you only have to register the template type on it by putting the following on top:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><code>config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span></code>
-<code><span class="hljs-comment"># set module search path</span></code>
-<code><span class="hljs-comment"># (with paths for calling in the upper directory)</span></code>
-<code>config.register <span class="hljs-string">'codedoc'</span>, __dirname,</code>
-<code>  folder: <span class="hljs-string">'template'</span></code>
-<code>  type: <span class="hljs-string">'template'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><code>config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-config'</span>);</code>
-<code><span class="hljs-comment">// set module search path</span></code>
-<code><span class="hljs-comment">// (with paths for calling in the upper directory)</span></code>
-<code>config.register(<span class="hljs-string">'codedoc'</span>, __dirname, {</code>
-<code>  folder: <span class="hljs-string">'template'</span>,</code>
-<code>  type: <span class="hljs-string">'template'</span></code>
-<code>});</code></pre>
+<pre><code class="coffee">config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span>
+<span class="hljs-comment"># set module search path</span>
+<span class="hljs-comment"># (with paths for calling in the upper directory)</span>
+config.register <span class="hljs-string">'codedoc'</span>, __dirname,
+  folder: <span class="hljs-string">'template'</span>
+  type: <span class="hljs-string">'template'</span>
+</code></pre>
+<pre><code class="js">config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-config'</span>);
+<span class="hljs-comment">// set module search path</span>
+<span class="hljs-comment">// (with paths for calling in the upper directory)</span>
+config.register(<span class="hljs-string">'codedoc'</span>, __dirname, {
+  folder: <span class="hljs-string">'template'</span>,
+  type: <span class="hljs-string">'template'</span>
+});
+</code></pre>
 <p>This allows you to put your templates also under:</p>
 <ul>
-<li>var/src/template/report/…</li>
-<li>var/local/template/report/…</li>
-<li>/etc/<yourapp>/template/report/…</li>
-<li>~/.<yourapp>/template/report/…</li>
+<li>var/src/template/report/...</li>
+<li>var/local/template/report/...</li>
+<li>/etc/<yourapp>/template/report/...</li>
+<li>~/.<yourapp>/template/report/...</li>
 </ul>
-<h2 id="license">License</h2>
-<p>© Copyright 2016 Alexander Schilling</p>
-<p>Licensed under the Apache License, Version 2.0 (the “License”);
+<div class="pilwrap" id="debugging">
+  <h2>
+    <a href="#debugging" name="debugging" class="pilcrow"></a>
+Debugging
+  </h2>
+</div>
+<p>If you have any problems you may debug the code with the predefined flags. It uses
+the <a href="https://github.com/visionmedia/debug/blob/master/Readme.md">debug</a> module to
+let you define what to debug.</p>
+<p>Call it with the <code>DEBUG</code> environment variable set to the types you want to debug.
+The most valueable flags will be:</p>
+<pre><code class="sh">DEBUG=codedoc* codedoc  <span class="hljs-comment"># more information what goes on</span>
+DEBUG=config* codedoc   <span class="hljs-comment"># registering paths for template search</span>
+DEBUG=report* codedoc   <span class="hljs-comment"># conversion into html</span>
+</code></pre>
+<p>You can also combine them using comma or use only <code>DEBUG=*</code> to show all.</p>
+<div class="pilwrap" id="license">
+  <h2>
+    <a href="#license" name="license" class="pilcrow"></a>
+License
+  </h2>
+</div>
+<p>(C) Copyright 2016 Alexander Schilling</p>
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at</p>
 <blockquote>
 <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
 </blockquote>
 <p>Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an “AS IS” BASIS,
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</p>
-
-        </div>
-
-        <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
-          <h1>Further pages</h1>
-          <ul class="nav nav-sidebar">
-            <li class="header">
-              <a href="README.md.html">CodeDoc</a>
-            </li>
-                <li class="active level0">
-                  <a href="README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="level0">
-                  <a href="src/man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
-                </li>
-                <li class="level0">
-                  <a href="src/document.md.html" title="Writing Docs (/src/document.md)">Writing Docs</a>
-                </li>
-                <li class="level0">
-                  <a href="src/index.coffee.html" title="API: Main Controller (/src/index.coffee)">Main Controller</a>
-                </li>
-                <li class="level0">
-                  <a href="bin/codedoc.html" title="Start CLI (/bin/codedoc)">Start CLI</a>
-                </li>
-                <li class="level0">
-                  <a href="Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
-                </li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  </body>
+</div>
+  </div>
+</body>
 </html>

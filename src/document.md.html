@@ -1,89 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Writing Docs</title>
-    <meta name="HandheldFriendly" content="true" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/8.5.0/styles/solarized_light.min.css" /><style type="text/css">#topnav .navbar-nav{margin-top:8px}.navbar{min-width:300px}.nav>li{padding:2px 12px}.navbar-inverse .navbar-nav>li>a{color:#222;font-weight:bold}.navbar-spacer{height:51px}.btn-warning:active,.btn-primary:active{transform:scale(.92)}.btn-warning{background:#f2b560;background:#ee9f31 linear-gradient(180deg,#f2b560,#ee9f31) repeat-x}.btn-primary{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x}.navbar-inverse .navbar-nav>li>a:focus,.navbar-inverse .navbar-nav>li>a:hover{background:#73aad8;background:#4b91cd linear-gradient(180deg,#73aad8,#4b91cd) repeat-x}.navbar-inverse .navbar-nav>li>a.btn-warning:focus,.navbar-inverse .navbar-nav>li>a.btn-warning:hover{background:#ec9721;background:#c97c11 linear-gradient(180deg,#ec9721,#c97c11) repeat-x}.sidebar .nav{list-style:disc;padding-left:30px;}.sidebar .nav>li{display:list-item;}.sidebar .nav>li>a{color:#222;}.sidebar .nav>li>a:active{box-shadow:0 2px 10px 2px rgba(0,0,0,0.25)}.sidebar .nav>li>a:hover{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x;color:#fff}.sidebar .nav>li.header,.sidebar .nav>li.active{display:none}.sidebar .nav>li.active>a{background:#73aad8;background:#4b91cd linear-gradient(180deg,#73aad8,#4b91cd) repeat-x;}.sidebar .nav>li.active>a:hover{background:#3d88c9;background:#2e6ea5 linear-gradient(180deg,#3d88c9,#2e6ea5) repeat-x;color:#fff}.sidebar .nav>li.header>a{font-weight:bold;background:#f2b560;background:#ee9f31 linear-gradient(180deg,#f2b560,#ee9f31) repeat-x;}.sidebar .nav>li.header>a:hover{background:#ec9721;background:#c97c11 linear-gradient(180deg,#ec9721,#c97c11) repeat-x;color:#fff}.sidebar .nav>li.level1>a{padding-left:20px}.sidebar .nav>li.level2>a{padding-left:25px}.sidebar .nav>li.level3>a,.sidebar .nav>li.level4>a,.sidebar .nav>li.level5>a{padding-left:30px}@media (min-width:768px){#topnav .nav>li{padding:0 4px}.navbar-right{margin-right:0}.navbar-nav >li>a{padding:6px 10px}.sidebar{overflow:auto;position:fixed;top:51px;left:0;bottom:0;background:#ddd;padding:0;}.sidebar h1,.sidebar h2{display:none}.sidebar .nav{list-style:none;padding-left:0;}.sidebar .nav>li{padding:0;}.sidebar .nav>li.header,.sidebar .nav>li.active{display:block}}img.preload{display:none}body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-size:16px;line-height:1.2;-ms-word-break:break-all;word-break:break-all;word-break:break-word;hyphens:auto;-webkit-hyphenate-before:2;-webkit-hyphenate-after:3;hyphenate-lines:3;min-width:300px}h1,h2,h3,h4,h5,h6{font-weight:bold}h1{border-bottom:3px solid #222;padding-bottom:5px}h2{border-bottom:2px dotted #222;padding-bottom:3px}h3{border-bottom:2px dotted #aaa;padding-bottom:2px}h4{border-bottom:1px dotted #aaa}dt{font-weight:bold;margin-top:8px}blockquote{border:1px solid #eee;border-radius:3px;border-left:5px solid #337ab7;padding:5px 15px;margin:10px 0}table{border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;}table th,table td{padding:6px 13px;border:1px solid #ddd}table th{background-color:rgba(0,0,0,0.04);font-weight:bold;border-bottom:3px solid #999}table tr{background-color:#fff;border-top:1px solid #ccc;}table tr:nth-child(2n){background-color:rgba(0,0,0,0.04)}code,tt{background-color:#fafafa;border-radius:4px;font-size:85%;margin:0;padding:.2em 0}pre{background-color:#fafafa;border-radius:10px;border:1px solid #a4a4a4;font-size:85%;margin:20px;padding:10px;}pre code,pre tt{background:none}pre.language{counter-reset:line;max-height:265px;padding-top:30px;padding-bottom:0;overflow-x:hidden;}pre.language code,pre.language tt{display:block;position:relative;float:left;width:100%;border-left:45px solid #ddd;margin-left:-10px;padding-left:5px;}pre.language code:before,pre.language tt:before{counter-increment:line;content:counter(line);min-width:35px;float:left;text-align:right;padding-right:5px;color:#808080;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;margin-left:-45px}pre.language code:first-of-type,pre.language tt:first-of-type{padding-top:10px}pre.language code:last-child,pre.language tt:last-child{padding-bottom:10px}pre.language header{font-weight:bold;background:#fafafa;margin:-30px -10px 0 -10px;padding:5px 15px}pre.language.coffeescript header,pre.language.javascript header,pre.language.ruby header,pre.language.python header,pre.language.perl header,pre.language.cc header,pre.language.cpp header,pre.language.cs header,pre.language.java header,pre.language.jsp header,pre.language.groovy header,pre.language.php header,pre.language.bash header,pre.language.sql header,pre.language.makefile header{background:#f0ad4e}pre.language.json header,pre.language.cson header,pre.language.yaml header{background:#61b961}pre.language.handlebars header,pre.language.css header,pre.language.stylus header,pre.language.scss header,pre.language.less header,pre.language.markdown header{background:#76abca}.table-of-contents{border:2px solid #ddd;border-radius:10px;float:right;margin-top:0;padding:10px 10px 10px 25px;background:#fafafa;font-size:90%;}.table-of-contents header{font-weight:bold;font-size:120%;display:block;background:#ddd;margin:-10px -10px 4px -25px;border-top-left-radius:10px;border-top-right-radius:10px;padding:3px 10px}.table-of-contents ul{padding-left:15px}.table-of-contents a{text-decoration:none}img{vertical-align:middle}.emoji{height:1em}abbr,acronym{border-bottom:dotted 1px}div.detail,div.info,div.warning,div.alert{padding:30px 10px 6px 10px;margin:5px 0 8px 0;border-radius:3px;}div.detail>p,div.info>p,div.warning>p,div.alert>p{margin-bottom:0}div.detail header,div.info header,div.warning header,div.alert header{font-weight:bold;position:absolute;margin-top:-30px;margin-left:-10px;padding:3px 20px 3px 10px;border-bottom-right-radius:18px}div.detail{background-color:#fafafa;border:2px solid #ddd;padding-top:0}div.info{background-color:#9f9;border:2px solid #6d6;}div.info header{background-color:#6d6}div.warning{background-color:#fc9;border:2px solid #e86;}div.warning header{background-color:#e86}div.alert{background-color:#f99;border:2px solid #c00;}div.alert header{background-color:#c00;color:#fff}.text-red{color:#d13f19}.text-green{color:#2ecc40}.text-yellow{color:#ffdc00}.text-blue{color:#0074d9}.text-magenta{color:#f0f}.text-cyan{color:#0ff}.text-gray{color:#aaa}.bg-white{background-color:#fff}.center{text-align:center}.left{float:left}.right{float:right}.hide{display:none}.spacing{padding:10px}</style>
-  </head>
+<html>
+<head>
+  <title>document.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "src/document.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
 
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://alinex.github.io/" onmouseover="logo.src='http://alinex.github.io/images/Alinex-200.png'" onmouseout="logo.src='http://alinex.github.io/images/Alinex-black-200.png'">
-            <img name="logo" src="http://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Homepage">
-          </a>
-          <img class="preload" src="http://alinex.github.io/images/Alinex-200.png" aria-hidden="true">
-        </div>
-        <div id="topnav" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://alinex.github.io/blog" class="btn btn-primary">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Blog
-              </a></li>
-            <li><a href="http://alinex.github.io/develop" class="btn btn-primary">
-                <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Develop
-              </a></li>
-            <li><a href="http://alinex.github.io/code.html" class="btn btn-warning">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Code
-              </a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#writing-docs">Writing Docs</a>
       </div>
-    </nav>
 
-    <div class="navbar-spacer"></div>
+      <div class="heading h2">
+        <a href="#where-to-write-documentation">Where to write documentation?</a>
+      </div>
 
-    <div class="container-fluid">
-      <div class="row">
+      <div class="heading h3">
+        <a href="#extra-documents">Extra Documents</a>
+      </div>
 
-        <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <h1 id="writing-docs">Writing Docs</h1>
+      <div class="heading h3">
+        <a href="#in-the-code">In the Code</a>
+      </div>
+
+      <div class="heading h4">
+        <a href="#fixtures">Fixtures</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#how-to-write">How to Write?</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#first-heading">First Heading</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#extended-markdown">Extended Markdown</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#jsdocjavadoc">JsDoc/JavaDoc</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-codedoc" title="Fork me on GitHub"></a>
+    <div class="docs markdown"><div class="pilwrap" id="writing-docs">
+  <h1>
+    <a href="#writing-docs" name="writing-docs" class="pilcrow"></a>
+Writing Docs
+  </h1>
+</div>
 <p>To use codedoc you have to write your documentation into <strong>documentation files</strong>
 or/and <strong>within the code</strong> as comment blocks. The format should be <strong>simple or extended
 markdown</strong> maybe with jsDoc/JavaDoc like annotations.</p>
-<h2 id="where-to-write-documentation">Where to write documentation?</h2>
-<h3 id="extra-documents">Extra Documents</h3>
+<div class="pilwrap" id="where-to-write-documentation">
+  <h2>
+    <a href="#where-to-write-documentation" name="where-to-write-documentation" class="pilcrow"></a>
+Where to write documentation?
+  </h2>
+</div>
+<div class="pilwrap" id="extra-documents">
+  <h3>
+    <a href="#extra-documents" name="extra-documents" class="pilcrow"></a>
+Extra Documents
+  </h3>
+</div>
 <p>If you write some documents into separate files name them with a markdown extension
 of <code>*.md</code> like:</p>
 <pre><code>README.md
 Changelog.md
 </code></pre>
-<h3 id="in-the-code">In the Code</h3>
+<div class="pilwrap" id="in-the-code">
+  <h3>
+    <a href="#in-the-code" name="in-the-code" class="pilcrow"></a>
+In the Code
+  </h3>
+</div>
 <p>Additionally you can document within the code. Here we decide between code comments
 and documentation comments. They differ in the used style for comment. Most languages
 know such different types for documentation code:</p>
-<pre class="language javascript"><header>JavaScript Code</header><code><span class="hljs-comment">/**</span></code>
-<code><span class="hljs-comment"> *  Document comment for function</span></code>
-<code><span class="hljs-comment"> */</span></code>
-<code>x = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</code>
-<code>  <span class="hljs-comment">// inline code comment</span></code>
-<code>  <span class="hljs-comment">/* multiline code comment */</span></code>
-<code>}</code></pre>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
-<code><span class="hljs-comment">Document comment for function</span></code>
-<code><span class="hljs-comment">###</span></code>
-<code><span class="hljs-function"><span class="hljs-title">x</span> = -&gt;</span></code>
-<code>  <span class="hljs-comment"># inline code comment</span></code></pre>
+<pre><code class="js"><span class="hljs-comment">/**
+ *  Document comment for function
+ */</span>
+x = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// inline code comment</span>
+  <span class="hljs-comment">/* multiline code comment */</span>
+}
+</code></pre>
+<pre><code class="coffee"><span class="hljs-comment">###
+Document comment for function
+###</span>
+<span class="hljs-function"><span class="hljs-title">x</span> = -&gt;</span>
+  <span class="hljs-comment"># inline code comment</span>
+</code></pre>
 <p>Only the documentation code is extracted and formated as markdown. All other lines
 will be displayed as code with highlights.</p>
 <p>Like in the above languages a lot of other ones are supported, too:</p>
@@ -98,105 +143,125 @@ will be displayed as code with highlights.</p>
 <tbody>
 <tr>
 <td>CoffeeScript</td>
-<td>### … ###</td>
-<td>#…</td>
+<td>### ... ###</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>JavaScript</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>LiveScript</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Ruby</td>
-<td>=begin … =end</td>
-<td>#…</td>
+<td>=begin ... =end</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>Python</td>
-<td>###,  #… lines</td>
-<td>#…</td>
+<td>###,  #... lines</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>Perl</td>
-<td>=pod … =cut</td>
-<td>#…</td>
+<td>=pod ... =cut</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>C, C++, c#</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Java, JSP</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Groovy</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>PHP</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Bash</td>
-<td>###,  #… lines</td>
-<td>#…</td>
+<td>###,  #... lines</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>YAML</td>
-<td>###,  #… lines</td>
-<td>#…</td>
+<td>###,  #... lines</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>SCSS</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Stylus, CSS, Less</td>
-<td>/** … */</td>
-<td>//… or /<em>…</em>/</td>
+<td>/** ... */</td>
+<td>//... or /<em>..</em>/</td>
 </tr>
 <tr>
 <td>Makefile</td>
-<td>###,  #… lines</td>
-<td>#…</td>
+<td>###,  #... lines</td>
+<td>#...</td>
 </tr>
 <tr>
 <td>Apache</td>
-<td>###,  #… lines</td>
-<td>#…</td>
+<td>###,  #... lines</td>
+<td>#...</td>
 </tr>
 </tbody>
 </table>
-<h4 id="fixtures">Fixtures</h4>
-<p>In CoffeeScript block comments a triple hash ‘###’ is the end of the doc comment
-so it cant be used as it’s markdown format for a heading level 3. As workarround
-you may use ‘#3…’ which is no standard markdown but works here. The same goes
+<div class="pilwrap" id="fixtures">
+  <h4>
+    <a href="#fixtures" name="fixtures" class="pilcrow"></a>
+Fixtures
+  </h4>
+</div>
+<p>In CoffeeScript block comments a triple hash '###' is the end of the doc comment
+so it cant be used as it's markdown format for a heading level 3. As workarround
+you may use '#3...' which is no standard markdown but works here. The same goes
 with the other deeper headings level 4, 5 and 6.</p>
-<h2 id="how-to-write">How to Write?</h2>
+<div class="pilwrap" id="how-to-write">
+  <h2>
+    <a href="#how-to-write" name="how-to-write" class="pilcrow"></a>
+How to Write?
+  </h2>
+</div>
 <p>You write your documentation in the <strong>markdown</strong> format which is nearly as writing it
-in pure text down. For the simplest styles you won’t have to know anything, just
+in pure text down. For the simplest styles you won't have to know anything, just
 write it down.</p>
 <blockquote>
 <p>See my own short examples about <strong><a href="http://alinex.github.io/develop/lang/markdown.html">Markdown Syntax</a></strong>
 as an example.</p>
 </blockquote>
-<h3 id="first-heading">First Heading</h3>
+<div class="pilwrap" id="first-heading">
+  <h3>
+    <a href="#first-heading" name="first-heading" class="pilcrow"></a>
+First Heading
+  </h3>
+</div>
 <p>The first heading in each document will be the page title and also the name in the
 menu list. So think of a good headline at least for the first heading.</p>
-<p>To make menu entries more compact the heading will be split on ': ’ and ’ - ’ in
+<p>To make menu entries more compact the heading will be split on ': ' and ' - ' in
 parts and only the last part is used as menu entry.</p>
-<h3 id="extended-markdown">Extended Markdown</h3>
+<div class="pilwrap" id="extended-markdown">
+  <h3>
+    <a href="#extended-markdown" name="extended-markdown" class="pilcrow"></a>
+Extended Markdown
+  </h3>
+</div>
 <p>But to get more out of it look into the description of
 <a href="http://alinex.github.io/node-report">alinex-report</a> for examples and a detailed
 descriptions of the basic styles as well as extended formats like:</p>
@@ -205,45 +270,16 @@ descriptions of the basic styles as well as extended formats like:</p>
 <li><a href="http://alinex.github.io/node-report/README.md.html#font-awesome">fontawesome</a></li>
 <li><a href="http://alinex.github.io/node-report/README.md.html#charts">charts</a></li>
 <li><a href="http://alinex.github.io/node-report/README.md.html#plantuml">UML diagrams</a> using (plantuml)</li>
-<li><a href="http://alinex.github.io/node-report/README.md.html#report-elements">and more…</a></li>
+<li><a href="http://alinex.github.io/node-report/README.md.html#report-elements">and more...</a></li>
 </ul>
-<h3 id="jsdocjavadoc">JsDoc/JavaDoc</h3>
+<div class="pilwrap" id="jsdocjavadoc">
+  <h3>
+    <a href="#jsdocjavadoc" name="jsdocjavadoc" class="pilcrow"></a>
+JsDoc/JavaDoc
+  </h3>
+</div>
 <p>In the near future a lot of JsDoc/JavaDoc Tags will be supported, too.</p>
-
-        </div>
-
-        <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
-          <h1>Further pages</h1>
-          <ul class="nav nav-sidebar">
-            <li class="header">
-              <a href="../README.md.html.html">CodeDoc</a>
-            </li>
-                <li class="level0">
-                  <a href="../README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
-                </li>
-                <li class="level0">
-                  <a href="man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
-                </li>
-                <li class="active level0">
-                  <a href="document.md.html" title="Writing Docs (/src/document.md)">Writing Docs <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="level0">
-                  <a href="index.coffee.html" title="API: Main Controller (/src/index.coffee)">Main Controller</a>
-                </li>
-                <li class="level0">
-                  <a href="../bin/codedoc.html" title="Start CLI (/bin/codedoc)">Start CLI</a>
-                </li>
-                <li class="level0">
-                  <a href="../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
-                </li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  </body>
+</div>
+  </div>
+</body>
 </html>

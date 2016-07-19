@@ -1,0 +1,1 @@
+var tree={"files":["Changelog.md","README.md","coffeelint.json","package.json"],"dirs":{"src":{"files":["cli.coffee","document.md","index.coffee","language.coffee","template.md"],"dirs":{"man":{"files":["codedoc.1.md"]}}},"var":{"dirs":{"src":{"dirs":{"template":{"dirs":{"report":{"files":["codedoc.css","codedoc.styl"]}}}}}}}}};
