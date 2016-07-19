@@ -4,6 +4,36 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.3.0 (2016-07-19)
+-------------------------------------------------
+Now supporting the docuemntation and code view mode.
+
+- Upgrade yargs@4.8.1
+- Add description of handlebars template variables.
+- Start documenting the templates.
+- Add options in man and debug possibilities.
+- Optimize API documentation.
+- Update all language formats.
+- Change style of headings.
+- Optimize documentation.
+- Add install and usage information for api.
+- Add description for #3 headings.
+- Fix link to examples.
+- Only indent page links if code view enabled.
+- Allow code display to be enabled.
+- Add help about documenting.
+- Add handlebars support and github link.
+- Optimize documentation.
+- Add link to doc page hidden there.
+- Add link to doc page hidden there.
+- Add stylus and css highlighting.
+- Support javascript and local file links.
+- Add correct line numbers.
+- Better formating for code lists with line numbers.
+- Remove line numbers in text code blocks.
+- Allow full height if only code.
+- CHange style of further links in small view.
+
 Version 0.2.1 (2016-07-15)
 -------------------------------------------------
 - upgraded alinex-report@2.1.4
