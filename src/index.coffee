@@ -148,9 +148,9 @@ exports.run = (setup, cb) ->
         .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
         async.eachLimit mapKeys, PARALLEL, (name, cb) ->
           # create link list
-          files = []
+          pages = []
           for p, e of map
-            files.push
+            pages.push
               depth: if setup.code then e.parts.length - 1 else 0
               title: e.title
               path: p
@@ -163,7 +163,7 @@ exports.run = (setup, cb) ->
             style: 'codedoc'
             context:
               moduleName: moduleName
-              files: files
+              pages: pages
           , (err, html) ->
             html = html.replace ///href=\"(?!https?://|/)(.*?)\"///, 'href="$1.html"'
             fs.mkdirs path.dirname(file.dest), (err) ->
@@ -192,6 +192,7 @@ processFile = (file, local, setup, cb) ->
     # create report
     (contents, lang, cb) ->
       report = new Report()
+#      report.toc()
       if lang.name is 'markdown'
         report.raw contents
       else

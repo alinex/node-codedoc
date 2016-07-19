@@ -30,14 +30,25 @@ Within the template you may use the following variables:
 - __content__ - the main part
   The content is a string of html therefore you have to use triple braces to
   include: `{{{content}}}`
-- __moduleName__
-- __files__
-  - __depth__
-  - __title__
-  - __path__
-  - __link__
-  - __url__
-  - __active__
+- __moduleName__ - name of the module itself
+  Use `{{moduleName}}` as a heading or name tag within your layout.
+- __pages__ - all pages in sorted order
+  The list contains different information for each displayable page. Best is to
+  iterate over it using `{{#iterate pages}}...{{/iterate}}`. Provides the following fields:
+  - __depth__ - of file in tree
+    This goes from 0 (main directory) to the number of subdirectories but is only
+    set in code view.
+  - __title__ - title of the page
+    This contains the title from the first heading within the page.
+  - __path__ - absolute file path
+    Not really useful within the browser but already there because used internally.
+  - __link__ - short text (short version of title)
+    This is the text you should use in your menu or sidebar because it is mostly
+    shorter than the title.
+  - __url__ - relative link to it
+    The link you have to use to get to this page.
+  - __active__ - flag
+    Set to `true` if this is the actual page.
 
 
 CSS Stylesheet

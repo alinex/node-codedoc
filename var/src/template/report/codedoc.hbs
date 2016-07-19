@@ -66,7 +66,7 @@
             <li class="header">
               <a href="{{files.0.url}}">{{moduleName}}</a>
             </li>
-            {{#iterate files}}
+            {{#iterate pages}}
               {{#if value.active}}
                 <li class="active level{{value.depth}}">
                   <a href="{{value.url}}" title="{{value.title}} ({{value.path}})">{{value.link}} <span class="sr-only">(current)</span></a>

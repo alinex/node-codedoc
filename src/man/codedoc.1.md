@@ -67,7 +67,7 @@ Parameters
     documentation more appropriate for internal use and for the developer which also
     wan't to extend or change the source.
     But for all other the default view without code should be the more compact and
-    there fore better to read version. This is the default.
+    there fore better to read version (default).
 
 ### General Options
 
