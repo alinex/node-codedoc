@@ -4,6 +4,16 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.3.2 (2016-07-19)
+-------------------------------------------------
+- Upgraded alinex-builder@2.3.0
+- Add info about stylesheets.
+- Fix anchor point of links.
+- Add table of contents.
+- Also keep image links untouched.
+- Fix internal page linking.
+- Create index page if not there.
+
 Version 0.3.1 (2016-07-19)
 -------------------------------------------------
 - Add missing main link in package.json.
