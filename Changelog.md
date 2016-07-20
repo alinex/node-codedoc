@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.4.0 (2016-07-20)
+-------------------------------------------------
+- Update alinex-fs@2.0.6
+- Copy resources to documentation.
+- Also let js and css links untouched.
+- Add google search.
+
 Version 0.3.3 (2016-07-19)
 -------------------------------------------------
 - Fix package.
