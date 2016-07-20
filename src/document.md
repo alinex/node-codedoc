@@ -18,54 +18,86 @@ of `*.md` like:
     Changelog.md
 
 
-### In the Code
+### Code Documentation
 
-Additionally you can document within the code. Here we decide between code comments
-and documentation comments. They differ in the used style for comment. Most languages
-know such different types for documentation code:
+Additionally you can document within the code. That allows you to edit your documentation
+where it belongs to and to also make an API documentation.
+
+You have the possibility between three types of documenttation:
+
+- __Documentation and external API__
+
+  This is a top level documentation which goes always into the documentation. Write
+  it in the language specific doc comment style.
+
+- __Internal API__
+
+  This is normally ignored in the documentation creation. Only in the 'code view'
+  this will be displayed alongside the code itself. The style will be the same as
+  for external API. It is written as block comment.
+
+- __Code Comments__
+
+  And at last you may use normal single line comments in the language which won't be
+  extracted but shown highlighted within the code view.
+
+The concrete style for each type of comment differs on the used language. See the
+following examples for CoffeeScript and JavaScript:
 
 ``` js
 /**
- *  Document comment for function
+ *  Document comment for general documentation or to document external API.
  */
+
+ /*
+  *  Document comment for internal function
+  */
 x = function () {
   // inline code comment
-  /* multiline code comment */
+  /* as single line it's the same */
 }
 ```
 
 ``` coffee
 ###
-Document comment for function
+Document comment for general documentation or to document external API.
 ###
+
+#
+# Document comment for internal function
+#
 x = ->
   # inline code comment
 ```
 
-Only the documentation code is extracted and formated as markdown. All other lines
-will be displayed as code with highlights.
+See the following table for the detected styles per each language.
 
 Like in the above languages a lot of other ones are supported, too:
 
-|   Language   |    Doc Comment   | Other Comments   |
-| ------------ | ---------------- | ---------------- |
-| CoffeeScript | ### ... ###      | #...             |
-| JavaScript   | /** ... */       | //... or /*..*/  |
-| LiveScript   | /** ... */       | //... or /*..*/  |
-| Ruby         | =begin ... =end  | #...             |
-| Python       | ###,  #... lines | #...             |
-| Perl         | =pod ... =cut    | #...             |
-| C, C++, c#   | /** ... */       | //... or /*..*/  |
-| Java, JSP    | /** ... */       | //... or /*..*/  |
-| Groovy       | /** ... */       | //... or /*..*/  |
-| PHP          | /** ... */       | //... or /*..*/  |
-| Bash         | ###,  #... lines | #...             |
-| YAML         | ###,  #... lines | #...             |
-| SCSS         | /** ... */       | //... or /*..*/  |
-| Stylus, CSS, Less  | /** ... */       | //... or /*..*/  |
-| Makefile     | ###,  #... lines | #...             |
-| Apache       | ###,  #... lines | #...             |
+|     Language       |    Doc Comment   | Internal API ^1^  | Code Comments ^2^ |
+| ------------------ | ---------------- | ----------------- | ----------------- |
+| CoffeeScript       | ### ... ###      | #...              | #...              | CS_DOC HASH_API
+| JavaScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| LiveScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Ruby               | =begin ... =end  | #...              | #...              | RB_DOC HASH_API
+| Python             | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
+| Perl               | =pod ... =cut    | #...              | #...              | PL_DOC HASH_API
+| C, C++, c#         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Java, JSP          | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Groovy             | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| PHP                | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Bash               | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
+| YAML               | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
+| SCSS               | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Stylus, CSS, Less  | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
+| Makefile           | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
+| Apache             | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
 
+^1^ Internal API always need multiple contineous comment lines\
+^2^ Inline comments are the same as internal API but have only one line
+
+As you see we use the language specific styles here and most languages also use the
+same style.
 
 #### Fixtures
 

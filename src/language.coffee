@@ -1,4 +1,4 @@
-# Startup script
+# Language Definition
 # =================================================
 
 
@@ -7,18 +7,9 @@
 path = require 'path'
 
 
-shebangRegex = ///
-  ^                     # start of contents
-  \#!                   # this have to be the first two bytes
-  \s*(?:/usr/bin/env)?  # the call to search executable in path
-  \s*(?:[^\n]*/)*       # any path before the executable
-  ([^/\n]+)             # the executable
-  (?:\n|$)              # end of line
-  ///
-
-
 # Detection
 # -------------------------------------------------
+
 # Provides language-specific params for a given file name.
 #
 # @param {string} filename The name of the file to test
@@ -35,7 +26,7 @@ module.exports = (file, contents) ->
     return l if l.extensions? and ext in l.extensions
     return l if l.names? and base in l.names
   # If that doesn't work, see if we can grab a shebang
-  match = shebangRegex.exec(contents)
+  match = SHEBANG.exec contents
   if match
     for _, l of languages
       return l if l.executables? and match[1] in l.executables
@@ -43,20 +34,92 @@ module.exports = (file, contents) ->
   null
 
 
-# Language definition
+# General Definitions
 # -------------------------------------------------
 
-C_DOC =
+# Use with match to get the executable name out of shebang syntax.
+#
+# __Example:__ #!/usr/bin env node
+# - $1 - will be the executable: 'node'
+SHEBANG =
+  ///
+    ^                     # start of contents
+    \#!                   # this have to be the first two bytes
+    \s*(?:/usr/bin/env)?  # the call to search executable in path
+    \s*(?:[^\n]*/)*       # any path before the executable
+    ([^/\n]+)             # the executable
+    (?:\n|$)              # end of line
+  ///
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ /** ... */
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+C_DOC = [
   ///
     \s*         # with optional spaces
     /\*{2,}     # start with slash and at least two asterisk
     (           # content of the comment
-      [\s\S]*?  # comment charactes
+    [\s\S]*?    # comment charactes
     )           # end of comment
     \*+/        # at least one asterisk and slash
     \s*         # with optional spaces
   ///g
-HASH_DOC =
+  (txt) ->      # remove optional starting asterisk
+    txt.replace /\n\s*\*\s?/, '\n'
+]
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ /* ... */
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+C_API = [
+  ///
+    \s*         # with optional spaces
+    /\*         # start with slash and a single asterisk
+    (           # content of the comment
+    [\s\S]*?    # comment charactes
+    \n          # at least two lines
+    [\s\S]*?    # comment charactes
+    )           # end of comment
+    \*+/        # at least one asterisk and slash
+    \s*         # with optional spaces
+  ///g
+  (txt) ->      # remove optional starting asterisk
+    txt.replace /\n\s*\*\s?/, '\n'
+]
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ ###\n ... ###
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+COFFEE_DOC = [
+  ///           # ###\n ... \n###
+    (?:^|\n)    # start of document or line
+    \s*         # with optional spaces
+    \#{3}       # then three hashes: ###
+    (           # content of the comment
+      [^\#]     # no more than the three hashes
+      [\s\S]*?  # other comment charactes
+    )           # end of comment
+    \#{3,}      # then three or more hashes
+    [ \t]*?\n   # only spaces till end of line
+  ///g
+]
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ ### ... + # ... lines
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+HASH_DOC = [
   ///           # ###\n ... \n###
     (?:^|\n)    # start of document or line
     \s*         # with optional spaces
@@ -64,148 +127,200 @@ HASH_DOC =
     (           # content of the comment
       [^\#]     # no more than the three hashes
       .*        # everything in that line
-      \n\s*\#   # each following line start with an hash
-      \s?.*     # and all in that line
+      (?:       # multiple lines
+        \n\s*\# # each following line start with an hash
+        \s?.*   # and all in that line
+      )+        # at least two lines
     )           # end of comment
     \n          # end the match
   ///g
+  (txt) ->      # remove optional starting asterisk
+    txt.replace /\n\s*\#\s?/, '\n'
+]
 
-
-# # Languages
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
 #
-# All the languages Docker can parse are in here.
+# __Example:__ # ... lines
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+HASH_API = [
+  ///           # ###\n ... \n###
+    (?:^|\n)    # start of document or line
+    \s*         # with optional spaces
+    \#\s?       # then three hashes: ###
+    (           # content of the comment
+      [^\#]     # no more than the three hashes
+      .*        # everything in that line
+      (?:       # multiple lines
+        \n\s*\# # each following line start with an hash
+        \s?.*   # and all in that line
+      )+        # at least two lines
+    )           # end of comment
+    \n          # end the match
+  ///g
+  (txt) ->      # remove optional starting asterisk
+    txt.replace /\n\s*\#\s?/, '\n'
+]
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ \n=begin\n ... \n=end\n
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+RB_DOC = [
+  ///
+    \s*\n       # with optional spaces
+    =begin      # start the line with '=begin'
+    \s*\n       # and no more in this line
+    (           # content of the comment
+      [\s\S]*?  # comment charactes
+    )           # end of comment
+    \s*\n       # start a new line
+    =end        # with '=end' at the start
+    \s*\n       # with no more in this line
+  ///g
+]
+
+# Use the RegExp from list element #0 to get all code documents and the optimization
+# method (list element #1) afterwards
+#
+# __Example:__ \n=pod\n ... \n=cut\n
+# - `$1` - the unoptimized content
+# - optimized - leading asterisk removed
+PL_DOC = [
+  ///
+    \s*\n       # with optional spaces
+    =           # start the line with any allowed pod command
+      (pod|head[1-4]|over|item|back|begin|end|for|encoding)
+    \s*\n       # and no more in this line
+    (           # content of the comment
+      [\s\S]*?  # comment charactes
+    )           # end of comment
+    \s*\n       # start a new line
+    =cut        # with '=cut' at the start
+    \s*\n       # with no more in this line
+  ///g
+]
+
+
+# Language Definitions
+# -------------------------------------------------
+# All the languages which are parseable are in here.
 # A language can have the following properties:
 #
-# * `extensions`: All possible file extensions for the language
-# * `executables`: Executables for the language that might be in a shebang
-# * `comment`: Delimiter for single-line comments
-# * `multiLine`: Start and end delimiters for multi-line comments
-# * `commentsIgnore`: Regex for comments that shouldn't be interpreted as descriptive
-# * `jsDoc`: whether to try and extract jsDoc-style comment data
-# * `literals`: Quoted strings are ignored when looking for comment delimiters.
-#   Any extra literals go here
-# * `highlightLanguage`: override for language to use with highlight.js
+# - `extensions` - all possible file extensions for the language
+# - `executables` - executables for the language that might be in a shebang
+# - `doc` - document comment parsers as list of RegExp and optimization function
+# - `api` - internal api documentation parser as list of RegExp and optimization function
+# - `jsDoc`: whether to try and extract jsDoc-style comment data
+#   - `functionName` - RegExp to extract the function name
 languages =
   coffeescript:
     extensions: [ 'coffee' ]
     names: [ 'cakefile' ]
     executables: [ 'coffee' ]
-    doc: [
-      ///           # ###\n ... \n###
-        (?:^|\n)    # start of document or line
-        \s*         # with optional spaces
-        \#{3}       # then three hashes: ###
-        (           # content of the comment
-          [^\#]     # no more than the three hashes
-          [\s\S]*?  # other comment charactes
-        )           # end of comment
-        \#{3,}      # then three or more hashes
-        [ \t]*?\n   # only spaces till end of line
-      ///g
-    ]
+    doc: COFFEE_DOC
+    api: HASH_API
   javascript:
     extensions: [ 'js' ]
     executables: [ 'node' ]#
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   livescript:
     extensions: [ 'ls' ]
     executables: [ 'lsc' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   ruby:
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ]
     executables: [ 'ruby' ]
     names: [ 'rakefile' ]
-    doc: [
-      ///
-        \s*\n       # with optional spaces
-        =begin      # start the line with '=begin'
-        \s*\n       # and no more in this line
-        (           # content of the comment
-          [\s\S]*?  # comment charactes
-        )           # end of comment
-        \s*\n       # start a new line
-        =end        # with '=end' at the start
-        \s*\n       # with no more in this line
-      ///g
-    ]
+    doc: RB_DOC
+    api: HASH_API
   python:
     extensions: [ 'py' ]
     executables: [ 'python' ]
-    doc: [ HASH_DOC ]
+    doc: HASH_DOC
+    api: HASH_API
   perl:
     extensions: [ 'pl', 'pm' ]
     executables: [ 'perl' ]
-    doc: [
-      ///
-        \s*\n       # with optional spaces
-        =           # start the line with any allowed pod command
-          (pod|head[1-4]|over|item|back|begin|end|for|encoding)
-        \s*\n       # and no more in this line
-        (           # content of the comment
-          [\s\S]*?  # comment charactes
-        )           # end of comment
-        \s*\n       # start a new line
-        =cut        # with '=cut' at the start
-        \s*\n       # with no more in this line
-      ///g
-    ]
+    doc: PL_DOC
+    api: HASH_API
   c:
     extensions: [ 'c', 'h' ]
     executables: [ 'gcc' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   cpp:
     extensions: [ 'cc', 'cpp' ]
     executables: [ 'g++' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   cs:
     extensions: [ 'cs' ]
     comment: '//'
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   java:
     extensions: [ 'java' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   jsp:
     extensions: [ 'jsp' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   php:
     extensions: [ 'php', 'phtml', 'php3', 'php4', 'php5', 'php7' ]
     executables: [ 'php' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   bash:
     extensions: [ 'sh', 'kst', 'bash' ]
     names: [ '.bashrc', 'bashrc']
     executables: [ 'bash', 'sh', 'zsh' ]
-    doc: [ HASH_DOC ]
+    doc: HASH_DOC
+    api: HASH_API
   yaml:
     extensions: [ 'yaml', 'yml' ]
-    doc: [ HASH_DOC ]
+    doc: HASH_DOC
+    api: HASH_API
   markdown:
     extensions: [ 'md', 'mkd', 'markdown' ]
     type: 'markdown'
   scss:
     extensions: [ 'scss' ]
     comment: '//'
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   makefile:
     names: [ 'makefile' ]
-    doc: [ HASH_DOC ]
+    doc: HASH_DOC
+    api: HASH_API
   apache:
     names: [ '.htaccess', 'apache.conf', 'apache2.conf' ]
-    doc: [ HASH_DOC ]
+    doc: HASH_DOC
+    api: HASH_API
   handlebars:
     extensions: [ 'hbs', 'handlebars' ]
   groovy:
     extensions: [ 'groovy' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   stylus:
     extensions: [ 'styl' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   css:
     extensions: [ 'css' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   less:
     extensions: [ 'less' ]
-    doc: [ C_DOC ]
+    doc: C_DOC
+    api: C_API
   html:
     extensions: [ 'html', 'htm' ]
   json:
