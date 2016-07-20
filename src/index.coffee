@@ -77,6 +77,7 @@ config = require 'alinex-config'
 language = require './language'
 
 PARALLEL = 10
+STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 ###
 Initialize Module - setup()
@@ -122,60 +123,73 @@ exports.run = (setup, cb) ->
   console.log "Output to #{setup.output}..."
   fs.mkdirs setup.output, (err) ->
     return cb err if err
-    # start
-    debug "search files in #{setup.input}"
-    fs.find setup.input, setup.find, (err, list) ->
-      return cb err if err
-      debug "convert files..."
-      map = {}
-      async.eachLimit list, PARALLEL, (file, cb) ->
-        p = file[setup.input.length..]
-        processFile file, p, setup, (err, report) ->
-          if err
-            return cb err if err instanceof Error
-            return cb() # no real problem but abort
-          map[p] =
-            report: report
-            dest: "#{setup.output}#{p}.html"
-            parts: p[1..].toLowerCase().split /\//
-            title: report.getTitle() ? p[1..]
-          cb()
-      , (err) ->
-        return cb err if err
-        map = sortMap map
-        mapKeys = Object.keys map
-        moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
-        .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
-        async.eachLimit mapKeys, PARALLEL, (name, cb) ->
-          # create link list
-          pages = []
-          for p, e of map
-            pages.push
-              depth: if setup.code then e.parts.length - 1 else 0
-              title: e.title
-              path: p
-              link: e.title.replace /^.*?[-:]\s+/, ''
-              url: "#{path.relative path.dirname(name), p}.html"
-              active: p is name
-          # convert to html
-          file = map[name]
-          file.report.toHtml
-            style: 'codedoc'
-            context:
-              moduleName: moduleName
-              pages: pages
-          , (err, html) ->
-            html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
-              if link.length is 0 or link.match /\.(html|gif|png|jpg|js|css)$/i
-                "href=\"#{link}#{end}" # keep link
-              else
-                "href=\"#{link}.html#{end}" # add .html
-            fs.mkdirs path.dirname(file.dest), (err) ->
-              return cb err if err
-              fs.writeFile file.dest, html, 'utf8', cb
-        , (err) ->
+    async.parallel [
+      (cb) -> # search source files
+        debug "search files in #{setup.input}"
+        fs.find setup.input, setup.find, (err, list) ->
           return cb err if err
-          createIndex setup.output, mapKeys[0][1..], cb
+          # create reports
+          debug "convert files..."
+          map = {}
+          async.eachLimit list, PARALLEL, (file, cb) ->
+            p = file[setup.input.length..]
+            processFile file, p, setup, (err, report) ->
+              if err
+                return cb err if err instanceof Error
+                return cb() # no real problem but abort
+              map[p] =
+                report: report
+                dest: "#{setup.output}#{p}.html"
+                parts: p[1..].toLowerCase().split /\//
+                title: report.getTitle() ? p[1..]
+              cb()
+          , (err) ->
+            return cb err if err
+            # write files
+            map = sortMap map
+            mapKeys = Object.keys map
+            moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
+            .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
+            async.eachLimit mapKeys, PARALLEL, (name, cb) ->
+              # create link list
+              pages = []
+              for p, e of map
+                pages.push
+                  depth: if setup.code then e.parts.length - 1 else 0
+                  title: e.title
+                  path: p
+                  link: e.title.replace /^.*?[-:]\s+/, ''
+                  url: "#{path.relative path.dirname(name), p}.html"
+                  active: p is name
+              # convert to html
+              file = map[name]
+              file.report.toHtml
+                style: 'codedoc'
+                context:
+                  moduleName: moduleName
+                  pages: pages
+              , (err, html) ->
+                html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
+                  if link.length is 0 or link.match STATIC_FILES
+                    "href=\"#{link}#{end}" # keep link
+                  else
+                    "href=\"#{link}.html#{end}" # add .html
+                fs.mkdirs path.dirname(file.dest), (err) ->
+                  return cb err if err
+                  fs.writeFile file.dest, html, 'utf8', cb
+            , (err) ->
+              return cb err if err
+              createIndex setup.output, mapKeys[0][1..], cb
+      (cb) -> # copy resources
+        debug "copy static files from #{setup.input}"
+        filter = util.extend util.clone(setup.find),
+          include: STATIC_FILES
+        fs.find setup.input, filter, (err, list) ->
+          return cb err if err
+          async.eachLimit list, PARALLEL, (file, cb) ->
+            p = file[setup.input.length..]
+            fs.copy file, "#{setup.output}#{p}", cb
+    ], cb
 
 createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'

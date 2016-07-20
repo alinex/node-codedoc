@@ -9,6 +9,7 @@
 yargs = require 'yargs'
 chalk = require 'chalk'
 async = require 'async'
+path = require 'path'
 # include alinex modules
 fs = require 'alinex-fs'
 alinex = require 'alinex-core'
@@ -44,6 +45,7 @@ for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
 # -----------------------------------------------------------
 
 readExcludes = (dir, cb) ->
+  dir = path.resolve dir
   async.detectSeries ["#{dir}/.docignore", "#{dir}/.gitignore"], (file, cb) ->
     fs.exists file, (exists) -> cb null, exists
   , (err, file) ->
@@ -55,10 +57,10 @@ readExcludes = (dir, cb) ->
       list = ".git/\n#{res}".split /\s*\n\s*/
       .filter (e) -> e.trim().length
       .map (e) ->
-        e.replace /^\//, ''
+        e.replace /^\//, "^"
         .replace /\./, '\\.'
         .replace /\*+/, '.*'
-      cb null, new RegExp "^(#{list.join '|'})"
+      cb null, new RegExp "(#{list.join '|'})"
 
 # Main routine
 # -------------------------------------------------
