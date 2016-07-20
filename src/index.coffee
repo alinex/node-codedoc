@@ -166,7 +166,7 @@ exports.run = (setup, cb) ->
               pages: pages
           , (err, html) ->
             html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
-              if link.length is 0 or link.match /\.(html|gif|png|jpg)$/i
+              if link.length is 0 or link.match /\.(html|gif|png|jpg|js|css)$/i
                 "href=\"#{link}#{end}" # keep link
               else
                 "href=\"#{link}.html#{end}" # add .html
