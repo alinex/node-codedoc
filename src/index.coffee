@@ -124,10 +124,12 @@ exports.run = (setup, cb) ->
     return cb err if err
     async.parallel [
       (cb) -> # search source files
+        console.log "search files in #{setup.input}" if setup.verbose
         debug "search files in #{setup.input}"
         fs.find setup.input, setup.find, (err, list) ->
           return cb err if err
           # create reports
+          console.log "convert files..." if setup.verbose
           debug "convert files..."
           map = {}
           async.eachLimit list, PARALLEL, (file, cb) ->
@@ -178,28 +180,34 @@ exports.run = (setup, cb) ->
                   fs.writeFile file.dest, html, 'utf8', cb
             , (err) ->
               return cb err if err
-              debug "check for index page"
+              console.log "check index page" if setup.verbose
+              debug "check index page"
               createIndex setup.output, map[mapKeys[0]].dest, (err) ->
                 return cb err if err
+                console.log "page creation done" if setup.verbose
                 debug "page creation done"
                 cb()
       (cb) -> # copy resources
+        console.log "copy static files from #{setup.input}" if setup.verbose
         debug "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
           include: STATIC_FILES
         fs.find setup.input, filter, (err, list) ->
           return cb err if err
           async.eachLimit list, PARALLEL, (file, cb) ->
+            console.log "copy #{file}" if setup.verbose > 1
             debugCopy "copy #{file}"
             dest = "#{setup.output}#{file[setup.input.length..]}"
             fs.remove dest, ->
               fs.copy file, dest, cb
           , (err) ->
             return cb err if err
+            console.log "copyying files done" if setup.verbose
             debug "copyying files done"
             cb()
     ], (err) ->
       return cb err if err
+      console.log "finished document creation" if setup.verbose
       debug "finished document creation"
       cb()
 
@@ -208,6 +216,7 @@ createIndex = (dir, link, cb) ->
   dest = path.relative dir, link
   fs.exists file, (exists) ->
     return cb() if exists
+    debug "create index page"
     fs.writeFile file, """
       <html>
       <head>
@@ -228,6 +237,7 @@ processFile = (file, local, setup, cb) ->
   async.waterfall [
     # get file
     (cb) ->
+      console.log "analyze #{file}" if setup.verbose > 1
       debugPage "analyze #{file}"
       fs.readFile file, (err, buffer) ->
         return cb err if err
@@ -238,8 +248,10 @@ processFile = (file, local, setup, cb) ->
     (contents, cb) ->
       lang = language file, contents
       unless lang
+        console.error chalk.magenta "could not detect language of #{file}" if setup.verbose
         debug chalk.magenta "could not detect language of #{file}"
         return cb 'UNKNOWN'
+      console.log chalk.grey "#{lang.name}: #{file}" if setup.verbose > 2
       debugPage chalk.grey "#{lang.name}: #{file}"
       cb null, contents, lang
     # create report
