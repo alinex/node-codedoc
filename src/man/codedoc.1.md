@@ -84,7 +84,10 @@ Parameters
 --verbose, -v   
 
 :   Show verbode output. This will show which files are detected and which have some
-    problems.
+    problems. Set multiple times for higher verbosity:
+    - `-v` - info what parts are running or finished
+    - `-vv` - also show files being processed
+    - `-vvv` - show information about the files
 
 --quiet, -q     
 

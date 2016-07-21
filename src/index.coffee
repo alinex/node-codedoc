@@ -251,8 +251,8 @@ processFile = (file, local, setup, cb) ->
         console.error chalk.magenta "could not detect language of #{file}" if setup.verbose
         debug chalk.magenta "could not detect language of #{file}"
         return cb 'UNKNOWN'
-      console.log chalk.grey "#{lang.name}: #{file}" if setup.verbose > 2
-      debugPage chalk.grey "#{lang.name}: #{file}"
+      console.log chalk.grey "#{file}: detected as #{lang.name}" if setup.verbose > 2
+      debugPage chalk.grey "#{file}: detected as #{lang.name}"
       cb null, contents, lang
     # create report
     (contents, lang, cb) ->
@@ -269,6 +269,8 @@ processFile = (file, local, setup, cb) ->
           while match = re.exec contents
             match[1] = fn match[1] if fn
             docs.push [match.index, match.index + match[0].length, match[1]]
+          console.log chalk.grey "#{file}: #{docs.length} doc comments" if setup.verbose > 2
+          debugPage chalk.grey "#{file}: #{docs.length} doc comments"
         if lang.api and setup.code
           [re, fn] = lang.api
           while match = re.exec contents
@@ -281,6 +283,9 @@ processFile = (file, local, setup, cb) ->
                 break
             unless found
               docs.push [match.index, end, match[1]]
+          if setup.verbose > 2
+            console.log chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
+          debugPage chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
         # sort found sections
         docs.sort (a, b) ->
           return -1 if a[0] < b[0]
