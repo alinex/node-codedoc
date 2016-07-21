@@ -68,7 +68,7 @@ C_DOC = [
     \s*         # with optional spaces
   ///g
   (txt) ->      # remove optional starting asterisk
-    txt.replace /\n\s*\*\s?/g, '\n'
+    txt.replace /\n[\t\r ]*\*[\t\r ]?/g, '\n'
 ]
 
 # Use the RegExp from list element #0 to get all code documents and the optimization
@@ -90,7 +90,7 @@ C_API = [
     \s*         # with optional spaces
   ///g
   (txt) ->      # remove optional starting asterisk
-    txt.replace /\n\s*\*\s?/g, '\n'
+    txt.replace /\n[\t\r ]*\*[\t\r ]?/g, '\n'
 ]
 
 # Use the RegExp from list element #0 to get all code documents and the optimization
@@ -109,7 +109,7 @@ COFFEE_DOC = [
       [\s\S]*?  # other comment charactes
     )           # end of comment
     \#{3,}      # then three or more hashes
-    [ \t]*?\n   # only spaces till end of line
+    [\t\r ]*?\n   # only spaces till end of line
   ///g
 ]
 
@@ -128,14 +128,14 @@ HASH_DOC = [
       [^\#]     # no more than the three hashes
       .*        # everything in that line
       (?:       # multiple lines
-        \n\s*\# # each following line start with an hash
-        \s?.*   # and all in that line
+        \n[\t\r ]*\# # each following line start with an hash
+        [\t\r ]?.*   # and all in that line
       )+        # at least two lines
     )           # end of comment
     \n          # end the match
   ///g
   (txt) ->      # remove optional starting asterisk
-    txt.replace /\n\s*\#\s?/g, '\n'
+    txt.replace /\n[\t\r ]*\#[\t\r ]?/g, '\n'
 ]
 
 # Use the RegExp from list element #0 to get all code documents and the optimization
@@ -160,7 +160,7 @@ HASH_API = [
     \n          # end the match
   ///g
   (txt) ->      # remove optional starting asterisk
-    txt.replace /\n\s*\#\s?/g, '\n'
+    txt.replace /\n[\t\r ]*\#[\t\r ]?/g, '\n'
 ]
 
 # Use the RegExp from list element #0 to get all code documents and the optimization

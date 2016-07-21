@@ -1,5 +1,5 @@
 ###
-API: Main Controller
+Main Controller
 =================================================
 
 This class is loaded by the CLI call or from other packages and contains all
@@ -278,9 +278,9 @@ processFile = (file, local, setup, cb) ->
             line = contents[0..pos].split('\n').length - 1
             report.p Report.style "code: style=\"counter-reset:line #{line}\""
         # optimize report by adding path with compiled path
-        source = local
+        source = "`#{local}`"
         if match = local.match /^\/src(\/.*)\.coffee$/
-          source += " → /lib#{match[1]}.js"
+          source += " compiled to `/lib#{match[1]}.js`"
         report.body = report.body.replace /(\n\s*={10,}\s*\n)/, "$1\n> Path: #{source}\n\n"
       cb null, report
   ], cb
