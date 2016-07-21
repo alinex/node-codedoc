@@ -62,6 +62,8 @@ comes before 'README.md' and the other files.
 
 # include base modules
 debug = require('debug') 'codedoc'
+debugPage = require('debug') 'codedoc:page'
+debugCopy = require('debug') 'codedoc:copy'
 chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
@@ -176,7 +178,11 @@ exports.run = (setup, cb) ->
                   fs.writeFile file.dest, html, 'utf8', cb
             , (err) ->
               return cb err if err
-              createIndex setup.output, map[mapKeys[0]].dest, cb
+              debug "check for index page"
+              createIndex setup.output, map[mapKeys[0]].dest, (err) ->
+                return cb err if err
+                debug "page creation done"
+                cb()
       (cb) -> # copy resources
         debug "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
@@ -184,8 +190,15 @@ exports.run = (setup, cb) ->
         fs.find setup.input, filter, (err, list) ->
           return cb err if err
           async.eachLimit list, PARALLEL, (file, cb) ->
+            debugCopy "copy #{file}"
             p = file[setup.input.length..]
-            fs.copy file, "#{setup.output}#{p}", cb
+            fs.mkdirs path.dirname(file), ->
+              fs.remove file, ->
+                fs.copy file, "#{setup.output}#{p}", cb
+          , (err) ->
+            return cb err if err
+            debug "copyying files done"
+            cb()
     ], (err) ->
       return cb err if err
       debug "finished document creation"
@@ -216,7 +229,7 @@ processFile = (file, local, setup, cb) ->
   async.waterfall [
     # get file
     (cb) ->
-      debug "analyze #{file}"
+      debugPage "analyze #{file}"
       fs.readFile file, (err, buffer) ->
         return cb err if err
         isBinaryFile buffer, buffer.length, (err, binary) ->
@@ -228,7 +241,7 @@ processFile = (file, local, setup, cb) ->
       unless lang
         debug chalk.magenta "could not detect language of #{file}"
         return cb 'UNKNOWN'
-      debug chalk.grey "#{lang.name}: #{file}"
+      debugPage chalk.grey "#{lang.name}: #{file}"
       cb null, contents, lang
     # create report
     (contents, lang, cb) ->
