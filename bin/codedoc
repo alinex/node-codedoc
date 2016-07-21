@@ -4,8 +4,6 @@
 Start CLI
 =========================================================
 
-> /bin/createdoc
-
 This script will start the command line interface. See more at
 [/src/lib.coffee](../src/cli.coffee)
 */
