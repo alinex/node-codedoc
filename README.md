@@ -44,7 +44,7 @@ Install
  ![Downloads](https://nodei.co/npm-dl/alinex-codedoc.png?months=9&height=3)
 ](https://www.npmjs.com/package/alinex-codedoc)
 
-### As Standalone Tool
+### CLI Tool
 
 Install the package globally using npm:
 
@@ -53,7 +53,7 @@ sudo npm install -g alinex-codedoc --production
 codedoc --help
 ```
 
-### Integrate into your Node Project
+### API Integration
 
 To do this you install it into your own module:
 
@@ -66,7 +66,7 @@ sudo npm install --save alinex-codedoc
 Usage
 -------------------------------------------------
 
-### As Standalone Tool
+### CLI Tool
 
 After global installation you may directly call `codedoc` from anywhere to work
 in the current or defined directory.
@@ -74,7 +74,7 @@ in the current or defined directory.
 See the [man page](src/man/codedoc1.md) for explanation of the command line use
 and options.
 
-### Integrate into your Node Project
+### API Usage
 
 You have to include it into your project:
 

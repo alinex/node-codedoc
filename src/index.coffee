@@ -170,7 +170,10 @@ exports.run = (setup, cb) ->
                   moduleName: moduleName
                   pages: pages
               , (err, html) ->
-                html = html.replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
+                html = html
+                .replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
+                , '<li class="sidebar"><a href="#further-pages">Further Pages</a></li>$1'
+                .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
                   if link.length is 0 or link.match STATIC_FILES
                     "href=\"#{link}#{end}" # keep link
                   else
@@ -258,7 +261,7 @@ processFile = (file, local, setup, cb) ->
     (contents, lang, cb) ->
       report = new Report()
       report.toc()
-      report.raw '\n' # needed in case raw adding will follow
+      report.raw '<!-- end-of-toc -->\n\n' # needed in case raw adding will follow
       if lang.name is 'markdown'
         report.raw contents
       else
