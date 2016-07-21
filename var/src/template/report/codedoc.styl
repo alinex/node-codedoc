@@ -291,15 +291,16 @@ ul.table-of-contents
   white-space: nowrap
   &:hover
     max-width: 285px
-    max-height: 205px
+    max-height: 248px
     transition: max-width 100ms ease, max-height 1s ease 100ms
     overflow-y: auto;
   header
+    position: fixed;
+    top: 51px;
     background: #999
     font-weight: bold
-    margin: -5px -15px
+    margin: 0 -15px
     padding: 5px 15px
-    position: fixed;
     width: 100%;
   &>li
     padding-bottom: 2px
