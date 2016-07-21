@@ -247,7 +247,14 @@ processFile = (file, local, setup, cb) ->
           [re, fn] = lang.api
           while match = re.exec contents
             match[1] = fn match[1] if fn
-            docs.push [match.index, match.index + match[0].length, match[1]]
+            end = match.index + match[0].length
+            found = false
+            for c in docs
+              if c[0] is match.index and c[1] is end
+                found = true
+                break
+            unless found
+              docs.push [match.index, end, match[1]]
         # sort found sections
         docs.sort (a, b) ->
           return -1 if a[0] < b[0]

@@ -82,9 +82,15 @@ C_API = [
     \s*         # with optional spaces
     /\*         # start with slash and a single asterisk
     (           # content of the comment
-    [\s\S]*?    # comment charactes
-    \n          # at least two lines
-    [\s\S]*?    # comment charactes
+      ([^*]       # no asterisk
+      |[\r\n]     # or newline
+      |(          # or
+        \*+(        # asterisk
+          [^/]      # but not comment end
+          |[\r\n]   # or return
+      )))*        # and that all multiple times
+      \n          # at least two lines
+      ([^*]|[\r\n]|(\*+([^/]|[\r\n])))* # same as above
     )           # end of comment
     \*+/        # at least one asterisk and slash
     \s*         # with optional spaces
