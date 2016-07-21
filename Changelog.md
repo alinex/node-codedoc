@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.5.1 (2016-07-21)
+-------------------------------------------------
+- Fix line numbers in code.
+- Fixed duplicate view of API comments.
+- Optimize table-of-contents style.
+- Fix link in index page.
+
 Version 0.5.0 (2016-07-21)
 -------------------------------------------------
 - Fix optimizations of api code parsing.
