@@ -4,6 +4,15 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.5.0 (2016-07-21)
+-------------------------------------------------
+- Fix optimizations of api code parsing.
+- Fix inline API parsing.
+- Fix use of new lang structure.
+- Use the new doc extraction with optimizations.
+- Update language doc parsing with three comment types.
+- Use https anywhere.
+
 Version 0.4.0 (2016-07-20)
 -------------------------------------------------
 - Update alinex-fs@2.0.6
