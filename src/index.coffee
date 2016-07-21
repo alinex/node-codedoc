@@ -191,10 +191,9 @@ exports.run = (setup, cb) ->
           return cb err if err
           async.eachLimit list, PARALLEL, (file, cb) ->
             debugCopy "copy #{file}"
-            p = file[setup.input.length..]
-            fs.mkdirs path.dirname(file), ->
-              fs.remove file, ->
-                fs.copy file, "#{setup.output}#{p}", cb
+            dest = "#{setup.output}#{file[setup.input.length..]}"
+            fs.remove dest, ->
+              fs.copy file, dest, cb
           , (err) ->
             return cb err if err
             debug "copyying files done"
