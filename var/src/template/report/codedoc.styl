@@ -268,17 +268,24 @@ ul.table-of-contents
   border-bottom: 2px solid #999
   border-bottom-left-radius: 10px;
   list-style-type: none
+  white-space: nowrap
   &:hover
-    max-width: 300px
-    max-height: 200px
+    max-width: 285px
+    max-height: 205px
     transition: max-width 100ms ease, max-height 1s ease 100ms
+    overflow: auto;
   header
     background: #999
     font-weight: bold
     margin: -5px -15px
     padding: 5px 15px
-  &>li:first-of-type
-    padding-top: 8px
+    position: fixed;
+    width: 100%;
+  &>li
+    padding-bottom: 2px
+    padding-right: 8px
+    &:first-of-type
+      padding-top: 28px
   a
     color: black
 

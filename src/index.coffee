@@ -1,9 +1,9 @@
 ###
-Main Controller
+Controller
 =================================================
 
-This class is loaded by the CLI call or from other packages and contains all
-accessible methods neccessary to use the package.
+This module is used as the base API. If you load the package you will get a reference
+to the exported methods, here. Also the CLI works through this API.
 
 Workflow
 -------------------------------------------------
