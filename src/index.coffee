@@ -74,7 +74,7 @@ config = require 'alinex-config'
 # internal methods
 language = require './language'
 
-PARALLEL = 1
+PARALLEL = 10
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 ###
