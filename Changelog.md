@@ -4,6 +4,19 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.5.2 (2016-07-21)
+-------------------------------------------------
+- Update alinex-report@2.1.8
+- Position toc header.
+- Add table of contents link for further pages.
+- Be even more verbose.
+- Allow verbose settings.
+- Fix copy resource job.
+- Scrollbars only vertical in toc.
+- Update documentation.
+- Optimize debug support.
+- Bug: Sometimes not reaching finished state and without error.
+
 Version 0.5.1 (2016-07-21)
 -------------------------------------------------
 - Fix line numbers in code.
