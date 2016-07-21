@@ -118,7 +118,6 @@ exports.run = (setup, cb) ->
   setup.find.type = 'file'
   setup.brand ?= 'alinex'
   # start converting
-  console.log "Output to #{setup.output}..."
   fs.mkdirs setup.output, (err) ->
     return cb err if err
     async.parallel [
@@ -187,7 +186,10 @@ exports.run = (setup, cb) ->
           async.eachLimit list, PARALLEL, (file, cb) ->
             p = file[setup.input.length..]
             fs.copy file, "#{setup.output}#{p}", cb
-    ], cb
+    ], (err) ->
+      return cb err if err
+      debug "finished document creation"
+      cb()
 
 createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'

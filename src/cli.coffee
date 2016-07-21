@@ -139,6 +139,7 @@ codedoc.setup (err) ->
   argv.input ?= '.'
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err
+    console.log "Output to #{argv.output}..."
     codedoc.run
       input: argv.input
       find:
@@ -146,6 +147,7 @@ codedoc.setup (err) ->
       output: argv.output
       style: argv.style
       code: argv.code
+      verbose: argv.verbose
     , (err) ->
       console.log 'Everything done.'
       alinex.exit err
