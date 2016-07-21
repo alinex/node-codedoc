@@ -2,8 +2,6 @@
 API: Main Controller
 =================================================
 
-> /src/index.coffee
-
 This class is loaded by the CLI call or from other packages and contains all
 accessible methods neccessary to use the package.
 
@@ -76,7 +74,7 @@ config = require 'alinex-config'
 # internal methods
 language = require './language'
 
-PARALLEL = 10
+PARALLEL = 1
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 ###
@@ -238,12 +236,10 @@ processFile = (file, local, setup, cb) ->
         report.raw contents
       else
         # document comments
-        hasExternal = false
         docs = []
         if lang.doc
           [re, fn] = lang.doc
           while match = re.exec contents
-            hasExternal = true
             match[1] = fn match[1] if fn
             docs.push [match.index, match.index + match[0].length, match[1]]
         if lang.api and setup.code
@@ -260,7 +256,7 @@ processFile = (file, local, setup, cb) ->
         unless docs.length
           return cb 'CODE_DISABLED' unless setup.code
           report.h1 "File: #{path.basename local}"
-          report.quote local
+          report.quote "Path: #{local}"
           report.code trim(contents), lang.name
           report.p Report.style 'code: style="max-height:none"'
           return cb null, report
@@ -272,13 +268,20 @@ processFile = (file, local, setup, cb) ->
             if pos # set correct line number
               line = contents[0..pos].split('\n').length - 1
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
-          report.raw doc[2].replace /\n\s*#3\s+/, '\n### '
+          md = doc[2].replace /(\n\s*)#3(\s+)/, '$1###$2'
+          .replace /\n\s*?$/, ''
+          report.raw "\n#{md}\n\n"
           pos = doc[1]
         if pos < contents.length and setup.code
           report.code trim(contents[pos..]), lang.name
           if pos # set correct line number
             line = contents[0..pos].split('\n').length - 1
             report.p Report.style "code: style=\"counter-reset:line #{line}\""
+        # optimize report by adding path with compiled path
+        source = local
+        if match = local.match /^\/src(\/.*)\.coffee$/
+          source += " → /lib#{match[1]}.js"
+        report.body = report.body.replace /(\n\s*={10,}\s*\n)/, "$1\n> Path: #{source}\n\n"
       cb null, report
   ], cb
 
