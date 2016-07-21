@@ -177,7 +177,7 @@ exports.run = (setup, cb) ->
                   fs.writeFile file.dest, html, 'utf8', cb
             , (err) ->
               return cb err if err
-              createIndex setup.output, mapKeys[0][1..], cb
+              createIndex setup.output, map[mapKeys[0]].dest, cb
       (cb) -> # copy resources
         debug "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
@@ -191,20 +191,21 @@ exports.run = (setup, cb) ->
 
 createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'
+  dest = path.relative dir, link
   fs.exists file, (exists) ->
     return cb() if exists
     fs.writeFile file, """
       <html>
       <head>
-        <meta http-equiv="refresh" content="0; url=#{link}" />
+        <meta http-equiv="refresh" content="0; url=#{dest}" />
         <script type="text/javascript">
-            window.location.href = "#{link}"
+            window.location.href = "#{dest}"
         </script>
         <title>Page Redirection</title>
       </head>
       <body>
         If you are not redirected automatically, follow the link to the
-        <a href='#{link}'>README</a>.
+        <a href='#{dest}'>README</a>.
       </body>
       </html>
       """, cb
