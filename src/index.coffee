@@ -241,16 +241,16 @@ processFile = (file, local, setup, cb) ->
         hasExternal = false
         docs = []
         if lang.doc
-          for [re, fn] in lang.doc
-            while match = re.exec contents
-              hasExternal = true
-              match[1] = fn match[1] if fn
-              docs.push [match.index, match.index + match[0].length, match[1]]
+          [re, fn] = lang.doc
+          while match = re.exec contents
+            hasExternal = true
+            match[1] = fn match[1] if fn
+            docs.push [match.index, match.index + match[0].length, match[1]]
         if lang.api and setup.code
-          for [re, fn] in lang.api
-            while match = re.exec contents
-              match[1] = fn match[1] if fn
-              docs.push [match.index, match.index + match[0].length, match[1]]
+          [re, fn] = lang.api
+          while match = re.exec contents
+            match[1] = fn match[1] if fn
+            docs.push [match.index, match.index + match[0].length, match[1]]
         # sort found sections
         docs.sort (a, b) ->
           return -1 if a[0] < b[0]
