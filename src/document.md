@@ -143,3 +143,11 @@ block it will be used as heading. The heading will be of level 3 but only added 
 no heading level 1-3 is already included.
 
 ### Use of Tags
+
+Additionally you can use the default `@xxx`-tags from jsDoc/JavaDoc to document your
+code. They will be replaced with properly formated description.
+
+To use them you have to add them at the start or separated by an empty line from the
+heading markdown.
+
+EXAMPLE
