@@ -220,8 +220,9 @@ PL_DOC = [
 # - `executables` - executables for the language that might be in a shebang
 # - `doc` - document comment parsers as list of RegExp and optimization function
 # - `api` - internal api documentation parser as list of RegExp and optimization function
-# - `jsDoc`: whether to try and extract jsDoc-style comment data
-#   - `functionName` - RegExp to extract the function name
+# - `tab` - number of spaces to use for tab indenting (default 2)
+# - `tags`: whether to try and extract jsDoc/javaDoc-style tag elements
+#   - `title` - RegExp to extract the function/class name from first code line
 languages =
   coffeescript:
     extensions: [ 'coffee' ]
@@ -229,6 +230,10 @@ languages =
     executables: [ 'coffee' ]
     doc: COFFEE_DOC
     api: HASH_API
+    tags:
+      title: (c) ->
+        return "#{m[1]}()" if m = c.match /^(.*?)\s*=.*?->.*/ # function call
+        c # fallback use complete line
   javascript:
     extensions: [ 'js' ]
     executables: [ 'node' ]#
@@ -309,6 +314,7 @@ languages =
     names: [ '.htaccess', 'apache.conf', 'apache2.conf' ]
     doc: HASH_DOC
     api: HASH_API
+    tab: 8
   handlebars:
     extensions: [ 'hbs', 'handlebars' ]
   groovy:

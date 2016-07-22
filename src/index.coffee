@@ -206,6 +206,10 @@ exports.run = (setup, cb) ->
       (if setup.verbose then console.log else debug) "finished document creation"
       cb()
 
+# If not existing create an `index.html` file which forwards to the first page
+# immediately.
+#
+# @test this is only for testing the tags
 createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'
   dest = path.relative dir, link
@@ -295,23 +299,28 @@ processFile = (file, local, setup, cb) ->
           return cb 'CODE_DISABLED' unless setup.code
           report.h1 "File: #{path.basename local}"
           report.quote "Path: #{local}"
-          report.code trim(contents), lang.name
+          report.code stripIndent(contents, lang.tab), lang.name
           report.p Report.style 'code: style="max-height:none"'
           return cb null, report
         pos = 0
         for doc in docs
+          # doc optimizations
+          optimize doc, lang.tags, file
           if pos < doc[0] and setup.code
+            # code block before doc
             part = contents[pos..doc[0]]
-            report.code trim(part), lang.name
+            report.code stripIndent(part, lang.tab), lang.name
             if pos # set correct line number
               line = contents[0..pos].split('\n').length - 1
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
+          # add doc block
           md = doc[2].replace /(\n\s*)#3(\s+)/, '$1###$2'
           .replace /\n\s*?$/, ''
           report.raw "\n#{md}\n\n"
           pos = doc[1]
         if pos < contents.length and setup.code
-          report.code trim(contents[pos..]), lang.name
+          # last code block
+          report.code stripIndent(contents[pos..], lang.tab), lang.name
           if pos # set correct line number
             line = contents[0..pos].split('\n').length - 1
             report.p Report.style "code: style=\"counter-reset:line #{line}\""
@@ -363,5 +372,41 @@ sortMap = (map) ->
   sorted[k] = map[k] for k in list
   sorted
 
-trim = (code) ->
-  code
+stripIndent = (code, tab) ->
+  str = code.replace /^[ \t]*(?=\S)/gm, (e) ->
+    e.replace '\t', util.string.repeat ' ', tab ? 2
+  match = str.match /^ *(?=\S)/gm
+  return code unless match
+  indent = Math.min.apply Math, match.map (e) -> e.length
+  code.replace new RegExp("^ {#{indent}}", 'gm'), ''
+
+optimize = (doc, lang, file) ->
+  return unless lang
+  md = doc[2]
+  code = doc[3]
+  # extract tags
+  spec = {}
+  if match = md.match /(?:\n|[ \t\r]){2,}(?=@)/
+    add = md[match.index+match[0].length..]
+    md = md[0..match.index-1]
+    for part in add.split /(?:\n|[ \t\r])(?=@)/g
+      if match = part.match /^@(\S+)\s+/
+        spec[match[1]] = part[match[0].length..]
+  # add markdown for spec
+
+
+  # replace inline tags
+
+
+  # add heading 3 if not there
+  unless md.match /(^|\n)(#|[^\n]+\n[-=]{3,})/
+    title = if lang.title then lang.title code else code
+    md = "### #{title}\n\n#{md}"
+
+#  if file.match /index.coffee/
+#    console.log '000000000000000000000000000000000000000000000000000'
+#    console.log util.inspect(doc[2]), spec, code
+#    console.log '__________________'
+#    console.log md
+  # store changes
+  doc[2] = md
