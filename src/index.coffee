@@ -399,7 +399,7 @@ optimize = (doc, lang, file) ->
 
 
   # add heading 3 if not there
-  unless md.match /(^|\n)(#|[^\n]+\n[-=]{3,})/
+  unless md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
     title = if lang.title then lang.title code else code
     md = "### #{title}\n\n#{md}"
 

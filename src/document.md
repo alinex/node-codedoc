@@ -136,6 +136,10 @@ descriptions of the basic styles as well as extended formats like:
 - [UML diagrams](http://alinex.github.io/node-report/README.md.html#plantuml) using (plantuml)
 - [and more...](http://alinex.github.io/node-report/README.md.html#report-elements)
 
-### JsDoc/JavaDoc
+### Automatic Headings in Code
 
-In the near future a lot of JsDoc/JavaDoc Tags will be supported, too.
+If in programing language files a line of code will follow directly the documentation
+block it will be used as heading. The heading will be of level 3 but only added if
+no heading level 1-3 is already included.
+
+### Use of Tags
