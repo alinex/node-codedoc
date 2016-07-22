@@ -147,7 +147,35 @@ no heading level 1-3 is already included.
 Additionally you can use the default `@xxx`-tags from jsDoc/JavaDoc to document your
 code. They will be replaced with properly formated description.
 
+Not all possible tags are supported because this tool won't do a real language agnostic
+parsing and therefore mostly code independent tags are supported.  
 To use them you have to add them at the start or separated by an empty line from the
-heading markdown.
+heading markdown. See the example below:
 
 EXAMPLE
+
+The following list shows the currently supported tags. You will find further information
+to each of them under [JsDoc](http://usejsdoc.org/).
+
+Auto Heading
+
+:   Define the name to be used for the heading if missing.
+    - `@name` or `@alias` flags
+    - alternatively extracted from first code line
+
+Access Line
+
+:   Specify how to access the code.
+    - `@access <string>` to give a specific access level
+    - `@private`, `@protected`, `@public` flags as predefined access levels
+    - `@static` flag to define as static method
+    - `@abstract`, `@virtual` flag to mark as abstract method
+    - `@constant` flag to define as constant variable
+    - `@constructor` flag to define method as constructor
+
+Info Line
+
+:   Comes soon...
+
+Is something missing here? Don't hestitate and make an issue on the
+[GitHub Page](https://github.com/alinex/node-codedoc/issues).

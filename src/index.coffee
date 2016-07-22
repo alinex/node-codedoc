@@ -388,19 +388,39 @@ optimize = (doc, lang, file) ->
   spec = {}
   if match = md.match /(?:\n|[ \t\r]){2,}(?=@)/
     add = md[match.index+match[0].length..]
-    md = md[0..match.index-1]
+    md = md[0..match.index-1] + '\n'
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
       if match = part.match /^@(\S+)\s+/
-        spec[match[1]] = part[match[0].length..]
-  # add markdown for spec
-
+        spec[match[1]] ?= []
+        spec[match[1]].push part[match[0].length..]
+  # add access settings
+  access = ''
+  if spec.access
+    access = util.array.last spec.access
+  else if spec.private
+    access = 'private'
+  else if spec.protected
+    access = 'protected'
+  else if spec.public
+    access = 'public'
+  access += ' static' if spec.static
+  access += ' abstract' if spec.abstract or spec.virtual
+  access += ' constant' if spec.constant
+  access += ' constructor' if spec.constructor
+  access += " (#{util.array.last spec.this})" if spec.this
+  md += "\n#{access.trim()}\n" if access
+  # add info line
+  
 
   # replace inline tags
-
+  # {@link}
+  # {@tutorial}
 
   # add heading 3 if not there
   unless md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
     title = if lang.title then lang.title code else code
+    title = e for e in spec.name if spec.name
+    title = e for e in spec.alias if spec.alias
     md = "### #{title}\n\n#{md}"
 
 #  if file.match /index.coffee/
