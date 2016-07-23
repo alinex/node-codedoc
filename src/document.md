@@ -154,6 +154,42 @@ heading markdown. See the example below:
 
 EXAMPLE
 
+The HTML layout of the additional information should look like:
+
+::: detail
+
+> **Usage** private: new method(text, cb)
+
+Parameter
+
+:   - text (string) - text to transform
+    - cb (function) - callback function
+
+Return
+
+:   (string) transformed text
+
+Throws
+
+:   - `Error` - with code 11 if given text is empty
+
+Event
+
+:   - `error` - if something goes wrong
+    - `data` - with additional text info
+
+See also
+
+:   - [trim](trim.coffee) as alternative implementation
+
+Extends MyClass / Run in context of handlebars
+
+Version 0.1.3 (C) 2016 Alexander Schilling - License: Apache 2.0
+
+:::
+
+### Possible Tags
+
 The following list shows the currently supported tags. You will find further information
 to each of them under [JsDoc](http://usejsdoc.org/).
 
@@ -163,19 +199,37 @@ Auto Heading
     - `@name` or `@alias` flags
     - alternatively extracted from first code line
 
-Access Line
+Deprecation Warning
+
+:   `@deprecated` flag defines this part as outdated and you should no longer use
+    it because it may be removed in the next versions
+
+Usage Line
 
 :   Specify how to access the code.
     - `@access <string>` to give a specific access level
     - `@private`, `@protected`, `@public` flags as predefined access levels
     - `@static` flag to define as static method
-    - `@abstract`, `@virtual` flag to mark as abstract method
     - `@constant` flag to define as constant variable
     - `@constructor` flag to define method as constructor
+    - also the title from the auto heading also if not used there will be used
+    - `@param` definition of possible parameter names
 
-Info Line
+Definition List
 
-:   Comes soon...
+:   Different definitions:
+    - `@param`, `@arg`, `@argument` a method parameter with optional type
+      given as: `@param {<type>} <name> <description>`
+    - `@return`, `@returns` defining what will be returned
+      given as: `@return {<type>} <description>`
+    - `@throws`, `@exception` descripe possible excepzions
+      given as: `@throws {<type>} <description>`
+    - `@event`, `@fires` descripe events to be thrown
+      given as: `@event {<type>} <name> <description>`
+    - `@see` references additional information, use `{@link...}` within
+
+
+
 
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).

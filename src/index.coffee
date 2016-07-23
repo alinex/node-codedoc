@@ -380,6 +380,13 @@ stripIndent = (code, tab) ->
   indent = Math.min.apply Math, match.map (e) -> e.length
   code.replace new RegExp("^ {#{indent}}", 'gm'), ''
 
+tagAlias =
+  alias: 'name'
+  arg: 'param'
+  argument: 'param'
+  returns: 'return'
+  exception: 'throws'
+  fires: 'event'
 optimize = (doc, lang, file) ->
   return unless lang
   md = doc[2]
@@ -391,26 +398,83 @@ optimize = (doc, lang, file) ->
     md = md[0..match.index-1] + '\n'
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
       if match = part.match /^@(\S+)\s+/
-        spec[match[1]] ?= []
-        spec[match[1]].push part[match[0].length..]
-  # add access settings
-  access = ''
-  if spec.access
-    access = util.array.last spec.access
-  else if spec.private
-    access = 'private'
-  else if spec.protected
-    access = 'protected'
-  else if spec.public
-    access = 'public'
-  access += ' static' if spec.static
-  access += ' abstract' if spec.abstract or spec.virtual
-  access += ' constant' if spec.constant
-  access += ' constructor' if spec.constructor
-  access += " (#{util.array.last spec.this})" if spec.this
-  md += "\n#{access.trim()}\n" if access
-  # add info line
-  
+        name = tagAlias[match[1]] ? match[1]
+        spec[name] ?= []
+        spec[name].push part[match[0].length..]
+  # split some tags further down
+  for type in ['return', 'throws']
+    if spec[type]
+      m = spec[type].match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
+      spec[type] = if m
+        [m[1], m[2]]
+      else
+        [null, spec[type]]
+  for type in ['param', 'event']
+    if spec[type]
+      m = spec[type].match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+      spec[type] = if m
+        [m[1], m[2], m[3]]
+      else
+        [null, spec[type]]
+  # get title
+  title = if lang.title then lang.title code else code
+  title = e for e in spec.name if spec.name
+  # deprecation warning
+  if spec.deprecated
+    md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
+  # create usage line
+  if spec.access or spec.private or spec.protected or spec.public or spec.constant or
+  spec.static or spec.constructor or spec.param
+    md += "\n> **Usage**"
+    if spec.access
+      md += " #{util.array.last spec.access}"
+    else if spec.private
+      md += ' private'
+    else if spec.protected
+      md += ' protected'
+    else if spec.public
+      md += ' public'
+    md += ' static' if spec.static
+    md += ':'
+    md += ' const' if spec.constant
+    md += ' `new`' if spec.constructor
+    md += "`#{title}`"
+    if spec.param
+      md = md.replace /\(\)$/, ''
+      md += "`(#{spec.param.map((e) -> e[1]).join ', '})`\n"
+  # method definitions
+  if spec.param
+    md += "Parameter\n:   "
+    for e in spec.param
+      md += "- "
+      md += "#{e[0]} " if e[0]
+      md += "`#{e[1]}` " if e[1]
+      md += "#{e[2]}\n    "
+  if spec.return
+    md += "Return\n:   "
+    md += "`#{e[0]}` " if e[0]
+    md += "#{e[1]}\n"
+  if spec.throws
+    md += "Throws\n:   "
+    for e in spec.throws
+      md += "- "
+      md += "`#{e[0]}` " if e[0]
+      md += "#{e[1]}\n    "
+  if spec.event
+    md += "Event\n:   "
+    for e in spec.event
+      md += "- "
+      md += "#{e[0]} " if e[0]
+      md += "`#{e[1]}` " if e[1]
+      md += "#{e[2]}\n    "
+  if spec.see
+    md += "See also\n:   "
+    for e in spec.see
+      md += "- "
+      md += "#{e}\n    "
+  # info line
+
+  # signature
 
   # replace inline tags
   # {@link}
@@ -418,9 +482,6 @@ optimize = (doc, lang, file) ->
 
   # add heading 3 if not there
   unless md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
-    title = if lang.title then lang.title code else code
-    title = e for e in spec.name if spec.name
-    title = e for e in spec.alias if spec.alias
     md = "### #{title}\n\n#{md}"
 
 #  if file.match /index.coffee/
