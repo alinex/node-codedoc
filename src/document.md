@@ -182,8 +182,6 @@ See also
 
 :   - [trim](trim.coffee) as alternative implementation
 
-Extends MyClass / Run in context of handlebars
-
 Version 0.1.3 (C) 2016 Alexander Schilling - License: Apache 2.0
 
 :::
@@ -194,18 +192,15 @@ The following list shows the currently supported tags. You will find further inf
 to each of them under [JsDoc](http://usejsdoc.org/).
 
 Auto Heading
-
 :   Define the name to be used for the heading if missing.
     - `@name` or `@alias` flags
     - alternatively extracted from first code line
 
 Deprecation Warning
-
 :   `@deprecated` flag defines this part as outdated and you should no longer use
     it because it may be removed in the next versions
 
 Usage Line
-
 :   Specify how to access the code.
     - `@access <string>` to give a specific access level
     - `@private`, `@protected`, `@public` flags as predefined access levels
@@ -216,7 +211,6 @@ Usage Line
     - `@param` definition of possible parameter names
 
 Definition List
-
 :   Different definitions:
     - `@param`, `@arg`, `@argument` a method parameter with optional type
       given as: `@param {<type>} <name> <description>`
@@ -228,8 +222,13 @@ Definition List
       given as: `@event {<type>} <name> <description>`
     - `@see` references additional information, use `{@link...}` within
 
+Signature Line
+:   Copyright and legal information which will be displayed as line at the end:
+    - `@version` specific version
+    - `@copyright` copyright noticr
+    - `@author` name and possibly mail link to author and developers
+    - `@license` license for this part
 
-
-
+These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).

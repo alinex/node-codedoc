@@ -232,8 +232,14 @@ languages =
     api: HASH_API
     tags:
       title: (c) ->
-        return "#{m[1]}()" if m = c.match /^(.*?)\s*=.*?->.*/ # function call
+        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/ # function call
+        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/ # function call
+        return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/ # variable setting
+        return "Class #{m[1]}" if m = c.match /^\s*Class\s*(\S+)/ # class definition
         c # fallback use complete line
+      access: (c) ->
+        return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
+        null
   javascript:
     extensions: [ 'js' ]
     executables: [ 'node' ]#

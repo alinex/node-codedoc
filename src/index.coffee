@@ -80,7 +80,7 @@ PARALLEL = 10
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 ###
-Initialize Module - setup()
+Initialize Module
 -------------------------------------------------
 To use the template search through the [alinex-config](http://alinex.github.io/node-config)
 path module you have to init the template type by calling this method once.
@@ -88,6 +88,10 @@ path module you have to init the template type by calling this method once.
 This will setup the [alinex-report](http://alinex.github.io/node-report) component
 and register the template type to search for templates in the global, user and
 local path like known from the config module.
+###
+
+###
+@param {function(err)} cb method, to call with 'Error' or `null` after done.
 ###
 exports.setup = util.function.once this, (cb) ->
   debug chalk.grey "setup codedoc component"
@@ -102,14 +106,22 @@ exports.setup = util.function.once this, (cb) ->
     cb()
 
 ###
-Create Documentation - run()
+Create Documentation
 -------------------------------------------------
 Like described in the workflow above this is the main routine and will do all the
 steps to make the documentation ready to browse in the local path.
+###
 
-::: alert
-The method documentation in form of @tags will come soon.
-:::
+###
+@param {object} setup defining the document creation
+- `input` - path to read from
+- `òutput`- output directory to store to
+- `find` - source search pattern
+  - `include` - files to include see [alinex-fs](https://alinex.github.io/node-fs)
+  - `exclude` - files to exclude see [alinex-fs](https://alinex.github.io/node-fs)
+- `brand` - branding name to remove from automatic titles
+- `verbose` - level of verbose mode
+@param {function(err)} cb function to be called after done
 ###
 exports.run = (setup, cb) ->
   # set up system
@@ -210,6 +222,10 @@ exports.run = (setup, cb) ->
 # immediately.
 #
 # @test this is only for testing the tags
+#
+# @param {string} dir base path of index file
+# @param {string} link destination for the link to the first page
+# @param {function(err)} cb callback method after done
 createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'
   dest = path.relative dir, link
@@ -387,6 +403,7 @@ tagAlias =
   returns: 'return'
   exception: 'throws'
   fires: 'event'
+  constructor: 'construct'
 optimize = (doc, lang, file) ->
   return unless lang
   md = doc[2]
@@ -404,90 +421,89 @@ optimize = (doc, lang, file) ->
   # split some tags further down
   for type in ['return', 'throws']
     if spec[type]
-      m = spec[type].match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
-      spec[type] = if m
-        [m[1], m[2]]
-      else
-        [null, spec[type]]
+      spec[type] = spec[type].map (e) ->
+        m = e.match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
+        if m then [m[1], m[2]] else [null, spec[type]]
   for type in ['param', 'event']
     if spec[type]
-      m = spec[type].match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
-      spec[type] = if m
-        [m[1], m[2], m[3]]
-      else
-        [null, spec[type]]
+      spec[type] = spec[type].map (e) ->
+        m = e.match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+        if m then [m[1], m[2], m[3]] else [null, spec[type]]
   # get title
   title = if lang.title then lang.title code else code
   title = e for e in spec.name if spec.name
+  # optimize spec with auto detect
+  spec.access ?= [lang.access code] if lang.access
   # deprecation warning
   if spec.deprecated
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
   # create usage line
-  if spec.access or spec.private or spec.protected or spec.public or spec.constant or
-  spec.static or spec.constructor or spec.param
-    md += "\n> **Usage**"
+  if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
+  spec.static or spec.constructor or spec.param)
+    md += "\n> **Usage:** "
     if spec.access
-      md += " #{util.array.last spec.access}"
+      md += "#{util.array.last spec.access} "
     else if spec.private
-      md += ' private'
+      md += 'private '
     else if spec.protected
-      md += ' protected'
+      md += 'protected '
     else if spec.public
-      md += ' public'
-    md += ' static' if spec.static
-    md += ':'
-    md += ' const' if spec.constant
-    md += ' `new`' if spec.constructor
-    md += "`#{title}`"
+      md += 'public '
+    md += 'static ' if spec.static
+    md += '`'
+    md += 'const ' if spec.constant
+    md += 'new ' if spec.construct
+    md += "#{title}`"
     if spec.param
-      md = md.replace /\(\)$/, ''
-      md += "`(#{spec.param.map((e) -> e[1]).join ', '})`\n"
+      md = md.replace /(\(\))?`$/, ''
+      md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
+  md += "<!-- {p:.api-usage} -->\n"
   # method definitions
   if spec.param
-    md += "Parameter\n:   "
+    md += "\nParameter\n:   "
     for e in spec.param
       md += "- "
-      md += "#{e[0]} " if e[0]
-      md += "`#{e[1]}` " if e[1]
-      md += "#{e[2]}\n    "
+      md += "`#{e[1]}` - " if e[1]
+      md += "`#{e[0]}` - " if e[0]
+      md += "#{e[2].replace /\n/g, '\n      '}\n    "
   if spec.return
-    md += "Return\n:   "
-    md += "`#{e[0]}` " if e[0]
-    md += "#{e[1]}\n"
+    md += "\nReturn\n:   "
+    md += "`#{e[0]}` - " if e[0]
+    md += "#{e[1].replace '\n', '      \n'}\n"
   if spec.throws
-    md += "Throws\n:   "
+    md += "\nThrows\n:   "
     for e in spec.throws
       md += "- "
-      md += "`#{e[0]}` " if e[0]
-      md += "#{e[1]}\n    "
+      md += "`#{e[0]}` - " if e[0]
+      md += "#{e[1].replace '\n', '      \n'}\n    "
   if spec.event
-    md += "Event\n:   "
+    md += "\nEvent\n:   "
     for e in spec.event
       md += "- "
-      md += "#{e[0]} " if e[0]
-      md += "`#{e[1]}` " if e[1]
-      md += "#{e[2]}\n    "
+      md += "`#{e[1]}` - " if e[1]
+      md += "`#{e[0]}` - " if e[0]
+      md += "#{e[2].replace '\n', '      \n'}\n    "
   if spec.see
-    md += "See also\n:   "
+    md += "\nSee also\n:   "
     for e in spec.see
       md += "- "
-      md += "#{e}\n    "
-  # info line
-
+      md += "#{e.replace '\n', '      \n'}\n    "
+  if spec.param or spec.return or spec.throws or spec.event or spec.see
+    md += "<!-- {dl:.api-spec} -->\n"
   # signature
-
+  if spec.version or spec.copyright or spec.author or spec.license
+    md += "\n"
+    for type in ['version', 'copyright', 'author']
+      if spec[type]
+        md += "#{spec[type].join ' '} "
+    if spec.license
+      md += "- License: #{spec.license.join ' '} "
+    md += "\n<!-- {p:.api-signator} -->\n"
   # replace inline tags
   # {@link}
-  # {@tutorial}
 
   # add heading 3 if not there
   unless md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
     md = "### #{title}\n\n#{md}"
-
-#  if file.match /index.coffee/
-#    console.log '000000000000000000000000000000000000000000000000000'
-#    console.log util.inspect(doc[2]), spec, code
-#    console.log '__________________'
-#    console.log md
   # store changes
   doc[2] = md
