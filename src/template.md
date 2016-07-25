@@ -50,13 +50,36 @@ Within the template you may use the following variables:
   - __active__ - flag
     Set to `true` if this is the actual page.
 
+### Default codedoc Template
+
+The default style is called codedoc and is represented within the 4 files:
+- codedoc.hbs - base template
+- codedoc-logo.hbs - extracted logo part
+- codedoc-links.hbs - extracted top links
+- codedoc-search-results.hbs - extracted search engine
+
+The layout is divided into 4 files to make overwriting easier. To change something
+you may copy the included template files (all or only some) from
+`<install-dir>/var/src/template/report` into
+`/etc/codedoc/template/report` or `~/.codedoc/template/report` and change them there.
+
+The search uses Googles [site search](https://cse.google.com/cse/all) which you can
+be customized and used freely.
+
 
 CSS Stylesheet
 --------------------------------------------------
 The second part is the stylesheet which may get very complex. You can do everything
 here. But you need a normal stylesheet.
 
-### Preprocessor
+__Preprocessor__
 
 If you want you may use some preprocessor like styles, less or scssto create the
 stylesheets on your own. The default stylesheets are generated using stylus.
+
+### Default codedoc Style
+
+To change the complete layout of the pages you mostly won't have to do much to the
+template most things can be changed in the stylesheet.
+
+But to read it better use the commented source under `<install-dir>/var/src/template/report/codedoc.styl`.
