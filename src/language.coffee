@@ -239,7 +239,7 @@ languages =
         # variable setting
         return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/
         return "Class #{m[1]}" if m = c.match /^\s*Class\s*(\S+)/ # class definition
-        c # fallback use complete line
+        null
       access: (c) ->
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
         null

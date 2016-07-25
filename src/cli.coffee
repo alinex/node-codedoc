@@ -1,6 +1,7 @@
-# Startup script
+# CLI Parser
 # =================================================
-
+# This is used only for command line calls to get the parameters and invoke the
+# codedoc generation process.
 
 # Node Modules
 # -------------------------------------------------
@@ -16,7 +17,8 @@ alinex = require 'alinex-core'
 # include classes and helpers
 codedoc = require './index'
 
-process.title = 'CodeDoc'
+# Setup
+# -------------------------------------------------
 logo = alinex.logo 'Code Documentation Extractor'
 
 
@@ -44,6 +46,8 @@ for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
 # Helper Methods
 # -----------------------------------------------------------
 
+# @param {string} dir directory to search for ignore files
+# @param {function(err)} cb callback if done or failed
 readExcludes = (dir, cb) ->
   dir = path.resolve dir
   async.detectSeries ["#{dir}/.docignore", "#{dir}/.gitignore"], (file, cb) ->
@@ -68,6 +72,8 @@ unless quiet
   console.log logo
   console.log chalk.grey "Initializing..."
 
+# Try to setup codedoc system and parse the command line options through the following
+# yargs configuration:
 codedoc.setup (err) ->
   alinex.exit 16, err if err
   # Start argument parsing
@@ -135,7 +141,9 @@ codedoc.setup (err) ->
   # now parse the arguments
   argv = yargs.argv
 
-  # start processing
+  # ### Start processing
+  #
+  # Call codedoc to do it's work.
   argv.input ?= '.'
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err

@@ -321,7 +321,11 @@ processFile = (file, local, setup, cb) ->
         pos = 0
         for doc in docs
           # doc optimizations
-          optimize doc, lang.tags, file
+          try
+            optimize doc, lang.tags, file
+          catch
+            return cb new Error "Could not parse documentation at #{file}: \
+            #{chalk.grey util.inspect doc[2]}"
           if pos < doc[0] and setup.code
             # code block before doc
             part = contents[pos..doc[0]]
@@ -410,7 +414,7 @@ optimize = (doc, lang, file) ->
   code = doc[3]
   # extract tags
   spec = {}
-  if match = md.match /(?:(?:\n|[ \t\r]){2,}|\s+)(?=@)/
+  if match = md.match /(?:(?:\n|[ \t\r]){2,}|\s*)(?=@)/
     add = md[match.index+match[0].length..]
     md = if match.index then md[0..match.index-1] + '\n' else ''
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
@@ -442,7 +446,7 @@ optimize = (doc, lang, file) ->
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
   # create usage line
   if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
-  spec.static or spec.constructor or spec.param)
+  spec.static or spec.construct or spec.param)
     md += "\n> **Usage:** "
     if spec.access
       md += "#{util.array.last spec.access} "
@@ -506,7 +510,7 @@ optimize = (doc, lang, file) ->
   # {@link}
 
   # add heading 3 if not there
-  unless md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
+  if title and not md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
     md = "### #{title}\n\n#{md}"
   # store changes
   doc[2] = md
