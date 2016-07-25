@@ -223,7 +223,8 @@ PL_DOC = [
 # - `api` - internal api documentation parser as list of RegExp and optimization function
 # - `tab` - number of spaces to use for tab indenting (default 2)
 # - `tags`: whether to try and extract jsDoc/javaDoc-style tag elements
-#   - `title` - RegExp to extract the function/class name from first code line
+#   - `title` - function to extract the function/class name from first code line
+#   - `access` - function to detect access level from first code line
 languages =
   coffeescript:
     extensions: [ 'coffee' ]
