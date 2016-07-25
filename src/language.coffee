@@ -1,6 +1,7 @@
 # Language Definition
 # =================================================
-
+# Code and definition for language recognition. This includes the file detection as
+# well as the language agnostic auto detection.
 
 # Node Modules
 # -------------------------------------------------
@@ -39,7 +40,7 @@ module.exports = (file, contents) ->
 
 # Use with match to get the executable name out of shebang syntax.
 #
-# __Example:__ #!/usr/bin env node
+# __Example:__ `#!/usr/bin env node`
 # - $1 - will be the executable: 'node'
 SHEBANG =
   ///
@@ -54,7 +55,7 @@ SHEBANG =
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ /** ... */
+# __Example:__ `/** ... */`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 C_DOC = [
@@ -74,7 +75,7 @@ C_DOC = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ /* ... */
+# __Example:__ `/* ... */`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 C_API = [
@@ -102,7 +103,7 @@ C_API = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ ###\n ... ###
+# __Example:__ `###\n ... ###`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 COFFEE_DOC = [
@@ -122,7 +123,7 @@ COFFEE_DOC = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ ### ... + # ... lines
+# __Example:__ `### ...` + `# ... lines`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 HASH_DOC = [
@@ -147,7 +148,7 @@ HASH_DOC = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ # ... lines
+# __Example:__ `# ... lines`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 HASH_API = [
@@ -172,7 +173,7 @@ HASH_API = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ \n=begin\n ... \n=end\n
+# __Example:__ `\n=begin\n ... \n=end\n`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 RB_DOC = [
@@ -192,7 +193,7 @@ RB_DOC = [
 # Use the RegExp from list element #0 to get all code documents and the optimization
 # method (list element #1) afterwards
 #
-# __Example:__ \n=pod\n ... \n=cut\n
+# __Example:__ `\n=pod\n ... \n=cut\n`
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 PL_DOC = [
