@@ -435,7 +435,8 @@ optimize = (doc, lang, file) ->
     for e in spec.name
       title = e
   # optimize spec with auto detect
-  spec.access ?= [lang.access code] if lang.access
+  if lang.access and not spec.access
+    spec.access = [access] if access = lang.access code
   # deprecation warning
   if spec.deprecated
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
@@ -459,7 +460,7 @@ optimize = (doc, lang, file) ->
     if spec.param
       md = md.replace /(\(\))?`$/, ''
       md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
-  md += "<!-- {p:.api-usage} -->\n"
+    md += "<!-- {p:.api-usage} -->\n"
   # method definitions
   if spec.param
     md += "\nParameter\n:   "
