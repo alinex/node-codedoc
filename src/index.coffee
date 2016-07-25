@@ -460,7 +460,7 @@ optimize = (doc, lang, file) ->
     if spec.param
       md = md.replace /(\(\))?`$/, ''
       md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
-    md += "<!-- {p:.api-usage} -->\n"
+    md += "\n<!-- {p:.api-usage} -->\n"
   # method definitions
   if spec.param
     md += "\nParameter\n:   "
@@ -492,7 +492,7 @@ optimize = (doc, lang, file) ->
       md += "- "
       md += "#{e.replace '\n', '      \n'}\n    "
   if spec.param or spec.return or spec.throws or spec.event or spec.see
-    md += "<!-- {dl:.api-spec} -->\n"
+    md += "\n<!-- {dl:.api-spec} -->\n"
   # signature
   if spec.version or spec.copyright or spec.author or spec.license
     md += "\n"
@@ -501,7 +501,7 @@ optimize = (doc, lang, file) ->
         md += "#{spec[type].join ' '} "
     if spec.license
       md += "- License: #{spec.license.join ' '} "
-    md += "\n<!-- {p:.api-signator} -->\n"
+    md += "\n\n<!-- {p:.api-signator} -->\n"
   # replace inline tags
   # {@link}
 
