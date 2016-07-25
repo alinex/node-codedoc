@@ -410,9 +410,9 @@ optimize = (doc, lang, file) ->
   code = doc[3]
   # extract tags
   spec = {}
-  if match = md.match /(?:\n|[ \t\r]){2,}(?=@)/
+  if match = md.match /(?:(?:\n|[ \t\r]){2,}|\s+)(?=@)/
     add = md[match.index+match[0].length..]
-    md = md[0..match.index-1] + '\n'
+    md = if match.index then md[0..match.index-1] + '\n' else ''
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
       if match = part.match /^@(\S+)\s+/
         name = tagAlias[match[1]] ? match[1]
@@ -431,7 +431,9 @@ optimize = (doc, lang, file) ->
         if m then [m[1], m[2], m[3]] else [null, spec[type]]
   # get title
   title = if lang.title then lang.title code else code
-  title = e for e in spec.name if spec.name
+  if spec.name
+    for e in spec.name
+      title = e
   # optimize spec with auto detect
   spec.access ?= [lang.access code] if lang.access
   # deprecation warning

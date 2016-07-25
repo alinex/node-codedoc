@@ -232,9 +232,12 @@ languages =
     api: HASH_API
     tags:
       title: (c) ->
-        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/ # function call
-        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/ # function call
-        return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/ # variable setting
+        # function call
+        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/
+        # function call
+        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/
+        # variable setting
+        return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/
         return "Class #{m[1]}" if m = c.match /^\s*Class\s*(\S+)/ # class definition
         c # fallback use complete line
       access: (c) ->
