@@ -4,6 +4,26 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.0.0 (2016-07-25)
+-------------------------------------------------
+- Update template docs.
+- Use includes in handlebars templates.
+- Descripe access parsing in language.
+- Mark examples as code.
+- Fix some language detection bugs for coffeescript.
+- Fix decorator style.
+- Fix access detection.
+- Fix parsing of only tags.
+- More API tags supported with some auto detection.
+- Add deprecation and definitions from tags.
+- Support first tags.
+- Initial jsddoc help.
+- Only check for headings 1-3 to add automatically.
+- Add parsing for tags and auto add title if not there.
+- Remove messages from debug if send for verbose mode.
+- Fix scroll problem on table-of-contents.
+- Upgrade alinex-builder@2.3.2
+
 Version 0.5.2 (2016-07-21)
 -------------------------------------------------
 - Update alinex-report@2.1.8
