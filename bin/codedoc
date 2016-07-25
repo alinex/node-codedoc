@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
-Start CLI
+Executable
 =========================================================
 
 This script will start the command line interface. See more at

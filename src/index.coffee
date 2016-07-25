@@ -22,7 +22,7 @@ $$$ plantuml
     note right
       for each
       file
-    end note
+    end noteto
     :read file<
     :analyze language]
     if (is markdown) then (yes)

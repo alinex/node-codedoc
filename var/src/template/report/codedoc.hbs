@@ -27,22 +27,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="https://alinex.github.io/" onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'" onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
-            <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Homepage">
-          </a>
-          <img class="preload" src="https://alinex.github.io/images/Alinex-200.png" aria-hidden="true">
+          {{include codedoc-logo}}
         </div>
         <div id="topnav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://alinex.github.io/blog" class="btn btn-primary">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Blog
-              </a></li>
-            <li><a href="https://alinex.github.io/develop" class="btn btn-primary">
-                <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Develop
-              </a></li>
-            <li><a href="https://alinex.github.io/code.html" class="btn btn-warning">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Code
-              </a></li>
+            {{include codedoc-links}}
           </ul>
           <form class="navbar-form navbar-right">
             <input name="q" type="text" class="form-control" placeholder="Search...">
@@ -57,18 +46,7 @@
       <div class="row">
 
         <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
-          <script>
-            (function() {
-              var cx = '010539487162786288372:chxqbheanxc';
-              var gcse = document.createElement('script');
-              gcse.type = 'text/javascript';
-              gcse.async = true;
-              gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-              var s = document.getElementsByTagName('script')[0];
-              s.parentNode.insertBefore(gcse, s);
-            })();
-          </script>
-          <gcse:searchresults-only></gcse:searchresults-only>
+          {{include codedoc-search-result}}
           {{{content}}}
         </div>
         <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
