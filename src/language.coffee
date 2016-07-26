@@ -113,6 +113,8 @@ COFFEE_DOC = [
     \#{3}       # then three hashes: ###
     (           # content of the comment
       [^\#!]    # no more than the three hashes
+      .*        # everything in that line
+      \n        # at least two lines
       [\s\S]*?  # other comment charactes
     )           # end of comment
     \#{3,}      # then three or more hashes
