@@ -339,7 +339,9 @@ processFile = (file, local, setup, cb) ->
               line = contents[0..pos].split('\n').length - 1
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
           # add doc block
-          md = doc[2].replace /(\n\s*)#3(\s+)/, '$1###$2'
+          md = doc[2]
+          .replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
+            "#{pre}#{util.string.repeat '#', num}#{post}"
           .replace /\n\s*?$/, ''
           report.raw "\n#{md}\n\n"
           pos = doc[1]
