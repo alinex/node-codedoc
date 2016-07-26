@@ -8,7 +8,7 @@ Alinex CodeDoc: Readme
 <!-- {.right} -->
 
 A general code documentation tool based on the concepts of
-[docco](http://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
+[docco](https://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
 
 This tool should help you create browsable documentation out of the comments written
 in the code. At first it is no general tool for everybody but a helper for myself to
@@ -22,19 +22,19 @@ The main features are:
 - additional support for javadoc like formatting
 - responsive design through templates
 
-To see what it will give you is shown here in [this documentation](http://alinex.github.io/node-codedoc)
+To see what it will give you is shown here in [this documentation](https://alinex.github.io/node-codedoc)
 which is completely made with it.
 
-> It is one of the modules of the [Alinex Namespace](http://alinex.github.io/code.html)
-> following the code standards defined in the [General Docs](http://alinex.github.io/develop).
+> It is one of the modules of the [Alinex Namespace](https://alinex.github.io/code.html)
+> following the code standards defined in the [General Docs](https://alinex.github.io/develop).
 
 __Read the complete documentation under
-[http://alinex.github.io/node-codedoc](http://alinex.github.io/node-codedoc).__
+[https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
 <!-- {p: .hide} -->
 
 As an example you can check this documentation:
-- [without code](http://alinex.github.io/node-codedoc/README.md.html)
-- [with code](http://alinex.github.io/code-codedoc/README.md.html)
+- [without code](https://alinex.github.io/node-codedoc/README.md.html)
+- [with code](https://alinex.github.io/code-codedoc/README.md.html)
 
 
 Install
@@ -130,7 +130,7 @@ codedoc.setup(function(err) {
 Find more information about calling the code documentation in the [API](src/index.coffee).
 
 If you want to use your own style templates within your app's config directory
-and your already using [alinex-config](http://alinex.github.io/node-config)
+and your already using [alinex-config](https://alinex.github.io/node-config)
 you only have to register the template type on it by putting the following on top:
 
 ``` coffee
@@ -186,7 +186,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
->  <http://www.apache.org/licenses/LICENSE-2.0>
+>  <https://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

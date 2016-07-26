@@ -82,10 +82,10 @@ STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 ###
 Initialize Module
 -------------------------------------------------
-To use the template search through the [alinex-config](http://alinex.github.io/node-config)
+To use the template search through the [alinex-config](https://alinex.github.io/node-config)
 path module you have to init the template type by calling this method once.
 
-This will setup the [alinex-report](http://alinex.github.io/node-report) component
+This will setup the [alinex-report](https://alinex.github.io/node-report) component
 and register the template type to search for templates in the global, user and
 local path like known from the config module.
 ###

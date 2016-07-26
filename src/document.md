@@ -113,7 +113,7 @@ You write your documentation in the **markdown** format which is nearly as writi
 in pure text down. For the simplest styles you won't have to know anything, just
 write it down.
 
-> See my own short examples about __[Markdown Syntax](http://alinex.github.io/develop/lang/markdown.html)__
+> See my own short examples about __[Markdown Syntax](https://alinex.github.io/develop/lang/markdown.html)__
 > as an example.
 
 ### First Heading
@@ -127,14 +127,14 @@ parts and only the last part is used as menu entry.
 ### Extended Markdown
 
 But to get more out of it look into the description of
-[alinex-report](http://alinex.github.io/node-report) for examples and a detailed
+[alinex-report](https://alinex.github.io/node-report) for examples and a detailed
 descriptions of the basic styles as well as extended formats like:
 
-- [tables](http://alinex.github.io/node-report/README.md.html#table)
-- [fontawesome](http://alinex.github.io/node-report/README.md.html#font-awesome)
-- [charts](http://alinex.github.io/node-report/README.md.html#charts)
-- [UML diagrams](http://alinex.github.io/node-report/README.md.html#plantuml) using (plantuml)
-- [and more...](http://alinex.github.io/node-report/README.md.html#report-elements)
+- [tables](https://alinex.github.io/node-report/README.md.html#table)
+- [fontawesome](https://alinex.github.io/node-report/README.md.html#font-awesome)
+- [charts](https://alinex.github.io/node-report/README.md.html#charts)
+- [UML diagrams](https://alinex.github.io/node-report/README.md.html#plantuml) using (plantuml)
+- [and more...](https://alinex.github.io/node-report/README.md.html#report-elements)
 
 ### Automatic Headings in Code
 

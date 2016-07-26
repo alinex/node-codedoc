@@ -15,8 +15,8 @@ Delivery Network) which will be faster.
 
 HTML Template
 --------------------------------------------------
-The template is a basic HTML with [Handlebars](http://alinex.github.io/develop/lang/handlebars.html)
-markup language and the [alinex-handlebars](http://alinex.github.io/node-handlebars/README.md.html)
+The template is a basic HTML with [Handlebars](https://alinex.github.io/develop/lang/handlebars.html)
+markup language and the [alinex-handlebars](https://alinex.github.io/node-handlebars/README.md.html)
 extension.
 
 Within the template you may use the following variables:

@@ -5,7 +5,7 @@ A code documentation extractor used to create browsable documentation out of you
 documentation.
 
 __Read the complete documentation under
-[http://alinex.github.io/node-codedoc](http://alinex.github.io/node-codedoc).__
+[https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
 <!-- {p: .hide} -->
 
 
@@ -113,8 +113,8 @@ switch to add them. If not only the files which contain doc comments and only th
 will be displayed.
 
 See this documentation:
-- [without code](http://alinex.github.io/node-codedoc/src/man/codedoc.1.md.html)
-- [with code](http://alinex.github.io/code-codedoc/src/man/codedoc.1.md.html)
+- [without code](https://alinex.github.io/node-codedoc/src/man/codedoc.1.md.html)
+- [with code](https://alinex.github.io/code-codedoc/src/man/codedoc.1.md.html)
 
 The links to the pages are also only indented based on the file level depth if
 code is enabled.
@@ -137,7 +137,7 @@ To change it, make a copy or new files with your own style name under:
   - `var/local/template/report/yourstyle.css`
 
 You may also use your apps directory if you init it with the `register()` method
-of the [alinex-config](http://alinex.github.io/node-config) with the `template`
+of the [alinex-config](https://alinex.github.io/node-config) with the `template`
 type.
 
 The changed directory to the source is essential to make them stay while updating
@@ -153,7 +153,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
->  <http://www.apache.org/licenses/LICENSE-2.0>
+>  <https://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
