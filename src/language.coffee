@@ -246,7 +246,7 @@ languages =
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
         null
   javascript:
-    extensions: [ 'js' ]
+    extensions: [ 'js', 'es6' ]
     executables: [ 'node' ]#
     doc: C_DOC
     api: C_API
@@ -349,6 +349,7 @@ languages =
   json:
     extensions: [ 'json' ]
     names: [ '.eslintrc', '.jshintrc' ]
+
 
 # also add the language name within the definition
 l.name = name for name, l of languages
