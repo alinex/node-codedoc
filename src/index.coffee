@@ -208,7 +208,10 @@ exports.run = (setup, cb) ->
             (if setup.verbose > 1 then console.log else debugCopy) "copy #{file}"
             dest = "#{setup.output}#{file[setup.input.length..]}"
             fs.remove dest, ->
-              fs.copy file, dest, cb
+              async.times 3,
+                (cb) ->
+                  fs.copy file, dest, cb
+              , cb
           , (err) ->
             return cb err if err
             (if setup.verbose then console.log else debug) "copying files done"
@@ -323,7 +326,10 @@ processFile = (file, local, setup, cb) ->
           # doc optimizations
           try
             optimize doc, lang.tags, file
-          catch
+          catch error
+            debugPage chalk.magenta "Could not parse documentation at #{file}: \
+            #{chalk.grey util.inspect doc[2]}"
+            debugPage chalk.magenta "caused by #{error.message}"
             return cb new Error "Could not parse documentation at #{file}: \
             #{chalk.grey util.inspect doc[2]}"
           if pos < doc[0] and setup.code
