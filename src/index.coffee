@@ -1,7 +1,6 @@
 ###
-Controller
+Controller - Package Main
 =================================================
-
 This module is used as the base API. If you load the package you will get a reference
 to the exported methods, here. Also the CLI works through this API.
 
@@ -208,9 +207,7 @@ exports.run = (setup, cb) ->
             (if setup.verbose > 1 then console.log else debugCopy) "copy #{file}"
             dest = "#{setup.output}#{file[setup.input.length..]}"
             fs.remove dest, ->
-              async.times 3, (cb) ->
-                fs.copy file, dest, cb
-              , cb
+              fs.copy file, dest, cb
           , (err) ->
             return cb err if err
             (if setup.verbose then console.log else debug) "copying files done"
@@ -439,6 +436,10 @@ optimize = (doc, lang, file) ->
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+        if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
+          m[2] = details[1]
+          m[3] = "optional #{m[3] ? ''}"
+          m[3] += " (default: #{details[2]})" if details[2]
         if m then [m[1], m[2], m[3]] else [null, spec[type]]
   # get title
   title = if lang.title then lang.title code else code
