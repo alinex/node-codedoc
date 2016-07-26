@@ -112,11 +112,11 @@ COFFEE_DOC = [
     \s*         # with optional spaces
     \#{3}       # then three hashes: ###
     (           # content of the comment
-      [^\#]     # no more than the three hashes
+      [^\#!]    # no more than the three hashes
       [\s\S]*?  # other comment charactes
     )           # end of comment
     \#{3,}      # then three or more hashes
-    [\t\r ]*?\n   # only spaces till end of line
+    [\t\r ]*?\n # only spaces till end of line
   ///g
 ]
 
@@ -132,7 +132,7 @@ HASH_DOC = [
     \s*         # with optional spaces
     \#{3}       # then three hashes: ###
     (           # content of the comment
-      [^\#]     # no more than the three hashes
+      [^\#!]    # no more than the three hashes
       .*        # everything in that line
       (?:       # multiple lines
         \n[\t\r ]*\# # each following line start with an hash
@@ -152,12 +152,12 @@ HASH_DOC = [
 # - `$1` - the unoptimized content
 # - optimized - leading asterisk removed
 HASH_API = [
-  ///           # ###\n ... \n###
+  ///           # #\n ... \n#
     (?:^|\n)    # start of document or line
     \s*         # with optional spaces
     \#\s?       # then three hashes: ###
     (           # content of the comment
-      [^\#]     # no more than the three hashes
+      [^\#!]    # no more than the three hashes
       .*        # everything in that line
       (?:       # multiple lines
         \n[\t\r ]*\# # each following line start with an hash

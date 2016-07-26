@@ -208,10 +208,9 @@ exports.run = (setup, cb) ->
             (if setup.verbose > 1 then console.log else debugCopy) "copy #{file}"
             dest = "#{setup.output}#{file[setup.input.length..]}"
             fs.remove dest, ->
-              async.times 3,
-                (cb) ->
-                  fs.copy file, dest, cb
-              , cb
+              #async.times 3, (cb) ->
+              fs.copy file, dest, cb
+              #, cb
           , (err) ->
             return cb err if err
             (if setup.verbose then console.log else debug) "copying files done"

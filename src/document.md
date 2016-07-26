@@ -76,22 +76,22 @@ Like in the above languages a lot of other ones are supported, too:
 
 |     Language       |    Doc Comment   | Internal API ^1^  | Code Comments ^2^ |
 | ------------------ | ---------------- | ----------------- | ----------------- |
-| CoffeeScript       | ### ... ###      | #...              | #...              | CS_DOC HASH_API
-| JavaScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| LiveScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Ruby               | =begin ... =end  | #...              | #...              | RB_DOC HASH_API
-| Python             | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
-| Perl               | =pod ... =cut    | #...              | #...              | PL_DOC HASH_API
-| C, C++, c#         | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Java, JSP          | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Groovy             | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| PHP                | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Bash               | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
-| YAML               | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
-| SCSS               | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Stylus, CSS, Less  | /** ... */       | /*...*/, // ...   | //... or /*..*/   | C_DOC C_API
-| Makefile           | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
-| Apache             | ### + #... lines | #...              | #...              | HASH_DOC HASH_API
+| CoffeeScript       | ### ... ###      | #...              | #...              |
+| JavaScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| LiveScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Ruby               | =begin ... =end  | #...              | #...              |
+| Python             | ### + #... lines | #...              | #...              |
+| Perl               | =pod ... =cut    | #...              | #...              |
+| C, C++, c#         | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Java, JSP          | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Groovy             | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| PHP                | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Bash               | ### + #... lines | #...              | #...              |
+| YAML               | ### + #... lines | #...              | #...              |
+| SCSS               | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Stylus, CSS, Less  | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
+| Makefile           | ### + #... lines | #...              | #...              |
+| Apache             | ### + #... lines | #...              | #...              |
 
 ^1^ Internal API always need multiple contineous comment lines\
 ^2^ Inline comments are the same as internal API but have only one line
@@ -99,9 +99,18 @@ Like in the above languages a lot of other ones are supported, too:
 As you see we use the language specific styles here and most languages also use the
 same style.
 
-#### Fixtures
+### Exclude Block
 
-In CoffeeScript block comments a triple hash '###' is the end of the doc comment
+If you want a comment block in your code but not in the documentation you can do just
+this by adding an exclamation mark after the opening block syntax:
+- Hash Docs: `###! ... ###`
+- Hash API: `#! ... #`
+- C Doc: `/**! ... */`
+- C API: `/*! ... */`
+
+#### Hash Doc Fixture
+
+In hash block comments a triple hash '###' is the end of the doc comment
 so it cant be used as it's markdown format for a heading level 3. As workarround
 you may use '#3...' which is no standard markdown but works here. The same goes
 with the other deeper headings level 4, 5 and 6.
