@@ -57,7 +57,6 @@ comes before 'README.md' and the other files.
 
 # Node Modules
 # -------------------------------------------------
-#
 
 # include base modules
 debug = require('debug') 'codedoc'
@@ -75,6 +74,9 @@ config = require 'alinex-config'
 # internal methods
 language = require './language'
 
+
+# Configuration
+# -------------------------------------------------
 PARALLEL = 10
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
@@ -217,10 +219,11 @@ exports.run = (setup, cb) ->
       (if setup.verbose then console.log else debug) "finished document creation"
       cb()
 
+# Helper methods
+# --------------------------------------------------------
+
 # If not existing create an `index.html` file which forwards to the first page
 # immediately.
-#
-# @test this is only for testing the tags
 #
 # @param {string} dir base path of index file
 # @param {string} link destination for the link to the first page
@@ -247,6 +250,12 @@ createIndex = (dir, link, cb) ->
       </html>
       """, cb
 
+# Process a single file and get it's report back.
+#
+# @param {string} file absolute path of file to analyze
+# @param {string} local local path, absolute from input directory
+# @param {object} setup setup configuration from `run()` method
+# @param {function(err, report)} cb callback which is called with error or `Report` instance
 processFile = (file, local, setup, cb) ->
   async.waterfall [
     # get file

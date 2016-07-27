@@ -11,8 +11,8 @@ A general code documentation tool based on the concepts of
 [docco](https://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
 
 This tool should help you create browsable documentation out of the comments written
-in the code. At first it is no general tool for everybody but a helper for myself to
-get a documentation for my own projects.
+in the code. It is a way between hand written documentation, structured api information
+and code highlighting. Read my own thoughts below to know why it is like it is.
 
 The main features are:
 
@@ -35,6 +35,26 @@ __Read the complete documentation under
 As an example you can check this documentation:
 - [without code](https://alinex.github.io/node-codedoc/README.md.html)
 - [with code](https://alinex.github.io/code-codedoc/README.md.html)
+
+
+Philosophy
+-------------------------------------------------
+How important is documentation? How should it be structured? How to write it? This
+all depends on who will write it and mostly who should use it.
+
+In my projects I can answer the last statement easily because I write it and I will
+use it and also some other guys using my modules. After getting that clear I saw that
+mostly I have to decide how it should be.
+
+Someone said good code didn't need any documentation but I disagree and will say
+documentation may be extended with good code. I don't want to repeat to much information
+already in the code. The documentation should also concentrate on the things the
+user needs and don't mix internal developer API for mostly external use.
+
+With all these thoughts I created this tool as in between. It should display markdown
+documentation meant to explain how things go with external API. This all displayed in
+a modern web interface viewable on any device. So I mixed the docco/docker.js concept
+of doc + code with JsDoc tags for API and some minimal code analyzeation.  
 
 
 Install
