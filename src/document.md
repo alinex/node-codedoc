@@ -238,6 +238,10 @@ Signature Line
     - `@author` name and possibly mail link to author and developers
     - `@license` license for this part
 
+The `@todo` format also allows to easily define optional parameters and default values:
+`@todo {integer} [max=5] maximum number of...`. You add square brackets to the variable
+name to declare it as optional and you add an equal sign and default value if you want.
+
 These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).
