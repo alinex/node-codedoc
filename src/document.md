@@ -238,6 +238,10 @@ Signature Line
     - `@author` name and possibly mail link to author and developers
     - `@license` license for this part
 
+Other Specialities
+:   `@internal` - lets you add some text at the bottom which is only displayed in
+    codeview (use it in normal doc comments)
+
 The `@todo` format also allows to easily define optional parameters and default values:
 `@todo {integer} [max=5] maximum number of...`. You add square brackets to the variable
 name to declare it as optional and you add an equal sign and default value if you want.

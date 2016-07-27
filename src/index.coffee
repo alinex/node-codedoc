@@ -514,6 +514,7 @@ optimize = (doc, lang, file) ->
     if spec.license
       md += "- License: #{spec.license.join ' '} "
     md += "\n\n<!-- {p:.api-signator} -->\n"
+  # internal text
   # replace inline tags
   # {@link}
 
