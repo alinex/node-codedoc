@@ -56,6 +56,9 @@ documentation meant to explain how things go with external API. This all display
 a modern web interface viewable on any device. So I mixed the docco/docker.js concept
 of doc + code with JsDoc tags for API and some minimal code analyzeation.  
 
+As I sometimes also read documentation about the internal structure and API I added
+another mode called code view which is designed for the internal module developer.
+
 
 Install
 -------------------------------------------------
