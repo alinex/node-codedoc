@@ -321,7 +321,7 @@ processFile = (file, local, setup, cb) ->
         for doc in docs
           # doc optimizations
           try
-            optimize doc, lang.tags, file
+            optimize doc, lang.tags, setup, file
           catch error
             debugPage chalk.magenta "Could not parse documentation at #{file}: \
             #{chalk.grey util.inspect doc[2]}"
@@ -412,7 +412,7 @@ tagAlias =
   exception: 'throws'
   fires: 'event'
   constructor: 'construct'
-optimize = (doc, lang, file) ->
+optimize = (doc, lang, setup, file) ->
   return unless lang
   md = doc[2]
   code = doc[3]
@@ -426,6 +426,7 @@ optimize = (doc, lang, file) ->
         name = tagAlias[match[1]] ? match[1]
         spec[name] ?= []
         spec[name].push part[match[0].length..]
+      break if match[1] is 'internal' and not setup.code
   # split some tags further down
   for type in ['return', 'throws']
     if spec[type]
@@ -515,6 +516,8 @@ optimize = (doc, lang, file) ->
       md += "- License: #{spec.license.join ' '} "
     md += "\n\n<!-- {p:.api-signator} -->\n"
   # internal text
+  if spec.internal and setup.code
+    md += "\n#{spec.internal.join ' '}\n"
   # replace inline tags
   # {@link}
 
