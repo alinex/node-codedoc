@@ -52,6 +52,12 @@ Within the template you may use the following variables:
 
 ### Default codedoc Template
 
+This template is exactly the one used for my own documentation. So if you won't
+change anything you will get the alinex layout with logo and links to my site.
+
+> This is done on purpose to show you how to do it. But you may easily remove it
+> and change it to your liking.
+
 The default style is called codedoc and is represented within the 4 files:
 - codedoc.hbs - base template
 - codedoc-logo.hbs - extracted logo part
@@ -63,8 +69,16 @@ you may copy the included template files (all or only some) from
 `<install-dir>/var/src/template/report` into
 `/etc/codedoc/template/report` or `~/.codedoc/template/report` and change them there.
 
-The search uses Googles [site search](https://cse.google.com/cse/all) which you can
-be customized and used freely.
+What you may do:
+- To remove the headerline completely you only have to remove it in the `codedoc.hbs`
+  file.
+- To exchange logo and link use `codedoc-logo.hbs` and reference your logo at a public
+  url like your site or github raw.
+- To let the search work on your site use Googles [site search](https://cse.google.com/cse/all)
+  which you can customize and use freely. Use 'results only' as layout and copy the
+  html code into `codedoc-search-results.hbs`.
+- To add your own top links do so in `codedoc-links.hbs`.
+- To remove the search or top links completely remove the html tags from `codedoc.hbs`.
 
 
 CSS Stylesheet
