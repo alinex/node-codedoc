@@ -365,6 +365,10 @@ processFile = (file, local, setup, cb) ->
       cb null, report
   ], cb
 
+# #3 Setup Page Order
+#
+# This is done by patterns in the first and last listing. All undefined will be
+# between them in ordered list.
 orderFirst = [
   'readme.*'
   'readme'
@@ -381,6 +385,14 @@ orderLast = [
   'changelog'
   'changelog.*'
 ]
+
+# Sorting the page map is done by generating sort strings for each page from the
+# order in the lists above, the file depth and file name. The keys will be sorted
+# and a new object is generated in this sort order.
+#
+# @param {object} map map of pages
+# - `parts` is used to calculate the order
+# @return {object} the sorted map of pages
 sortMap = (map) ->
   list = Object.keys(map).map (e) ->
     parts = map[e].parts[..-2].map (p) -> "/#{p}"
@@ -405,6 +417,12 @@ sortMap = (map) ->
   sorted[k] = map[k] for k in list
   sorted
 
+# Remove indents which are the same in all lines. The tab size is used to translate
+# if tabs are included.
+#
+# @param {string} code original code lines
+# @param {integer} tab number of spaces to use instead of tab
+# @return {string} optimized code view
 stripIndent = (code, tab) ->
   str = code.replace /^[ \t]*(?=\S)/gm, (e) ->
     e.replace '\t', util.string.repeat ' ', tab ? 2
@@ -413,6 +431,9 @@ stripIndent = (code, tab) ->
   indent = Math.min.apply Math, match.map (e) -> e.length
   code.replace new RegExp("^ {#{indent}}", 'gm'), ''
 
+# #3 Setup alternative Tags
+#
+# These are aliases for other tags, implemented below.
 tagAlias =
   alias: 'name'
   arg: 'param'
@@ -421,6 +442,14 @@ tagAlias =
   exception: 'throws'
   fires: 'event'
   constructor: 'construct'
+
+# Replace tags in markdown with real markdown syntax and add some possible information
+# autodetected from code.
+#
+# @param {array} doc markdown document as read from file with: startpos, endpos, doc, codeline
+# @param {object} lang language definition structure from [language.coffee](language.coffee)
+# @param {object} setup setup configuration from [`run()`](#run) method
+# @param {file} [file] file name used only for page specific analyzation in development
 optimize = (doc, lang, setup, file) ->
   return unless lang
   md = doc[2]
