@@ -76,9 +76,10 @@
 <li><a href="#where-to-write-documentation">Where to write documentation?</a>
 <ul>
 <li><a href="#extra-documents">Extra Documents</a></li>
-<li><a href="#code-documentation">Code Documentation</a>
+<li><a href="#code-documentation">Code Documentation</a></li>
+<li><a href="#exclude-block">Exclude Block</a>
 <ul>
-<li><a href="#fixtures">Fixtures</a></li>
+<li><a href="#hash-doc-fixture">Hash Doc Fixture</a></li>
 </ul>
 </li>
 </ul>
@@ -262,8 +263,17 @@ following examples for CoffeeScript and JavaScript:</p>
 <sup>2</sup> Inline comments are the same as internal API but have only one line</p>
 <p>As you see we use the language specific styles here and most languages also use the
 same style.</p>
-<h4 id="fixtures">Fixtures</h4>
-<p>In CoffeeScript block comments a triple hash ‘###’ is the end of the doc comment
+<h3 id="exclude-block">Exclude Block</h3>
+<p>If you want a comment block in your code but not in the documentation you can do just
+this by adding an exclamation mark after the opening block syntax:</p>
+<ul>
+<li>Hash Docs: <code>###! ... ###</code></li>
+<li>Hash API: <code>#! ... #</code></li>
+<li>C Doc: <code>/**! ... */</code></li>
+<li>C API: <code>/*! ... */</code></li>
+</ul>
+<h4 id="hash-doc-fixture">Hash Doc Fixture</h4>
+<p>In hash block comments a triple hash ‘###’ is the end of the doc comment
 so it cant be used as it’s markdown format for a heading level 3. As workarround
 you may use ‘#3…’ which is no standard markdown but works here. The same goes
 with the other deeper headings level 4, 5 and 6.</p>
@@ -301,8 +311,10 @@ code. They will be replaced with properly formated description.</p>
 <p>Not all possible tags are supported because this tool won’t do a real language agnostic
 parsing and therefore mostly code independent tags are supported.<br />
 To use them you have to add them at the start or separated by an empty line from the
-heading markdown. See the example below:</p>
-<p>EXAMPLE</p>
+heading markdown. See the examples below:</p>
+<ul>
+<li><a href="example-coffee.md.html">CoffeeScript</a></li>
+</ul>
 <p>The HTML layout of the additional information should look like:</p>
 <div class="detail">
 <blockquote>
@@ -361,7 +373,7 @@ it because it may be removed in the next versions</dd>
 <li><code>@private</code>, <code>@protected</code>, <code>@public</code> flags as predefined access levels</li>
 <li><code>@static</code> flag to define as static method</li>
 <li><code>@constant</code> flag to define as constant variable</li>
-<li><code>@constructor</code> flag to define method as constructor</li>
+<li><code>@construct</code>, <code>@constructor</code> flag to define method as constructor</li>
 <li>also the title from the auto heading also if not used there will be used</li>
 <li><code>@param</code> definition of possible parameter names</li>
 </ul>
@@ -389,7 +401,18 @@ given as: <code>@event {&lt;type&gt;} &lt;name&gt; &lt;description&gt;</code></l
 <li><code>@license</code> license for this part</li>
 </ul>
 </dd>
+<dt>Other Specialities</dt>
+<dd>
+<ul>
+<li>‘@describe’, <code>@description</code> adds some more description after the API specification</li>
+<li><code>@internal</code> - lets you add some text at the bottom which is only displayed in
+codeview (use it in normal doc comments)</li>
+</ul>
+</dd>
 </dl>
+<p>The <code>@todo</code> format also allows to easily define optional parameters and default values:
+<code>@todo {integer} [max=5] maximum number of...</code>. You add square brackets to the variable
+name to declare it as optional and you add an equal sign and default value if you want.</p>
 <p>These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.
 Is something missing here? Don’t hestitate and make an issue on the
 <a href="https://github.com/alinex/node-codedoc/issues">GitHub Page</a>.</p>
@@ -411,10 +434,13 @@ Is something missing here? Don’t hestitate and make an issue on the
                   <a href="document.md.html" title="Writing Docs (/src/document.md)">Writing Docs <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="level0">
+                  <a href="example-coffee.md.html" title="Example: CoffeeScript (/src/example-coffee.md)">CoffeeScript</a>
+                </li>
+                <li class="level0">
                   <a href="template.md.html" title="Templates (/src/template.md)">Templates</a>
                 </li>
                 <li class="level0">
-                  <a href="index.coffee.html" title="Controller (/src/index.coffee)">Controller</a>
+                  <a href="index.coffee.html" title="Controller - API Usage (/src/index.coffee)">API Usage</a>
                 </li>
                 <li class="level0">
                   <a href="../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>

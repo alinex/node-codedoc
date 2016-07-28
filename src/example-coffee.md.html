@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alinex CodeDoc: Readme</title>
+    <title>Example: CoffeeScript</title>
     <meta name="HandheldFriendly" content="true" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -73,207 +73,114 @@
 <gcse:searchresults-only></gcse:searchresults-only>
 
           <p><ul class="table-of-contents" aria-hidden="true"><header>Index</header>
-<li><a href="#philosophy">Philosophy</a></li>
-<li><a href="#install">Install</a>
-<ul>
-<li><a href="#cli-tool">CLI Tool</a></li>
-<li><a href="#api-integration">API Integration</a></li>
-</ul>
-</li>
-<li><a href="#usage">Usage</a>
-<ul>
-<li><a href="#cli-tool-2">CLI Tool</a></li>
-<li><a href="#api-usage">API Usage</a></li>
-</ul>
-</li>
-<li><a href="#debugging">Debugging</a></li>
-<li><a href="#license">License</a></li>
+<li><a href="#main-documentation">Main Documentation</a></li>
+<li><a href="#external-api">External API</a></li>
+<li><a href="#internal-api">Internal API</a></li>
 <li class="sidebar"><a href="#further-pages">Further Pages</a></li></ul>
-</p><h1 id="alinex-codedoc-readme">Alinex CodeDoc: Readme</h1>
-<p><a href="https://travis-ci.org/alinex/node-codedoc"><img src="https://travis-ci.org/alinex/node-codedoc.svg?branch=master" alt="Build Status" /></a>
-<a href="https://coveralls.io/r/alinex/node-codedoc?branch=master"><img src="https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master" alt="Coverage Status" /></a>
-<a href="https://gemnasium.com/alinex/node-codedoc"><img src="https://gemnasium.com/alinex/node-codedoc.png" alt="Dependency Status" /></a>
-<a href="https://github.com/alinex/node-codedoc" title="Code on GitHub"><img src="https://assets-cdn.github.com/favicon.ico" alt="GitHub" class="right" /></a></p>
-<p>A general code documentation tool based on the concepts of
-<a href="https://jashkenas.github.io/docco/">docco</a> or <a href="https://jbt.github.io/docker/src/docker.js.html">docker.js</a>.</p>
-<p>This tool should help you create browsable documentation out of the comments written
-in the code. It is a way between hand written documentation, structured api information
-and code highlighting. Read my own thoughts below to know why it is like it is.</p>
-<p>The main features are:</p>
-<ul>
-<li>useable for any language</li>
-<li>with easy markdown text</li>
-<li>powerful options like graphs</li>
-<li>additional support for javadoc like formatting</li>
-<li>responsive design through templates</li>
-</ul>
-<p>To see what it will give you is shown here in <a href="https://alinex.github.io/node-codedoc">this documentation</a>
-which is completely made with it.</p>
+</p><h1 id="example-coffeescript">Example: CoffeeScript</h1>
 <blockquote>
-<p>It is one of the modules of the <a href="https://alinex.github.io/code.html">Alinex Namespace</a>
-following the code standards defined in the <a href="https://alinex.github.io/develop">General Docs</a>.</p>
+<p>In the following examples I will use code from the codedoc package. But it is slightly
+changed to see more of the possibilities.</p>
 </blockquote>
-<p class="hide"><strong>Read the complete documentation under
-<a href="https://alinex.github.io/node-codedoc">https://alinex.github.io/node-codedoc</a>.</strong></p>
-<p>As an example you can check this documentation:</p>
+<h2 id="main-documentation">Main Documentation</h2>
+<p>First things always are the general files:</p>
 <ul>
-<li><a href="https://alinex.github.io/node-codedoc/README.md.html">without code</a></li>
-<li><a href="https://alinex.github.io/code-codedoc/README.md.html">with code</a></li>
+<li><a href="https://raw.githubusercontent.com/alinex/node-codedoc/master/README.md">README.md</a> - <br />
+the index page in markdown</li>
+<li><a href="https://raw.githubusercontent.com/alinex/node-codedoc/master/Changelog.md">Changelog.md</a> - <br />
+the changes per each version</li>
 </ul>
-<h2 id="philosophy">Philosophy</h2>
-<p>How important is documentation? How should it be structured? How to write it? This
-all depends on who will write it and mostly who should use it.</p>
-<p>In my projects I can answer the last statement easily because I write it and I will
-use it and also some other guys using my modules. After getting that clear I saw that
-mostly I have to decide how it should be.</p>
-<p>Someone said good code didn’t need any documentation but I disagree and will say
-documentation may be extended with good code. I don’t want to repeat to much information
-already in the code. The documentation should also concentrate on the things the
-user needs and don’t mix internal developer API for mostly external use.</p>
-<p>With all these thoughts I created this tool as in between. It should display markdown
-documentation meant to explain how things go with external API. This all displayed in
-a modern web interface viewable on any device. So I mixed the docco/docker.js concept
-of doc + code with JsDoc tags for API and some minimal code analyzeation.</p>
-<p>As I sometimes also read documentation about the internal structure and API I added
-another mode called code view which is designed for the internal module developer.</p>
-<h2 id="install">Install</h2>
-<p><a href="https://www.npmjs.com/package/alinex-codedoc"><img src="https://nodei.co/npm/alinex-codedoc.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM" />
-<img src="https://nodei.co/npm-dl/alinex-codedoc.png?months=9&amp;height=3" alt="Downloads" />
-</a></p>
-<h3 id="cli-tool">CLI Tool</h3>
-<p>Install the package globally using npm:</p>
-<pre class="language bash"><header>Shell Script</header><code>sudo npm install -g alinex-codedoc --production</code>
-<code>codedoc --help</code></pre>
-<h3 id="api-integration">API Integration</h3>
-<p>To do this you install it into your own module:</p>
-<pre class="language bash"><header>Shell Script</header><code><span class="hljs-comment"># from within your module directory</span></code>
-<code>sudo npm install --save alinex-codedoc</code></pre>
-<h2 id="usage">Usage</h2>
-<h3 id="cli-tool-2">CLI Tool</h3>
-<p>After global installation you may directly call <code>codedoc</code> from anywhere to work
-in the current or defined directory.</p>
-<p>See the <a href="src/man/codedoc1.md.html">man page</a> for explanation of the command line use
-and options.</p>
-<h3 id="api-usage">API Usage</h3>
-<p>You have to include it into your project:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><code>codedoc = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-codedoc'</span></code>
-<code><span class="hljs-comment"># setup the template search paths</span></code>
-<code>codedoc.setup (err) -&gt;</code>
-<code>  <span class="hljs-comment"># do something on error like exit or reporting</span></code>
-<code>  <span class="hljs-keyword">if</span> err</code>
-<code>    <span class="hljs-built_in">console</span>.error err.message</code>
-<code>    process.exit <span class="hljs-number">1</span></code>
-<code>  <span class="hljs-comment"># run documentation generation</span></code>
-<code>  codedoc.run</code>
-<code>    input: argv.input</code>
-<code>    find:</code>
-<code>      exclude: list</code>
-<code>    output: argv.output</code>
-<code>    style: argv.style</code>
-<code>    code: argv.code</code>
-<code>  , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span></code>
-<code>    <span class="hljs-keyword">if</span> err</code>
-<code>      <span class="hljs-built_in">console</span>.error err.message</code>
-<code>      process.exit <span class="hljs-number">16</span>  </code>
-<code>    <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Documents created.'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><code>codedoc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-codedoc'</span>);</code>
-<code><span class="hljs-comment">// setup the template search paths</span></code>
-<code>codedoc.setup(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</code>
-<code>  <span class="hljs-comment">// do something on error like exit or reporting</span></code>
-<code>  <span class="hljs-keyword">if</span> (err) {</code>
-<code>    <span class="hljs-built_in">console</span>.error(err.message);</code>
-<code>    process.exit(<span class="hljs-number">1</span>);</code>
-<code>  }</code>
-<code>  <span class="hljs-comment">// run documentation generation</span></code>
-<code>  <span class="hljs-keyword">return</span> codedoc.run({</code>
-<code>    input: argv.input,</code>
-<code>    find: { exclude: list },</code>
-<code>    output: argv.output,</code>
-<code>    style: argv.style,</code>
-<code>    code: argv.code</code>
-<code>  }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</code>
-<code>    <span class="hljs-keyword">if</span> (err) {</code>
-<code>      <span class="hljs-built_in">console</span>.error(err.message);</code>
-<code>      process.exit(<span class="hljs-number">16</span>);</code>
-<code>    }</code>
-<code>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Documents created.'</span>);</code>
-<code>  });</code>
-<code>});</code></pre>
-<p>Find more information about calling the code documentation in the <a href="src/index.coffee.html">API</a>.</p>
-<p>If you want to use your own style templates within your app’s config directory
-and your already using <a href="https://alinex.github.io/node-config">alinex-config</a>
-you only have to register the template type on it by putting the following on top:</p>
-<pre class="language coffeescript"><header>CoffeeScript Code</header><code>config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span></code>
-<code><span class="hljs-comment"># set module search path</span></code>
-<code><span class="hljs-comment"># (with paths for calling in the upper directory)</span></code>
-<code>config.register <span class="hljs-string">'codedoc'</span>, __dirname,</code>
-<code>  folder: <span class="hljs-string">'template'</span></code>
-<code>  type: <span class="hljs-string">'template'</span></code></pre>
-<pre class="language javascript"><header>JavaScript Code</header><code>config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'alinex-config'</span>);</code>
-<code><span class="hljs-comment">// set module search path</span></code>
-<code><span class="hljs-comment">// (with paths for calling in the upper directory)</span></code>
-<code>config.register(<span class="hljs-string">'codedoc'</span>, __dirname, {</code>
-<code>  folder: <span class="hljs-string">'template'</span>,</code>
-<code>  type: <span class="hljs-string">'template'</span></code>
-<code>});</code></pre>
-<p>This allows you to put your templates also under:</p>
-<ul>
-<li>var/src/template/report/…</li>
-<li>var/local/template/report/…</li>
-<li>/etc/<yourapp>/template/report/…</li>
-<li>~/.<yourapp>/template/report/…</li>
-</ul>
-<h2 id="debugging">Debugging</h2>
-<p>If you have any problems you may debug the code with the predefined flags. It uses
-the <a href="https://github.com/visionmedia/debug/blob/master/Readme.md">debug</a> module to
-let you define what to debug.</p>
-<p>Call it with the <code>DEBUG</code> environment variable set to the types you want to debug.
-The most valueable flags will be:</p>
-<pre class="language bash"><header>Shell Script</header><code>DEBUG=codedoc* codedoc  <span class="hljs-comment"># more information what goes on</span></code>
-<code>DEBUG=config* codedoc   <span class="hljs-comment"># registering paths for template search</span></code>
-<code>DEBUG=report* codedoc   <span class="hljs-comment"># conversion into html</span></code></pre>
-<p>You can also combine them using comma or use only <code>DEBUG=*</code> to show all.</p>
-<h2 id="license">License</h2>
-<p>© Copyright 2016 Alexander Schilling</p>
-<p>Licensed under the Apache License, Version 2.0 (the “License”);
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at</p>
-<blockquote>
-<p><a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
-</blockquote>
-<p>Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an “AS IS” BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.</p>
+<p>Next you should add the main headding with some explanation:</p>
+<pre><code>###
+<span class="hljs-section">Controller - Package Main
+=================================================</span>
+This module is used as the base API. If you load the package you will get a reference
+to the exported methods, here. Also the CLI works through this API.
+###
+</code></pre>
+<p>Next maybe some more explanation as subheadings with detailed description, graphs and
+overall examples:</p>
+<pre><code>Workflow
+<span class="hljs-comment">-------------------------------------------------</span>
+
+The following graph will show you <span class="hljs-keyword">the</span> basic steps <span class="hljs-keyword">in</span> creating <span class="hljs-keyword">the</span> documentation:
+
+&gt; Plantuml is cut out <span class="hljs-built_in">to</span> make example shorter!
+
+<span class="hljs-comment">#3 Sorting</span>
+
+The <span class="hljs-built_in">file</span> links are sorted <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> natural way. This is <span class="hljs-built_in">from</span> <span class="hljs-built_in">upper</span> <span class="hljs-built_in">to</span> <span class="hljs-built_in">lower</span> <span class="hljs-built_in">directories</span>
+<span class="hljs-keyword">and</span> alphabetically but <span class="hljs-keyword">with</span> some defined orders. This means that <span class="hljs-string">'index.*'</span> always
+comes <span class="hljs-keyword">before</span> <span class="hljs-string">'README.md'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> other <span class="hljs-built_in">files</span>.
+<span class="hljs-comment">###</span>
+</code></pre>
+<p>As you see above the <code>#3</code>-heading syntax is special an no propper markup, it should be
+<code>###</code> but because this will collide with the doc block delimiter we use a special syntax
+here.</p>
+<h2 id="external-api">External API</h2>
+<p>The external API is also put in such doc block comments with some annotation tags
+just before the function definition:</p>
+<pre><code><span class="hljs-section">###</span>
+@param {object} setup defining the document creation
+<span class="hljs-bullet">- </span><span class="hljs-code">`input`</span> - path to read from
+<span class="hljs-bullet">- </span><span class="hljs-code">`òutput`</span>- output directory to store to
+<span class="hljs-bullet">- </span><span class="hljs-code">`find`</span> - source search pattern
+  - <span class="hljs-code">`include`</span> - files to include see [<span class="hljs-string">alinex-fs</span>](<span class="hljs-link">https://alinex.github.io/node-fs</span>)
+  - <span class="hljs-code">`exclude`</span> - files to exclude see [<span class="hljs-string">alinex-fs</span>](<span class="hljs-link">https://alinex.github.io/node-fs</span>)
+<span class="hljs-bullet">- </span><span class="hljs-code">`brand`</span> - branding name to remove from automatic titles
+<span class="hljs-bullet">- </span><span class="hljs-code">`verbose`</span> - level of verbose mode
+@param {function(err)} cb function to be called after done
+<span class="hljs-section">###</span>
+exports.run = (setup, cb) -&gt;
+  # set up system
+  setup.input = path.resolve setup.input ? '.'
+  # code goes on...
+</code></pre>
+<p>As there is no heading it will be auto created as ‘run()’ from the first code line.
+As you see there are alos some parameter described.</p>
+<h2 id="internal-api">Internal API</h2>
+<p>This is wwritten as normal command lines.</p>
+<pre><code># Sorting the page <span class="hljs-keyword">map</span> <span class="hljs-keyword">is</span> done by generating <span class="hljs-keyword">sort</span> strings <span class="hljs-keyword">for</span> each page from the
+# order in the lists above, the <span class="hljs-keyword">file</span> depth <span class="hljs-built_in">and</span> <span class="hljs-keyword">file</span> name. The <span class="hljs-built_in">keys</span> will <span class="hljs-keyword">be</span> sorted
+# <span class="hljs-built_in">and</span> <span class="hljs-keyword">a</span> <span class="hljs-keyword">new</span> object <span class="hljs-keyword">is</span> generated in this <span class="hljs-keyword">sort</span> order.
+#
+# @param {object} <span class="hljs-keyword">map</span> <span class="hljs-keyword">map</span> of pages
+# - `parts` <span class="hljs-keyword">is</span> used <span class="hljs-keyword">to</span> calculate the order
+# @param {boolean} [<span class="hljs-built_in">reverse</span>=false] flag <span class="hljs-keyword">for</span> reversed sorting
+# @return {object} the sorted <span class="hljs-keyword">map</span> of pages
+sortMap = (<span class="hljs-keyword">map</span>) -&gt;
+  # code goes <span class="hljs-keyword">on</span>...
+</code></pre>
+<p>The parameter for reversed sorting also shows you how to mark an parameter as optional
+and give it some default values.</p>
 
         </div>
         <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
           <h1 id="further-pages">Further Pages</h1>
           <ul class="nav nav-sidebar">
             <li class="header">
-              <a href="README.md.html">CodeDoc</a>
+              <a href="../README.md.html">CodeDoc</a>
             </li>
+                <li class="level0">
+                  <a href="../README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
+                </li>
+                <li class="level0">
+                  <a href="man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
+                </li>
+                <li class="level0">
+                  <a href="document.md.html" title="Writing Docs (/src/document.md)">Writing Docs</a>
+                </li>
                 <li class="active level0">
-                  <a href="README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme <span class="sr-only">(current)</span></a>
+                  <a href="example-coffee.md.html" title="Example: CoffeeScript (/src/example-coffee.md)">CoffeeScript <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="level0">
-                  <a href="src/man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
+                  <a href="template.md.html" title="Templates (/src/template.md)">Templates</a>
                 </li>
                 <li class="level0">
-                  <a href="src/document.md.html" title="Writing Docs (/src/document.md)">Writing Docs</a>
+                  <a href="index.coffee.html" title="Controller - API Usage (/src/index.coffee)">API Usage</a>
                 </li>
                 <li class="level0">
-                  <a href="src/example-coffee.md.html" title="Example: CoffeeScript (/src/example-coffee.md)">CoffeeScript</a>
-                </li>
-                <li class="level0">
-                  <a href="src/template.md.html" title="Templates (/src/template.md)">Templates</a>
-                </li>
-                <li class="level0">
-                  <a href="src/index.coffee.html" title="Controller - API Usage (/src/index.coffee)">API Usage</a>
-                </li>
-                <li class="level0">
-                  <a href="Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
+                  <a href="../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
                 </li>
           </ul>
         </div>
