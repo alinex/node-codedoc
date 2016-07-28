@@ -4,6 +4,28 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.1.0 (2016-07-28)
+-------------------------------------------------
+- Add file write retry.
+- Add print styles.
+- Add coffeescript example.
+- More doc changes.
+- Added code documentation.
+- Add philosophy section.
+- Add @internal support.
+- Add documentation for @internal tag.
+- Document @param format with optional and default.
+- Update docs for template changes.
+- Update docs.
+- At least two lines for coffee hash doc.
+- Remove google ads.
+- Add .es6 file extension for javascript.
+- Allow alternative #3 heading syntax for all heading levels.
+- Add ability to disable comments from documentation.
+- Run multiple tries for file copy.
+- Change some links to https.
+- Fix plantuml graph.
+
 Version 1.0.0 (2016-07-25)
 -------------------------------------------------
 - Update template docs.
