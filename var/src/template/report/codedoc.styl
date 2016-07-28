@@ -396,4 +396,18 @@ div.alert
     display: none !important
 .gsc-adBlock
   display: none !important
-  
+
+/*
+* Print style
+* --------------------------------------------------------------
+*/
+@media print
+  .navbar-spacer
+  .table-of-contents
+  .sidebar
+    display: none;
+  .main
+    left: 0
+    width: 100%
+  pre.language header
+    border-bottom: 2px solid #999
