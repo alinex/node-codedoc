@@ -159,9 +159,9 @@ code. They will be replaced with properly formated description.
 Not all possible tags are supported because this tool won't do a real language agnostic
 parsing and therefore mostly code independent tags are supported.  
 To use them you have to add them at the start or separated by an empty line from the
-heading markdown. See the example below:
+heading markdown. See the examples below:
 
-EXAMPLE
+- [CoffeeScript](example-coffee.md)
 
 The HTML layout of the additional information should look like:
 
@@ -215,7 +215,7 @@ Usage Line
     - `@private`, `@protected`, `@public` flags as predefined access levels
     - `@static` flag to define as static method
     - `@constant` flag to define as constant variable
-    - `@constructor` flag to define method as constructor
+    - `@construct`, `@constructor` flag to define method as constructor
     - also the title from the auto heading also if not used there will be used
     - `@param` definition of possible parameter names
 
@@ -239,8 +239,9 @@ Signature Line
     - `@license` license for this part
 
 Other Specialities
-:   `@internal` - lets you add some text at the bottom which is only displayed in
-    codeview (use it in normal doc comments)
+:   - '@describe', `@description` adds some more description after the API specification
+    - `@internal` - lets you add some text at the bottom which is only displayed in
+      codeview (use it in normal doc comments)
 
 The `@todo` format also allows to easily define optional parameters and default values:
 `@todo {integer} [max=5] maximum number of...`. You add square brackets to the variable

@@ -1,5 +1,5 @@
 ###
-Controller - Package Main
+Controller - API Usage
 =================================================
 This module is used as the base API. If you load the package you will get a reference
 to the exported methods, here. Also the CLI works through this API.
@@ -126,7 +126,6 @@ steps to make the documentation ready to browse in the local path.
 ###
 exports.run = (setup, cb) ->
   # set up system
-  setup.input ?= '.'
   setup.input = path.resolve setup.input ? '.'
   setup.output = path.resolve setup.output ? '.'
   setup.find ?= {}
@@ -442,6 +441,7 @@ tagAlias =
   exception: 'throws'
   fires: 'event'
   constructor: 'construct'
+  describe: 'description'
 
 # Replace tags in markdown with real markdown syntax and add some possible information
 # autodetected from code.
@@ -465,18 +465,20 @@ optimize = (doc, lang, setup, file) ->
         spec[name] ?= []
         spec[name].push part[match[0].length..]
       break if match[1] is 'internal' and not setup.code
-  # split some tags further down
+  # split some tags further down into name and desc
   for type in ['return', 'throws']
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
         if m then [m[1], m[2]] else [null, spec[type]]
+  # split some tags further down into name, type and desc
   for type in ['param', 'event']
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
         if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
           m[2] = details[1]
+          # interpret optional and default for params
           m[3] = "optional #{m[3] ? ''}"
           m[3] += " (default: #{details[2]})" if details[2]
         if m then [m[1], m[2], m[3]] else [null, spec[type]]
@@ -553,7 +555,8 @@ optimize = (doc, lang, setup, file) ->
     if spec.license
       md += "- License: #{spec.license.join ' '} "
     md += "\n\n<!-- {p:.api-signator} -->\n"
-  # internal text
+  # additional text
+  md += "\n#{spec.description.join ' '}\n" if spec.description
   if spec.internal and setup.code
     md += "\n#{spec.internal.join ' '}\n"
   # replace inline tags
