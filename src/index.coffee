@@ -441,6 +441,7 @@ tagAlias =
   arg: 'param'
   argument: 'param'
   returns: 'return'
+  throw: 'throws'
   exception: 'throws'
   fires: 'event'
   constructor: 'construct'
