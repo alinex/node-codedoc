@@ -51,7 +51,7 @@ $min-width = 300px
 
 .sidebar .nav
   list-style: disc;
-  padding-left: 30px;
+  padding-left: 25px;
   &>li
     display: list-item;
     &>a
@@ -74,14 +74,15 @@ $min-width = 300px
       &:hover
         gradient: darken($color-orange, 15);
         color: white;
-    &.level1>a
-      padding-left: 20px;
     &.level2>a
-      padding-left: 25px;
-    &.level3>a
-    &.level4>a
-    &.level5>a
       padding-left: 30px;
+    &.level3>a
+      padding-left: 50px;
+    &.level4>a
+      padding-left: 70px;
+    &.level5>a
+    &.level6>a
+      padding-left: 90px;
 
 @media (min-width: 768px)
   #topnav
@@ -110,6 +111,29 @@ $min-width = 300px
         &.header
         &.active
           display: block
+        &>a
+          padding-left: 15px !important
+        &.level2>a:before
+        &.level3>a:before
+        &.level4>a:before
+        &.level5>a:before
+        &.level6>a:before
+          content: "\2023"
+          font-size: 150%
+          line-height: 10%
+          font-weight: bold
+          padding-right: 10px;
+          display: block;
+          float: left;
+          margin-top: 8px;
+        &.level3>a:before
+          padding-left: 15px;
+        &.level4>a:before
+          padding-left: 30px;
+        &.level5>a:before
+          padding-left: 45px;
+        &.level6>a:before
+          padding-left: 60px;
 
 img.preload
   display: none;

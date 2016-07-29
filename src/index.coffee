@@ -166,7 +166,7 @@ exports.run = (setup, cb) ->
               pages = []
               for p, e of map
                 pages.push
-                  depth: if setup.code then e.parts.length - 1 else 0
+                  depth: if e.parts.length > 1 then e.parts.length - 1 else 0
                   title: e.title
                   path: p
                   link: e.title.replace /^.*?[-:]\s+/, ''
