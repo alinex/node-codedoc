@@ -15,7 +15,7 @@ First things always are the general files:
 
 Next you should add the main headding with some explanation:
 
-```
+``` coffee
 ###
 Controller - Package Main
 =================================================
@@ -53,7 +53,7 @@ External API
 The external API is also put in such doc block comments with some annotation tags
 just before the function definition:
 
-```
+``` coffee
 ###
 @param {object} setup defining the document creation
 - `input` - path to read from
@@ -79,7 +79,7 @@ Internal API
 --------------------------------------------------
 This is wwritten as normal command lines.
 
-```
+``` coffee
 # Sorting the page map is done by generating sort strings for each page from the
 # order in the lists above, the file depth and file name. The keys will be sorted
 # and a new object is generated in this sort order.
@@ -94,3 +94,42 @@ sortMap = (map) ->
 
 The parameter for reversed sorting also shows you how to mark an parameter as optional
 and give it some default values.
+
+
+Tricks and Tips
+--------------------------------------------------
+
+### Problem with name detection
+
+If the system can't autoatically detect the element name you may use the `@name`
+tag to add it yourself:
+
+``` coffee
+###
+@name stat()
+@param {String|Buffer} path local path to check
+@param {function(err, stats)} cb callback which gets an `Error` or a `Stats` object.
+###
+module.exports.stat = memoizee fs.stat
+```
+
+### Parameters partly internal
+
+Sometimes you have methods, which use some additional internal parameters mostly
+in resursive calls. Add them after an `@internal` tag. Everything after this
+tag will be ignored for normal View nut added in the internal documentation generation.
+
+``` coffee
+###
+@param {String} search source path to be searched in
+@param {Object} [options] specifications for check which define which files to list
+@param {function(err, list)} [cb] callback which is called after done with an `Èrror`
+or the complete list of files found as `Àrray`
+@internal The `depth` parameter is only used internally.
+@param {Integer} [depth=0] current depth in file tree
+###
+find = module.exports.find = (source, options, cb , depth = 0 ) ->
+```
+
+It doesn't matter that the different type of tags are scrambled, they will be output
+ordered by type.
