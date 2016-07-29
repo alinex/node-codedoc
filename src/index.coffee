@@ -336,9 +336,9 @@ processFile = (file, local, setup, cb) ->
           catch error
             debugPage chalk.magenta "Could not parse documentation at #{file}: \
             #{chalk.grey util.inspect doc[2]}"
-            debugPage chalk.magenta "caused by #{error.message}"
+            debugPage chalk.magenta "caused by #{error.message}" # at #{error.stack}"
             return cb new Error "Could not parse documentation at #{file}: \
-            #{chalk.grey util.inspect doc[2]}"
+            #{chalk.grey error.message}"
           if pos < doc[0] and setup.code
             # code block before doc
             part = contents[pos..doc[0]]
@@ -464,7 +464,7 @@ optimize = (doc, lang, setup, file) ->
     add = md[match.index+match[0].length..]
     md = if match.index then md[0..match.index-1] + '\n' else ''
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
-      if match = part.match /^@(\S+)\s+/
+      if match = part.match /^@(\S+)\s*/
         name = tagAlias[match[1]] ? match[1]
         spec[name] ?= []
         spec[name].push part[match[0].length..]
@@ -474,12 +474,14 @@ optimize = (doc, lang, setup, file) ->
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
-        if m then [m[1], m[2]] else [null, spec[type]]
+        if m then [m[1], m[2]]
+        else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
   # split some tags further down into name, type and desc
   for type in ['param', 'event']
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+        throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
         if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
           m[2] = details[1]
           # interpret optional and default for params
