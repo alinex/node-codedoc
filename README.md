@@ -94,9 +94,10 @@ report -> Transform
 symbols ..> Transform
 
 folder "Output Directory" as Doc {
-  [html]
+  [index] ..> [html]
   [other]
 }
+Transform -> index
 Transform -> html
 
 node Copy
@@ -119,7 +120,8 @@ and symbols table are filled up, too.
 
 The **transformation** will use the template to make html reports. A table of contents
 will be build out of the pages list and inline `@link` tags will be replaced using the
-symbol table if possible.
+symbol table if possible. An index will also be created redirecting to the first page of
+documentation.
 
 Resources like images, html or stylesheets will be **copied** directly to the output folder.
 Because you may refer to them directly from your documentation.
