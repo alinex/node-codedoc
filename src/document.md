@@ -254,3 +254,8 @@ name to declare it as optional and you add an equal sign and default value if yo
 These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).
+
+### Include Inline Images
+
+Through a small trick you may add images as inline data. Add them as local file link
+`file://...` and the report component will embed them.

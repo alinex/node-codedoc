@@ -111,17 +111,21 @@ $$$
 
 Which files to use firstly depends on the selection of the input folder and the
 filter conditions. These filter conditions can be set indirectly using the `.docignore`
-or `.gitignore` files.
+or `.gitignore` files or be given in the API.
 
 All files matching this conditions will be **analyzed**. Depending if you generate the normal
-view or the developer view document elements are extracted. If something is found
+view or the developer view document elements are extracted. Therefore the predefined
+language syntax is used. If some document parts are found
 a report will be generated containing the documentation in markdown format and the page list
 and symbols table are filled up, too.
 
-The **transformation** will use the template to make html reports. A table of contents
-will be build out of the pages list and inline `@link` tags will be replaced using the
-symbol table if possible. An index will also be created redirecting to the first page of
-documentation.
+The **transformation** will use the user definable template to make html reports.
+A table of contents will be build out of the pages list and inline `@link` tags
+will be replaced using the symbol table if possible. An index will also be created
+redirecting to the first page of documentation. Each html page will be standalone
+with all neccessary javascript, css and svg included. Only resources which are
+coming through the template (some CDN resources in the default) and the images
+you added as relative links are linked.
 
 Resources like images, html or stylesheets will be **copied** directly to the output folder.
 Because you may refer to them directly from your documentation.
