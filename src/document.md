@@ -239,12 +239,16 @@ Signature Line
     - `@license` license for this part
 
 Other Specialities
-:   - '@describe', `@description` adds some more description after the API specification
+:   - `@describe`, `@description` adds some more description after the API specification
     - `@internal` - lets you add some text at the bottom which is only displayed in
       codeview (use it in normal doc comments)
 
-The `@todo` format also allows to easily define optional parameters and default values:
-`@todo {integer} [max=5] maximum number of...`. You add square brackets to the variable
+Internal Tags
+:   - `@link` allows short linking to other pages in this doocumentation by using the
+      symbol name (heading of code) or the filename (from source) with optional anchor.
+
+The `@param` format also allows to easily define optional parameters and default values:
+`@param {integer} [max=5] maximum number of...`. You add square brackets to the variable
 name to declare it as optional and you add an equal sign and default value if you want.
 
 These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.

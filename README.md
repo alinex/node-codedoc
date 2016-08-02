@@ -60,6 +60,65 @@ As I sometimes also read documentation about the internal structure and API I ad
 another mode called code view which is designed for the internal module developer.
 
 
+Workflow
+-------------------------------------------------
+
+$$$ plantuml {.right}
+interface "CodeDoc" as CLI
+
+folder "Input Directory" as Source {
+  [Markdown]
+  [CODE]
+  [resources]
+}
+
+node Analyze
+CLI -> Analyze
+Markdown -> Analyze
+CODE -> Analyze
+[languages] ..> Analyze
+
+package Data {
+  [pages]
+  [report]
+  [symbols]
+}
+Analyze ..> pages
+Analyze -> report
+Analyze ..> symbols
+
+node Transform
+[template] -> Transform
+pages ..> Transform
+report -> Transform
+symbols ..> Transform
+
+folder "Output Directory" as Doc {
+  [html]
+  [other]
+}
+Transform -> html
+
+node Copy
+resources -> Copy
+Copy -> other
+
+skinparam node {
+	backgroundColor peachpuff
+}
+$$$
+
+All files in the input directory matching the possible given filter or rules in
+`.docignore` or `.gitignore` are analyzed. This generates reports for each file
+with some content and also fills up the page list and symbol table to be used later.
+
+The transformation will use the template to make html reports. A table of contents
+will be build out of the pages list and inline `@link` tags will be replaced using the
+symbol table if possible.
+
+Resources will be copied directly to the output folder.
+
+
 Install
 -------------------------------------------------
 
