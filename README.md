@@ -95,7 +95,7 @@ symbols ..> Transform
 
 folder "Output Directory" as Doc {
   [index] ..> [html]
-  [other]
+  [other] <.. [html]
 }
 Transform -> index
 Transform -> html
