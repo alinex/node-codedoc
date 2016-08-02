@@ -88,7 +88,7 @@ Analyze -> report
 Analyze ..> symbols
 
 node Transform
-[template] -> Transform
+[template] ..> Transform
 pages ..> Transform
 report -> Transform
 symbols ..> Transform
@@ -108,15 +108,21 @@ skinparam node {
 }
 $$$
 
-All files in the input directory matching the possible given filter or rules in
-`.docignore` or `.gitignore` are analyzed. This generates reports for each file
-with some content and also fills up the page list and symbol table to be used later.
+Which files to use firstly depends on the selection of the input folder and the
+filter conditions. These filter conditions can be set indirectly using the `.docignore`
+or `.gitignore` files.
 
-The transformation will use the template to make html reports. A table of contents
+All files matching this conditions will be **analyzed**. Depending if you generate the normal
+view or the developer view document elements are extracted. If something is found
+a report will be generated containing the documentation in markdown format and the page list
+and symbols table are filled up, too.
+
+The **transformation** will use the template to make html reports. A table of contents
 will be build out of the pages list and inline `@link` tags will be replaced using the
 symbol table if possible.
 
-Resources will be copied directly to the output folder.
+Resources like images, html or stylesheets will be **copied** directly to the output folder.
+Because you may refer to them directly from your documentation.
 
 
 Install
