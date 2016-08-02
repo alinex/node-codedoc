@@ -4,6 +4,7 @@ Controller - API Usage
 This module is used as the base API. If you load the package you will get a reference
 to the exported methods, here. Also the CLI works through this API.
 
+
 Workflow
 -------------------------------------------------
 
@@ -66,6 +67,7 @@ chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
 isBinaryFile = require 'isbinaryfile'
+uslug = require 'uslug'
 # include alinex modules
 util = require 'alinex-util'
 fs = require 'alinex-fs'
@@ -79,6 +81,7 @@ language = require './language'
 # -------------------------------------------------
 PARALLEL = 10
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
+
 
 ###
 Initialize Module
@@ -131,6 +134,7 @@ exports.run = (setup, cb) ->
   setup.find ?= {}
   setup.find.type = 'file'
   setup.brand ?= 'alinex'
+  symbols = {} # document wide collection
   # start converting
   fs.mkdirs setup.output, (err) ->
     return cb err if err
@@ -144,12 +148,13 @@ exports.run = (setup, cb) ->
           map = {}
           async.eachLimit list, PARALLEL, (file, cb) ->
             p = file[setup.input.length..]
-            processFile file, p, setup, (err, report) ->
+            analyzeFile file, p, setup, symbols, (err, report) ->
               if err
                 return cb err if err instanceof Error
                 return cb() # no real problem but abort
               map[p] =
                 report: report
+                source: file
                 dest: "#{setup.output}#{p}.html"
                 parts: p[1..].toLowerCase().split /\//
                 title: report.getTitle() ? p[1..]
@@ -172,8 +177,10 @@ exports.run = (setup, cb) ->
                   link: e.title.replace /^.*?[-:]\s+/, ''
                   url: "#{path.relative path.dirname(name), p}.html"
                   active: p is name
-              # convert to html
+              # replace inline tags
               file = map[name]
+              inlineTags file.report, file.source, symbols, pages
+              # convert to html
               file.report.toHtml
                 style: 'codedoc'
                 context:
@@ -252,13 +259,15 @@ createIndex = (dir, link, cb) ->
       </html>
       """, cb
 
-# Process a single file and get it's report back.
+# Analyze a single file and get it's report back.
 #
 # @param {string} file absolute path of file to analyze
 # @param {string} local local path, absolute from input directory
 # @param {object} setup setup configuration from `run()` method
+# @param {object} symbol map to fill with code symbols as `[file, anchor]` to
+# resolve links later
 # @param {function(err, report)} cb callback which is called with error or `Report` instance
-processFile = (file, local, setup, cb) ->
+analyzeFile = (file, local, setup, symbols, cb) ->
   async.waterfall [
     # get file
     (cb) ->
@@ -332,7 +341,7 @@ processFile = (file, local, setup, cb) ->
         for doc in docs
           # doc optimizations
           try
-            optimize doc, lang.tags, setup, file
+            tags doc, lang.tags, setup, file, symbols
           catch error
             debugPage chalk.magenta "Could not parse documentation at #{file}: \
             #{chalk.grey util.inspect doc[2]}"
@@ -453,14 +462,16 @@ tagAlias =
 # @param {array} doc markdown document as read from file with: startpos, endpos, doc, codeline
 # @param {object} lang language definition structure from [language.coffee](language.coffee)
 # @param {object} setup setup configuration from [`run()`](#run) method
-# @param {file} [file] file name used only for page specific analyzation in development
-optimize = (doc, lang, setup, file) ->
+# @param {file} file file name used for relative link creation
+# @param {object} symbol map to fill with code symbols as `[file, anchor]` to
+# resolve links later
+tags = (doc, lang, setup, file, symbols) ->
   return unless lang
   md = doc[2]
   code = doc[3]
   # extract tags
   spec = {}
-  if match = md.match /(?:(?:\n|[ \t\r]){2,}|\s*)(?=@)/
+  if match = md.match /(?:(?:\n|[ \t\r]){2,})\s*(?=@)/
     add = md[match.index+match[0].length..]
     md = if match.index then md[0..match.index-1] + '\n' else ''
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
@@ -488,14 +499,17 @@ optimize = (doc, lang, setup, file) ->
           m[3] = "optional #{m[3] ? ''}"
           m[3] += " (default: #{details[2]})" if details[2]
         if m then [m[1], m[2], m[3]] else [null, spec[type]]
+  # tags spec with auto detect
+  if lang.access and not spec.access
+    spec.access = [access] if access = lang.access code
   # get title
   title = if lang.title then lang.title code else code
   if spec.name
     for e in spec.name
       title = e
-  # optimize spec with auto detect
-  if lang.access and not spec.access
-    spec.access = [access] if access = lang.access code
+  # register in symbol table
+  if title
+    symbols[title] = [ file, uslug title ]
   # deprecation warning
   if spec.deprecated
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
@@ -565,12 +579,35 @@ optimize = (doc, lang, setup, file) ->
   md += "\n#{spec.description.join ' '}\n" if spec.description
   if spec.internal and setup.code
     md += "\n#{spec.internal.join ' '}\n"
-  # replace inline tags
-
-  # {@link}
-
   # add heading 3 if not there
   if title and not md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
     md = "### #{title}\n\n#{md}"
   # store changes
   doc[2] = md
+
+# @param {Report} report to replace inline tags within markdown
+# @param {file} file file name used for relative link creation
+# @param {Object} symbols map as `[file, anchor]` to resolve links
+# @param {Array} pages list of pages from table of contents
+inlineTags = (report, file, symbols, pages) ->
+  # find inline tags
+  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/, (source, tag, link, text) ->
+    switch tag
+      when 'link'
+        # check for symbol
+        if symbols[link]
+          url = path.relative path.dirname(file), "#{symbols[link][0]}.html"
+          url += "##{symbols[link][1]}"
+          "[`#{text ? link}`](#{url})"
+        # check for file
+        else
+          [link, anchor] = link.split /#/
+          found = []
+          .concat pages.filter (e) -> ~e.path.indexOf link
+          .concat pages.filter (e) -> link is path.basename e.path
+          if found
+            text ?= found[0].title
+            url = found[0].url
+          "[#{text ? link}](#{url ? link}#{if anchor then '#' + anchor else ''})"
+      else
+        source

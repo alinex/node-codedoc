@@ -60,6 +60,73 @@ As I sometimes also read documentation about the internal structure and API I ad
 another mode called code view which is designed for the internal module developer.
 
 
+Workflow
+-------------------------------------------------
+
+$$$ plantuml {.right}
+interface "CodeDoc" as CLI
+
+folder "Input Directory" as Source {
+  [Markdown]
+  [CODE]
+  [resources]
+}
+
+node Analyze
+CLI -> Analyze
+Markdown -> Analyze
+CODE -> Analyze
+[languages] ..> Analyze
+
+package Data {
+  [pages]
+  [report]
+  [symbols]
+}
+Analyze ..> pages
+Analyze -> report
+Analyze ..> symbols
+
+node Transform
+[template] ..> Transform
+pages ..> Transform
+report -> Transform
+symbols ..> Transform
+
+folder "Output Directory" as Doc {
+  [index] ..> [html]
+  [other] <.. [html]
+}
+Transform -> index
+Transform -> html
+
+node Copy
+resources -> Copy
+Copy -> other
+
+skinparam node {
+	backgroundColor peachpuff
+}
+$$$
+
+Which files to use firstly depends on the selection of the input folder and the
+filter conditions. These filter conditions can be set indirectly using the `.docignore`
+or `.gitignore` files.
+
+All files matching this conditions will be **analyzed**. Depending if you generate the normal
+view or the developer view document elements are extracted. If something is found
+a report will be generated containing the documentation in markdown format and the page list
+and symbols table are filled up, too.
+
+The **transformation** will use the template to make html reports. A table of contents
+will be build out of the pages list and inline `@link` tags will be replaced using the
+symbol table if possible. An index will also be created redirecting to the first page of
+documentation.
+
+Resources like images, html or stylesheets will be **copied** directly to the output folder.
+Because you may refer to them directly from your documentation.
+
+
 Install
 -------------------------------------------------
 
