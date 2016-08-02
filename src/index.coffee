@@ -545,20 +545,20 @@ tags = (doc, lang, setup, file, symbols) ->
   if spec.return
     md += "\nReturn\n:   "
     md += "`#{e[0]}` - " if e[0]
-    md += "#{e[1].replace '\n', '      \n'}\n"
+    md += "#{e[1].replace '\n', '\n      '}\n"
   if spec.throws
     md += "\nThrows\n:   "
     for e in spec.throws
       md += "- "
       md += "`#{e[0]}` - " if e[0]
-      md += "#{e[1].replace '\n', '      \n'}\n    "
+      md += "#{e[1].replace '\n', '\n      '}\n    "
   if spec.event
     md += "\nEvent\n:   "
     for e in spec.event
       md += "- "
       md += "`#{e[1]}` - " if e[1]
       md += "`#{e[0]}` - " if e[0]
-      md += "#{e[2].replace '\n', '      \n'}\n    "
+      md += "#{e[2].replace '\n', '\n      '}\n    "
   if spec.see
     md += "\nSee also\n:   "
     for e in spec.see
