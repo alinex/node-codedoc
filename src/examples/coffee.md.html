@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Writing Docs</title>
+    <title>Example: CoffeeScript</title>
     <meta name="HandheldFriendly" content="true" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -73,388 +73,142 @@
 <gcse:searchresults-only></gcse:searchresults-only>
 
           <p><ul class="table-of-contents" aria-hidden="true"><header>Index</header>
-<li><a href="#where-to-write-documentation">Where to write documentation?</a>
+<li><a href="#main-documentation">Main Documentation</a></li>
+<li><a href="#external-api">External API</a></li>
+<li><a href="#internal-api">Internal API</a></li>
+<li><a href="#tricks-and-tips">Tricks and Tips</a>
 <ul>
-<li><a href="#extra-documents">Extra Documents</a></li>
-<li><a href="#code-documentation">Code Documentation</a></li>
-<li><a href="#exclude-block">Exclude Block</a>
-<ul>
-<li><a href="#hash-doc-fixture">Hash Doc Fixture</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#how-to-write">How to Write?</a>
-<ul>
-<li><a href="#first-heading">First Heading</a></li>
-<li><a href="#extended-markdown">Extended Markdown</a></li>
-<li><a href="#automatic-headings-in-code">Automatic Headings in Code</a></li>
-<li><a href="#use-of-tags">Use of Tags</a></li>
-<li><a href="#possible-tags">Possible Tags</a></li>
-<li><a href="#include-inline-images">Include Inline Images</a></li>
+<li><a href="#problem-with-name-detection">Problem with name detection</a></li>
+<li><a href="#parameters-partly-internal">Parameters partly internal</a></li>
 </ul>
 </li>
 <li class="sidebar"><a href="#further-pages">Further Pages</a></li></ul>
-</p><h1 id="writing-docs">Writing Docs</h1>
-<p>To use codedoc you have to write your documentation into <strong>documentation files</strong>
-or/and <strong>within the code</strong> as comment blocks. The format should be <strong>simple or extended
-markdown</strong> maybe with jsDoc/JavaDoc like annotations.</p>
-<h2 id="where-to-write-documentation">Where to write documentation?</h2>
-<h3 id="extra-documents">Extra Documents</h3>
-<p>If you write some documents into separate files name them with a markdown extension
-of <code>*.md</code> like:</p>
-<pre><code>README.md
-Changelog.md
-</code></pre>
-<h3 id="code-documentation">Code Documentation</h3>
-<p>Additionally you can document within the code. That allows you to edit your documentation
-where it belongs to and to also make an API documentation.</p>
-<p>You have the possibility between three types of documenttation:</p>
+</p><h1 id="example-coffeescript">Example: CoffeeScript</h1>
+<blockquote>
+<p>In the following examples I will use code from the codedoc package. But it is slightly
+changed to see more of the possibilities.</p>
+</blockquote>
+<h2 id="main-documentation">Main Documentation</h2>
+<p>First things always are the general files:</p>
 <ul>
-<li>
-<p><strong>Documentation and external API</strong></p>
-<p>This is a top level documentation which goes always into the documentation. Write
-it in the language specific doc comment style.</p>
-</li>
-<li>
-<p><strong>Internal API</strong></p>
-<p>This is normally ignored in the documentation creation. Only in the 'code view’
-this will be displayed alongside the code itself. The style will be the same as
-for external API. It is written as block comment.</p>
-</li>
-<li>
-<p><strong>Code Comments</strong></p>
-<p>And at last you may use normal single line comments in the language which won’t be
-extracted but shown highlighted within the code view.</p>
-</li>
+<li><a href="https://raw.githubusercontent.com/alinex/node-codedoc/master/README.md">README.md</a> - <br />
+the index page in markdown</li>
+<li><a href="https://raw.githubusercontent.com/alinex/node-codedoc/master/Changelog.md">Changelog.md</a> - <br />
+the changes per each version</li>
 </ul>
-<p>The concrete style for each type of comment differs on the used language. See the
-following examples for CoffeeScript and JavaScript:</p>
-<pre class="language javascript"><header>JavaScript Code</header><code><span class="hljs-comment">/**</span></code>
-<code><span class="hljs-comment"> *  Document comment for general documentation or to document external API.</span></code>
-<code><span class="hljs-comment"> */</span></code>
-<code></code>
-<code> <span class="hljs-comment">/*</span></code>
-<code><span class="hljs-comment">  *  Document comment for internal function</span></code>
-<code><span class="hljs-comment">  */</span></code>
-<code>x = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</code>
-<code>  <span class="hljs-comment">// inline code comment</span></code>
-<code>  <span class="hljs-comment">/* as single line it's the same */</span></code>
-<code>}</code></pre>
+<p>Next you should add the main headding with some explanation:</p>
 <pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
-<code><span class="hljs-comment">Document comment for general documentation or to document external API.</span></code>
+<code><span class="hljs-comment">Controller - Package Main</span></code>
+<code><span class="hljs-comment">=================================================</span></code>
+<code><span class="hljs-comment">This module is used as the base API. If you load the package you will get a reference</span></code>
+<code><span class="hljs-comment">to the exported methods, here. Also the CLI works through this API.</span></code>
+<code><span class="hljs-comment">###</span></code></pre>
+<p>Next maybe some more explanation as subheadings with detailed description, graphs and
+overall examples:</p>
+<pre><code>Workflow
+<span class="hljs-comment">-------------------------------------------------</span>
+
+The following graph will show you <span class="hljs-keyword">the</span> basic steps <span class="hljs-keyword">in</span> creating <span class="hljs-keyword">the</span> documentation:
+
+&gt; Plantuml is cut out <span class="hljs-built_in">to</span> make example shorter!
+
+<span class="hljs-comment">#3 Sorting</span>
+
+The <span class="hljs-built_in">file</span> links are sorted <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> natural way. This is <span class="hljs-built_in">from</span> <span class="hljs-built_in">upper</span> <span class="hljs-built_in">to</span> <span class="hljs-built_in">lower</span> <span class="hljs-built_in">directories</span>
+<span class="hljs-keyword">and</span> alphabetically but <span class="hljs-keyword">with</span> some defined orders. This means that <span class="hljs-string">'index.*'</span> always
+comes <span class="hljs-keyword">before</span> <span class="hljs-string">'README.md'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> other <span class="hljs-built_in">files</span>.
+<span class="hljs-comment">###</span>
+</code></pre>
+<p>As you see above the <code>#3</code>-heading syntax is special an no propper markup, it should be
+<code>###</code> but because this will collide with the doc block delimiter we use a special syntax
+here.</p>
+<h2 id="external-api">External API</h2>
+<p>The external API is also put in such doc block comments with some annotation tags
+just before the function definition:</p>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
+<code><span class="hljs-comment">@param {object} setup defining the document creation</span></code>
+<code><span class="hljs-comment">- `input` - path to read from</span></code>
+<code><span class="hljs-comment">- `òutput`- output directory to store to</span></code>
+<code><span class="hljs-comment">- `find` - source search pattern</span></code>
+<code><span class="hljs-comment">  - `include` - files to include see [alinex-fs](https://alinex.github.io/node-fs)</span></code>
+<code><span class="hljs-comment">  - `exclude` - files to exclude see [alinex-fs](https://alinex.github.io/node-fs)</span></code>
+<code><span class="hljs-comment">- `brand` - branding name to remove from automatic titles</span></code>
+<code><span class="hljs-comment">- `verbose` - level of verbose mode</span></code>
+<code><span class="hljs-comment">@param {function(err)} cb function to be called after done</span></code>
 <code><span class="hljs-comment">###</span></code>
-<code></code>
+<code>exports.run = <span class="hljs-function"><span class="hljs-params">(setup, cb)</span> -&gt;</span></code>
+<code>  <span class="hljs-comment"># set up system</span></code>
+<code>  setup.input = path.resolve setup.input ? <span class="hljs-string">'.'</span></code>
+<code>  <span class="hljs-comment"># code goes on...</span></code></pre>
+<p>As there is no heading it will be auto created as ‘run()’ from the first code line.
+As you see there are alos some parameter described.</p>
+<h2 id="internal-api">Internal API</h2>
+<p>This is wwritten as normal command lines.</p>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment"># Sorting the page map is done by generating sort strings for each page from the</span></code>
+<code><span class="hljs-comment"># order in the lists above, the file depth and file name. The keys will be sorted</span></code>
+<code><span class="hljs-comment"># and a new object is generated in this sort order.</span></code>
 <code><span class="hljs-comment">#</span></code>
-<code><span class="hljs-comment"># Document comment for internal function</span></code>
-<code><span class="hljs-comment">#</span></code>
-<code><span class="hljs-function"><span class="hljs-title">x</span> = -&gt;</span></code>
-<code>  <span class="hljs-comment"># inline code comment</span></code></pre>
-<p>See the following table for the detected styles per each language.</p>
-<p>Like in the above languages a lot of other ones are supported, too:</p>
-<table>
-<thead>
-<tr>
-<th>Language</th>
-<th>Doc Comment</th>
-<th>Internal API <sup>1</sup></th>
-<th>Code Comments <sup>2</sup></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CoffeeScript</td>
-<td>### … ###</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>JavaScript</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>LiveScript</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Ruby</td>
-<td>=begin … =end</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>Python</td>
-<td>### + #… lines</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>Perl</td>
-<td>=pod … =cut</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>C, C++, c#</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Java, JSP</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Groovy</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>PHP</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Bash</td>
-<td>### + #… lines</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>YAML</td>
-<td>### + #… lines</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>SCSS</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Stylus, CSS, Less</td>
-<td>/** … */</td>
-<td>/<em>…</em>/, // …</td>
-<td>//… or /<em>…</em>/</td>
-</tr>
-<tr>
-<td>Makefile</td>
-<td>### + #… lines</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-<tr>
-<td>Apache</td>
-<td>### + #… lines</td>
-<td>#…</td>
-<td>#…</td>
-</tr>
-</tbody>
-</table>
-<p><sup>1</sup> Internal API always need multiple contineous comment lines<br />
-<sup>2</sup> Inline comments are the same as internal API but have only one line</p>
-<p>As you see we use the language specific styles here and most languages also use the
-same style.</p>
-<h3 id="exclude-block">Exclude Block</h3>
-<p>If you want a comment block in your code but not in the documentation you can do just
-this by adding an exclamation mark after the opening block syntax:</p>
-<ul>
-<li>Hash Docs: <code>###! ... ###</code></li>
-<li>Hash API: <code>#! ... #</code></li>
-<li>C Doc: <code>/**! ... */</code></li>
-<li>C API: <code>/*! ... */</code></li>
-</ul>
-<h4 id="hash-doc-fixture">Hash Doc Fixture</h4>
-<p>In hash block comments a triple hash ‘###’ is the end of the doc comment
-so it cant be used as it’s markdown format for a heading level 3. As workarround
-you may use ‘#3…’ which is no standard markdown but works here. The same goes
-with the other deeper headings level 4, 5 and 6.</p>
-<h2 id="how-to-write">How to Write?</h2>
-<p>You write your documentation in the <strong>markdown</strong> format which is nearly as writing it
-in pure text down. For the simplest styles you won’t have to know anything, just
-write it down.</p>
-<blockquote>
-<p>See my own short examples about <strong><a href="https://alinex.github.io/develop/lang/markdown.html">Markdown Syntax</a></strong>
-as an example.</p>
-</blockquote>
-<h3 id="first-heading">First Heading</h3>
-<p>The first heading in each document will be the page title and also the name in the
-menu list. So think of a good headline at least for the first heading.</p>
-<p>To make menu entries more compact the heading will be split on ': ’ and ’ - ’ in
-parts and only the last part is used as menu entry.</p>
-<h3 id="extended-markdown">Extended Markdown</h3>
-<p>But to get more out of it look into the description of
-<a href="https://alinex.github.io/node-report">alinex-report</a> for examples and a detailed
-descriptions of the basic styles as well as extended formats like:</p>
-<ul>
-<li><a href="https://alinex.github.io/node-report/README.md.html#table">tables</a></li>
-<li><a href="https://alinex.github.io/node-report/README.md.html#font-awesome">fontawesome</a></li>
-<li><a href="https://alinex.github.io/node-report/README.md.html#charts">charts</a></li>
-<li><a href="https://alinex.github.io/node-report/README.md.html#plantuml">UML diagrams</a> using (plantuml)</li>
-<li><a href="https://alinex.github.io/node-report/README.md.html#report-elements">and more…</a></li>
-</ul>
-<h3 id="automatic-headings-in-code">Automatic Headings in Code</h3>
-<p>If in programing language files a line of code will follow directly the documentation
-block it will be used as heading. The heading will be of level 3 but only added if
-no heading level 1-3 is already included.</p>
-<h3 id="use-of-tags">Use of Tags</h3>
-<p>Additionally you can use the default <code>@xxx</code>-tags from jsDoc/JavaDoc to document your
-code. They will be replaced with properly formated description.</p>
-<p>Not all possible tags are supported because this tool won’t do a real language agnostic
-parsing and therefore mostly code independent tags are supported.<br />
-To use them you have to add them at the start or separated by an empty line from the
-heading markdown. See the examples below:</p>
-<ul>
-<li><a href="example-coffee.md.html">CoffeeScript</a></li>
-</ul>
-<p>The HTML layout of the additional information should look like:</p>
-<div class="detail">
-<blockquote>
-<p><strong>Usage</strong> private: new method(text, cb)</p>
-</blockquote>
-<dl>
-<dt>Parameter</dt>
-<dd>
-<ul>
-<li>text (string) - text to transform</li>
-<li>cb (function) - callback function</li>
-</ul>
-</dd>
-<dt>Return</dt>
-<dd>(string) transformed text</dd>
-<dt>Throws</dt>
-<dd>
-<ul>
-<li><code>Error</code> - with code 11 if given text is empty</li>
-</ul>
-</dd>
-<dt>Event</dt>
-<dd>
-<ul>
-<li><code>error</code> - if something goes wrong</li>
-<li><code>data</code> - with additional text info</li>
-</ul>
-</dd>
-<dt>See also</dt>
-<dd>
-<ul>
-<li><a href="trim.coffee.html">trim</a> as alternative implementation</li>
-</ul>
-</dd>
-</dl>
-<p>Version 0.1.3 © 2016 Alexander Schilling - License: Apache 2.0</p>
-</div>
-<h3 id="possible-tags">Possible Tags</h3>
-<p>The following list shows the currently supported tags. You will find further information
-to each of them under <a href="http://usejsdoc.org/">JsDoc</a>.</p>
-<dl>
-<dt>Auto Heading</dt>
-<dd>Define the name to be used for the heading if missing.
-<ul>
-<li><code>@name</code> or <code>@alias</code> flags</li>
-<li>alternatively extracted from first code line</li>
-</ul>
-</dd>
-<dt>Deprecation Warning</dt>
-<dd><code>@deprecated</code> flag defines this part as outdated and you should no longer use
-it because it may be removed in the next versions</dd>
-<dt>Usage Line</dt>
-<dd>Specify how to access the code.
-<ul>
-<li><code>@access &lt;string&gt;</code> to give a specific access level</li>
-<li><code>@private</code>, <code>@protected</code>, <code>@public</code> flags as predefined access levels</li>
-<li><code>@static</code> flag to define as static method</li>
-<li><code>@constant</code> flag to define as constant variable</li>
-<li><code>@construct</code>, <code>@constructor</code> flag to define method as constructor</li>
-<li>also the title from the auto heading also if not used there will be used</li>
-<li><code>@param</code> definition of possible parameter names</li>
-</ul>
-</dd>
-<dt>Definition List</dt>
-<dd>Different definitions:
-<ul>
-<li><code>@param</code>, <code>@arg</code>, <code>@argument</code> a method parameter with optional type
-given as: <code>@param {&lt;type&gt;} &lt;name&gt; &lt;description&gt;</code></li>
-<li><code>@return</code>, <code>@returns</code> defining what will be returned
-given as: <code>@return {&lt;type&gt;} &lt;description&gt;</code></li>
-<li><code>@throws</code>, <code>@exception</code> descripe possible excepzions
-given as: <code>@throws {&lt;type&gt;} &lt;description&gt;</code></li>
-<li><code>@event</code>, <code>@fires</code> descripe events to be thrown
-given as: <code>@event {&lt;type&gt;} &lt;name&gt; &lt;description&gt;</code></li>
-<li><code>@see</code> references additional information, use <code>{@link...}</code> within</li>
-</ul>
-</dd>
-<dt>Signature Line</dt>
-<dd>Copyright and legal information which will be displayed as line at the end:
-<ul>
-<li><code>@version</code> specific version</li>
-<li><code>@copyright</code> copyright noticr</li>
-<li><code>@author</code> name and possibly mail link to author and developers</li>
-<li><code>@license</code> license for this part</li>
-</ul>
-</dd>
-<dt>Other Specialities</dt>
-<dd>
-<ul>
-<li><code>@describe</code>, <code>@description</code> adds some more description after the API specification</li>
-<li><code>@internal</code> - lets you add some text at the bottom which is only displayed in
-codeview (use it in normal doc comments)</li>
-</ul>
-</dd>
-<dt>Internal Tags</dt>
-<dd>
-<ul>
-<li><code>@link</code> allows short linking to other pages in this doocumentation by using the
-symbol name (heading of code) or the filename (from source) with optional anchor.</li>
-</ul>
-</dd>
-</dl>
-<p>The <code>@param</code> format also allows to easily define optional parameters and default values:
-<code>@param {integer} [max=5] maximum number of...</code>. You add square brackets to the variable
-name to declare it as optional and you add an equal sign and default value if you want.</p>
-<p>These are mostly based on CoffeeScript and JavaScript, but others will follow if needed.
-Is something missing here? Don’t hestitate and make an issue on the
-<a href="https://github.com/alinex/node-codedoc/issues">GitHub Page</a>.</p>
-<h3 id="include-inline-images">Include Inline Images</h3>
-<p>Through a small trick you may add images as inline data. Add them as local file link
-<code>file://...</code> and the report component will embed them.</p>
+<code><span class="hljs-comment"># @param {object} map map of pages</span></code>
+<code><span class="hljs-comment"># - `parts` is used to calculate the order</span></code>
+<code><span class="hljs-comment"># @param {boolean} [reverse=false] flag for reversed sorting</span></code>
+<code><span class="hljs-comment"># @return {object} the sorted map of pages</span></code>
+<code><span class="hljs-function"><span class="hljs-title">sortMap</span> = <span class="hljs-params">(map)</span> -&gt;</span></code>
+<code>  <span class="hljs-comment"># code goes on...</span></code></pre>
+<p>The parameter for reversed sorting also shows you how to mark an parameter as optional
+and give it some default values.</p>
+<h2 id="tricks-and-tips">Tricks and Tips</h2>
+<h3 id="problem-with-name-detection">Problem with name detection</h3>
+<p>If the system can’t autoatically detect the element name you may use the <code>@name</code>
+tag to add it yourself:</p>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
+<code><span class="hljs-comment">@name stat()</span></code>
+<code><span class="hljs-comment">@param {String|Buffer} path local path to check</span></code>
+<code><span class="hljs-comment">@param {function(err, stats)} cb callback which gets an `Error` or a `Stats` object.</span></code>
+<code><span class="hljs-comment">###</span></code>
+<code><span class="hljs-built_in">module</span>.exports.stat = memoizee fs.stat</code></pre>
+<h3 id="parameters-partly-internal">Parameters partly internal</h3>
+<p>Sometimes you have methods, which use some additional internal parameters mostly
+in resursive calls. Add them after an <code>@internal</code> tag. Everything after this
+tag will be ignored for normal View nut added in the internal documentation generation.</p>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
+<code><span class="hljs-comment">@param {String} search source path to be searched in</span></code>
+<code><span class="hljs-comment">@param {Object} [options] specifications for check which define which files to list</span></code>
+<code><span class="hljs-comment">@param {function(err, list)} [cb] callback which is called after done with an `Èrror`</span></code>
+<code><span class="hljs-comment">or the complete list of files found as `Àrray`</span></code>
+<code><span class="hljs-comment">@internal The `depth` parameter is only used internally.</span></code>
+<code><span class="hljs-comment">@param {Integer} [depth=0] current depth in file tree</span></code>
+<code><span class="hljs-comment">###</span></code>
+<code>find = <span class="hljs-built_in">module</span>.exports.find = <span class="hljs-function"><span class="hljs-params">(source, options, cb , depth = <span class="hljs-number">0</span> )</span> -&gt;</span></code></pre>
+<p>It doesn’t matter that the different type of tags are scrambled, they will be output
+ordered by type.</p>
 
         </div>
         <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
           <h1 id="further-pages">Further Pages</h1>
           <ul class="nav nav-sidebar">
             <li class="header">
-              <a href="../README.md.html">CodeDoc</a>
+              <a href="../../README.md.html">CodeDoc</a>
             </li>
                 <li class="level0">
-                  <a href="../README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
+                  <a href="../../README.md.html" title="Alinex CodeDoc: Readme (/README.md)">Readme</a>
                 </li>
                 <li class="level2">
-                  <a href="man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
-                </li>
-                <li class="active level1">
-                  <a href="document.md.html" title="Writing Docs (/src/document.md)">Writing Docs <span class="sr-only">(current)</span></a>
+                  <a href="../man/codedoc.1.md.html" title="codedoc(1) - Manpage (/src/man/codedoc.1.md)">Manpage</a>
                 </li>
                 <li class="level1">
-                  <a href="template.md.html" title="Templates (/src/template.md)">Templates</a>
+                  <a href="../document.md.html" title="Writing Docs (/src/document.md)">Writing Docs</a>
                 </li>
                 <li class="level1">
-                  <a href="index.coffee.html" title="Controller - API Usage (/src/index.coffee)">API Usage</a>
+                  <a href="../template.md.html" title="Templates (/src/template.md)">Templates</a>
                 </li>
-                <li class="level2">
-                  <a href="examples/coffee.md.html" title="Example: CoffeeScript (/src/examples/coffee.md)">CoffeeScript</a>
+                <li class="level1">
+                  <a href="../index.coffee.html" title="Controller - API Usage (/src/index.coffee)">API Usage</a>
+                </li>
+                <li class="active level2">
+                  <a href="coffee.md.html" title="Example: CoffeeScript (/src/examples/coffee.md)">CoffeeScript <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="level0">
-                  <a href="../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
+                  <a href="../../Changelog.md.html" title="Version changes (/Changelog.md)">Version changes</a>
                 </li>
           </ul>
         </div>
