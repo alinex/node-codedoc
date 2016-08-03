@@ -80,8 +80,7 @@ exports.file = (file, local, setup, symbols, cb) ->
           docs = extractDocs file, content, setup, lang, symbols
         catch error
           debug chalk.magenta "Could not parse documentation at #{file}: \
-          #{chalk.grey util.inspect doc[2]}"
-          debug chalk.magenta "caused by #{error.message}" # at #{error.stack}"
+          #{chalk.grey error.message + error.stack}"
           return cb new Error "Could not parse documentation at #{file}: \
           #{chalk.grey error.message}"
         # create report for undocumented code
@@ -202,117 +201,121 @@ tags = (doc, lang, setup, file, symbols) ->
   md = doc[2]
   code = doc[3]
   # extract tags
-  spec = {}
-  if match = md.match /(?:(?:\n|[ \t\r]){2,})\s*(?=@)/
-    add = md[match.index+match[0].length..]
-    md = if match.index then md[0..match.index-1] + '\n' else ''
-    for part in add.split /(?:\n|[ \t\r])(?=@)/g
-      if match = part.match /^@(\S+)\s*/
-        name = tagAlias[match[1]] ? match[1]
-        spec[name] ?= []
-        spec[name].push part[match[0].length..]
-      break if match[1] is 'internal' and not setup.code
-  # split some tags further down into name and desc
-  for type in ['return', 'throws']
-    if spec[type]
-      spec[type] = spec[type].map (e) ->
-        m = e.match /^(?:\s*\{(.+)\})\s*([\s\S]*)?$/
-        if m then [m[1], m[2]]
-        else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
-  # split some tags further down into name, type and desc
-  for type in ['param', 'event']
-    if spec[type]
-      spec[type] = spec[type].map (e) ->
-        m = e.match /^(?:\s*\{(.+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
-        throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
-        if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
-          m[2] = details[1]
-          # interpret optional and default for params
-          m[3] = "optional #{m[3] ? ''}"
-          m[3] += " (default: #{details[2]})" if details[2]
-        if m then [m[1], m[2], m[3]] else [null, spec[type]]
-  # tags spec with auto detect
-  if lang.access and not spec.access
-    spec.access = [access] if access = lang.access code
-  # get title
-  title = if lang.title then lang.title code else code
-  if spec.name
-    for e in spec.name
-      title = e
-  # register in symbol table
-  if title
-    symbols[title] = [ file, uslug title ]
-  # deprecation warning
-  if spec.deprecated
-    md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
-  # create usage line
-  if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
-  spec.static or spec.construct or spec.param)
-    md += "\n> **Usage:** "
-    if spec.access
-      md += "#{util.array.last spec.access} "
-    else if spec.private
-      md += 'private '
-    else if spec.protected
-      md += 'protected '
-    else if spec.public
-      md += 'public '
-    md += 'static ' if spec.static
-    md += '`'
-    md += 'const ' if spec.constant
-    md += 'new ' if spec.construct
-    md += "#{title}`"
+  try
+    spec = {}
+    if match = md.match /(?:(?:\n|[ \t\r]){2,})\s*(?=@)/
+      add = md[match.index+match[0].length..]
+      md = if match.index then md[0..match.index-1] + '\n' else ''
+      for part in add.split /(?:\n|[ \t\r])(?=@)/g
+        if match = part.match /^@(\S+)\s*/
+          name = tagAlias[match[1]] ? match[1]
+          spec[name] ?= []
+          spec[name].push part[match[0].length..]
+        break if match[1] is 'internal' and not setup.code
+    # split some tags further down into name and desc
+    for type in ['return', 'throws']
+      if spec[type]
+        spec[type] = spec[type].map (e) ->
+          m = e.match /^(?:\s*\{([^}]+)\})\s*([\s\S]*)?$/
+          if m then [m[1], m[2]]
+          else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+    # split some tags further down into name, type and desc
+    for type in ['param', 'event']
+      if spec[type]
+        spec[type] = spec[type].map (e) ->
+          m = e.match /^(?:\s*\{([^}]+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+          throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+          if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
+            m[2] = details[1]
+            # interpret optional and default for params
+            m[3] = "optional #{m[3] ? ''}"
+            m[3] += " (default: #{details[2]})" if details[2]
+          if m then [m[1], m[2], m[3]] else [null, spec[type]]
+    # tags spec with auto detect
+    if lang.access and not spec.access
+      spec.access = [access] if access = lang.access code
+    # get title
+    title = if lang.title then lang.title code else code
+    if spec.name
+      for e in spec.name
+        title = e
+    # register in symbol table
+    if title
+      symbols[title] = [ file, uslug title ]
+    # deprecation warning
+    if spec.deprecated
+      md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
+    # create usage line
+    if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
+    spec.static or spec.construct or spec.param)
+      md += "\n> **Usage:** "
+      if spec.access
+        md += "#{util.array.last spec.access} "
+      else if spec.private
+        md += 'private '
+      else if spec.protected
+        md += 'protected '
+      else if spec.public
+        md += 'public '
+      md += 'static ' if spec.static
+      md += '`'
+      md += 'const ' if spec.constant
+      md += 'new ' if spec.construct
+      md += "#{title}`"
+      if spec.param
+        md = md.replace /(\(\))?`$/, ''
+        md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
+      md += "\n<!-- {p:.api-usage} -->\n"
+    # method definitions
     if spec.param
-      md = md.replace /(\(\))?`$/, ''
-      md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
-    md += "\n<!-- {p:.api-usage} -->\n"
-  # method definitions
-  if spec.param
-    md += "\nParameter\n:   "
-    for e in spec.param
-      md += "- "
-      md += "`#{e[1]}` - " if e[1]
-      md += "`#{e[0]}` - " if e[0]
-      md += "#{e[2].replace '\n', '\n      '}\n    "
-  if spec.return
-    md += "\nReturn\n:   "
-    md += "`#{e[0]}` - " if e[0]
-    md += "#{e[1].replace '\n', '\n      '}\n    "
-  if spec.throws
-    md += "\nThrows\n:   "
-    for e in spec.throws
-      md += "- "
+      md += "\nParameter\n:   "
+      for e in spec.param
+        md += "- "
+        md += "`#{e[1]}` - " if e[1]
+        md += "`#{e[0]}` - " if e[0]
+        md += "#{e[2]?.replace '\n', '\n      '}\n    "
+    if spec.return
+      md += "\nReturn\n:   "
       md += "`#{e[0]}` - " if e[0]
       md += "#{e[1].replace '\n', '\n      '}\n    "
-  if spec.event
-    md += "\nEvent\n:   "
-    for e in spec.event
-      md += "- "
-      md += "`#{e[1]}` - " if e[1]
-      md += "`#{e[0]}` - " if e[0]
-      md += "#{e[2].replace '\n', '\n      '}\n    "
-  if spec.see
-    md += "\nSee also\n:   "
-    for e in spec.see
-      md += "- "
-      md += "#{e.replace '\n', '      \n'}\n    "
-  if spec.param or spec.return or spec.throws or spec.event or spec.see
-    md += "\n<!-- {dl:.api-spec} -->\n"
-  # signature
-  if spec.version or spec.copyright or spec.author or spec.license
-    md += "\n"
-    for type in ['version', 'copyright', 'author']
-      if spec[type]
-        md += "#{spec[type].join ' '} "
-    if spec.license
-      md += "- License: #{spec.license.join ' '} "
-    md += "\n\n<!-- {p:.api-signator} -->\n"
-  # additional text
-  md += "\n#{spec.description.join ' '}\n" if spec.description
-  if spec.internal and setup.code
-    md += "\n#{spec.internal.join ' '}\n"
-  # add heading 3 if not there
-  if title and not md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
-    md = "### #{title}\n\n#{md}"
-  # store changes
-  doc[2] = md
+    if spec.throws
+      md += "\nThrows\n:   "
+      for e in spec.throws
+        md += "- "
+        md += "`#{e[0]}` - " if e[0]
+        md += "#{e[1].replace '\n', '\n      '}\n    "
+    if spec.event
+      md += "\nEvent\n:   "
+      for e in spec.event
+        md += "- "
+        md += "`#{e[1]}` - " if e[1]
+        md += "`#{e[0]}` - " if e[0]
+        md += "#{e[2].replace '\n', '\n      '}\n    "
+    if spec.see
+      md += "\nSee also\n:   "
+      for e in spec.see
+        md += "- "
+        md += "#{e.replace '\n', '      \n'}\n    "
+    if spec.param or spec.return or spec.throws or spec.event or spec.see
+      md += "\n<!-- {dl:.api-spec} -->\n"
+    # signature
+    if spec.version or spec.copyright or spec.author or spec.license
+      md += "\n"
+      for type in ['version', 'copyright', 'author']
+        if spec[type]
+          md += "#{spec[type].join ' '} "
+      if spec.license
+        md += "- License: #{spec.license.join ' '} "
+      md += "\n\n<!-- {p:.api-signator} -->\n"
+    # additional text
+    md += "\n#{spec.description.join ' '}\n" if spec.description
+    if spec.internal and setup.code
+      md += "\n#{spec.internal.join ' '}\n"
+    # add heading 3 if not there
+    if title and not md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
+      md = "### #{title}\n\n#{md}"
+    # store changes
+    doc[2] = md
+  catch error
+    console.error chalk.magenta "Document error: #{error.message} at #{file}:
+    \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
