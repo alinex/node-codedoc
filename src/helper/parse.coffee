@@ -201,50 +201,50 @@ tags = (doc, lang, setup, file, symbols) ->
   md = doc[2]
   code = doc[3]
   # extract tags
+  spec = {}
+  if match = md.match /(?:^|(?:\n|[ \t\r]){2,})\s*(?=@)/
+    add = md[match.index+match[0].length..]
+    md = if match.index then md[0..match.index-1] + '\n' else ''
+    for part in add.split /(?:\n|[ \t\r])(?=@)/g
+      if match = part.match /^@(\S+)\s*/
+        name = tagAlias[match[1]] ? match[1]
+        spec[name] ?= []
+        spec[name].push part[match[0].length..]
+      break if match[1] is 'internal' and not setup.code
+  # split some tags further down into name and desc
+  for type in ['return', 'throws']
+    if spec[type]
+      spec[type] = spec[type].map (e) ->
+        m = e.match /^(?:\s*\{([^}]+)\})\s*([\s\S]*)?$/
+        if m then [m[1], m[2]]
+        else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+  # split some tags further down into name, type and desc
+  for type in ['param', 'event']
+    if spec[type]
+      spec[type] = spec[type].map (e) ->
+        m = e.match /^(?:\s*\{([^}]+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+        throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+        if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
+          m[2] = details[1]
+          # interpret optional and default for params
+          m[3] = "optional #{m[3] ? ''}"
+          m[3] += " (default: #{details[2]})" if details[2]
+        if m then [m[1], m[2], m[3]] else [null, spec[type]]
+  # tags spec with auto detect
+  if lang.access and not spec.access
+    spec.access = [access] if access = lang.access code
+  # get title
+  title = if lang.title then lang.title code else code
+  if spec.name
+    for e in spec.name
+      title = e
+  # register in symbol table
+  if title
+    symbols[title] = [ file, uslug title ]
+  # deprecation warning
+  if spec.deprecated
+    md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
   try
-    spec = {}
-    if match = md.match /(?:(?:\n|[ \t\r]){2,})\s*(?=@)/
-      add = md[match.index+match[0].length..]
-      md = if match.index then md[0..match.index-1] + '\n' else ''
-      for part in add.split /(?:\n|[ \t\r])(?=@)/g
-        if match = part.match /^@(\S+)\s*/
-          name = tagAlias[match[1]] ? match[1]
-          spec[name] ?= []
-          spec[name].push part[match[0].length..]
-        break if match[1] is 'internal' and not setup.code
-    # split some tags further down into name and desc
-    for type in ['return', 'throws']
-      if spec[type]
-        spec[type] = spec[type].map (e) ->
-          m = e.match /^(?:\s*\{([^}]+)\})\s*([\s\S]*)?$/
-          if m then [m[1], m[2]]
-          else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
-    # split some tags further down into name, type and desc
-    for type in ['param', 'event']
-      if spec[type]
-        spec[type] = spec[type].map (e) ->
-          m = e.match /^(?:\s*\{([^}]+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
-          throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
-          if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
-            m[2] = details[1]
-            # interpret optional and default for params
-            m[3] = "optional #{m[3] ? ''}"
-            m[3] += " (default: #{details[2]})" if details[2]
-          if m then [m[1], m[2], m[3]] else [null, spec[type]]
-    # tags spec with auto detect
-    if lang.access and not spec.access
-      spec.access = [access] if access = lang.access code
-    # get title
-    title = if lang.title then lang.title code else code
-    if spec.name
-      for e in spec.name
-        title = e
-    # register in symbol table
-    if title
-      symbols[title] = [ file, uslug title ]
-    # deprecation warning
-    if spec.deprecated
-      md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
     # create usage line
     if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
     spec.static or spec.construct or spec.param)
