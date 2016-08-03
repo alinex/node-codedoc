@@ -273,29 +273,29 @@ tags = (doc, lang, setup, file, symbols) ->
         md += "- "
         md += "`#{e[1]}` - " if e[1]
         md += "`#{e[0]}` - " if e[0]
-        md += "#{e[2]?.replace '\n', '\n      '}\n    "
+        md += "#{e[2]?.replace /\n/g, '\n      '}\n    "
     if spec.return
       md += "\nReturn\n:   "
       md += "`#{e[0]}` - " if e[0]
-      md += "#{e[1].replace '\n', '\n      '}\n    "
+      md += "#{e[1].replace /\n/g, '\n      '}\n    "
     if spec.throws
       md += "\nThrows\n:   "
       for e in spec.throws
         md += "- "
         md += "`#{e[0]}` - " if e[0]
-        md += "#{e[1].replace '\n', '\n      '}\n    "
+        md += "#{e[1].replace /\n/g, '\n      '}\n    "
     if spec.event
       md += "\nEvent\n:   "
       for e in spec.event
         md += "- "
         md += "`#{e[1]}` - " if e[1]
         md += "`#{e[0]}` - " if e[0]
-        md += "#{e[2].replace '\n', '\n      '}\n    "
+        md += "#{e[2].replace /\n/g, '\n      '}\n    "
     if spec.see
       md += "\nSee also\n:   "
       for e in spec.see
         md += "- "
-        md += "#{e.replace '\n', '      \n'}\n    "
+        md += "#{e.replace /\n/g, '      \n'}\n    "
     if spec.param or spec.return or spec.throws or spec.event or spec.see
       md += "\n<!-- {dl:.api-spec} -->\n"
     # signature
@@ -306,7 +306,7 @@ tags = (doc, lang, setup, file, symbols) ->
           md += "#{spec[type].join ' '} "
       if spec.license
         md += "- License: #{spec.license.join ' '} "
-      md += "\n\n<!-- {p:.api-signator} -->\n"
+      md += "\n\n<!-- {p:.api-signature} -->\n"
     # additional text
     md += "\n#{spec.description.join ' '}\n" if spec.description
     if spec.internal and setup.code

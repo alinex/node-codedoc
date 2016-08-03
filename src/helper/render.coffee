@@ -49,7 +49,7 @@ exports.createIndex = (dir, link, cb) ->
 # @param {Array} pages list of pages from table of contents
 exports.inlineTags = (report, file, symbols, pages) ->
   # find inline tags
-  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/, (source, tag, link, text) ->
+  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, link, text) ->
     switch tag
       when 'link'
         # check for symbol
@@ -68,7 +68,7 @@ exports.inlineTags = (report, file, symbols, pages) ->
             url = found[0].url
           "[#{text ? link}](#{url ? link}#{if anchor then '#' + anchor else ''})"
       else
-        source
+        text ? link
 
 # Helper methods
 # --------------------------------------------------------
