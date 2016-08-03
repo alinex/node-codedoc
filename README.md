@@ -138,6 +138,11 @@ Install
  ![Downloads](https://nodei.co/npm-dl/alinex-codedoc.png?months=9&height=3)
 ](https://www.npmjs.com/package/alinex-codedoc)
 
+> See the {@link Changelog.md} for a list of changes in recent versions.
+
+You may use it from the command line as CLI Tool or call it directly through the
+API from your nodeJS code.
+
 ### CLI Tool
 
 Install the package globally using npm:
@@ -165,7 +170,7 @@ Usage
 After global installation you may directly call `codedoc` from anywhere to work
 in the current or defined directory.
 
-See the [man page](src/man/codedoc1.md) for explanation of the command line use
+See the {@link codedoc.1.md} for explanation of the command line use
 and options.
 
 ### API Usage
@@ -221,7 +226,7 @@ codedoc.setup(function(err) {
 });
 ```
 
-Find more information about calling the code documentation in the [API](src/index.coffee).
+Find more information about calling the code documentation in the {@link index.coffee}.
 
 If you want to use your own style templates within your app's config directory
 and your already using [alinex-config](https://alinex.github.io/node-config)

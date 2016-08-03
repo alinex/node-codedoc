@@ -49,26 +49,27 @@ exports.createIndex = (dir, link, cb) ->
 # @param {Array} pages list of pages from table of contents
 exports.inlineTags = (report, file, symbols, pages) ->
   # find inline tags
-  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, link, text) ->
+  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
     switch tag
       when 'link'
         # check for symbol
-        if symbols[link]
-          url = path.relative path.dirname(file), "#{symbols[link][0]}.html"
-          url += "##{symbols[link][1]}"
-          "[`#{text ? link}`](#{url})"
+        if symbols[uri]
+          url = path.relative path.dirname(file), "#{symbols[uri][0]}.html"
+          url += "##{symbols[uri][1]}"
+          title = " \"File: #{symbols[uri][0]} Element: #{uri}\""
+          return "[`#{text ? uri}`](#{url + title})"
         # check for file
-        else
-          [link, anchor] = link.split /#/
-          found = []
-          .concat pages.filter (e) -> ~e.path.indexOf link
-          .concat pages.filter (e) -> link is path.basename e.path
-          if found
-            text ?= found[0].title
-            url = found[0].url
-          "[#{text ? link}](#{url ? link}#{if anchor then '#' + anchor else ''})"
-      else
-        text ? link
+        [uri, anchor] = uri.split /#/
+        found = []
+        .concat pages.filter (e) -> ~e.path.indexOf uri
+        .concat pages.filter (e) -> uri is path.basename e.path
+        if found.length
+          text ?= found[0].title ? uri
+          url = found[0].url ? uri
+          title = " \"File: #{uri}\""
+          return "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
+        # default
+        text ? uri
 
 # Helper methods
 # --------------------------------------------------------
