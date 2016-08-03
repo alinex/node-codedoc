@@ -4,6 +4,22 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.1.1 (2016-08-03)
+-------------------------------------------------
+- Upgraded to alinex-report@2.1.10, alinex-builder@2.3.4
+- Fixed multiline tags.
+- Extend documentation.
+- Merge branch 'master' of https://github.com/alinex/node-codedoc
+- Update graph.
+- Add index in doc graph.
+- Update documentation.
+- Add support for inline @link tags.
+- Add more coffee examples.
+- Better error reporting on wrong param tags.
+- Support depth also in general docs (default layout only from level 2).
+- Fixed bug where code was above toc.
+- Add @throw as alias for @throws.
+
 Version 1.1.0 (2016-07-28)
 -------------------------------------------------
 - Add file write retry.
