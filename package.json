@@ -50,7 +50,8 @@
   },
   "devDependencies": {
     "alinex-builder": "^2.3.4",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "rewire": "^2.5.2"
   },
   "optionalDependencies": {},
   "peerDependencies": {},
