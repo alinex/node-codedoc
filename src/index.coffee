@@ -171,7 +171,7 @@ exports.run = (setup, cb) ->
                   active: p is name
               # replace inline tags
               file = map[name]
-              render.inlineTags file.report, file.source, symbols, pages
+              file.report.body = render.inlineTags file.report.body, file.source, symbols, pages
               # convert to html
               file.report.toHtml
                 style: 'codedoc'

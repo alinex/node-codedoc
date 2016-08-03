@@ -43,13 +43,14 @@ exports.createIndex = (dir, link, cb) ->
       </html>
       """, cb
 
-# @param {Report} report to replace inline tags within markdown
+# @param {String} report text to replace inline tags within
 # @param {file} file file name used for relative link creation
 # @param {Object} symbols map as `[file, anchor]` to resolve links
 # @param {Array} pages list of pages from table of contents
+# @return {String} new content
 exports.inlineTags = (report, file, symbols, pages) ->
   # find inline tags
-  report.body = report.body.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
+  report.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
     switch tag
       when 'link'
         # check for symbol
@@ -70,6 +71,17 @@ exports.inlineTags = (report, file, symbols, pages) ->
           return "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
         # default
         text ? uri
+      when 'include'
+        # include file
+        [uri, anchor] = uri.split /#/
+        file = path.absolute path.dirname(file), uri
+        content = fs.readFileSync file, 'UTF8'
+        if anchor
+          [from, to] = anchor.split /\s*-\s*/
+          content = anchor.split(/\n/)[from-1..to-1]
+        # run inlineTags over this, too
+        return exports.inlineTag content, file, symbols, pages
+
 
 # Helper methods
 # --------------------------------------------------------
