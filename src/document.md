@@ -246,9 +246,9 @@ Other Specialities
 Inline Tags
 :   - `@link` allows short linking to other pages in this doocumentation by using the
       symbol name (heading of code) or the filename (from source) with anchor and an
-      optional title: `{@link <symbol> <text>}`.
+      optional title: `{` `@link <symbol> <text>}`.
     - `@include` can be used to include some lines from another source given as
-      filename with optional line reference like: `{@include <file>#<from>-<to>}`
+      filename with optional line reference like: `{` `@include <file>#<from>-<to>}`
 
 The `@param` format also allows to easily define optional parameters and default values:
 `@param {integer} [max=5] maximum number of...`. You add square brackets to the variable

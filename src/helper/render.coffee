@@ -74,7 +74,7 @@ exports.inlineTags = (report, file, symbols, pages) ->
       when 'include'
         # include file
         [uri, anchor] = uri.split /#/
-        file = path.absolute path.dirname(file), uri
+        file = path.resolve path.dirname(file), uri
         content = fs.readFileSync file, 'UTF8'
         if anchor
           [from, to] = anchor.split /\s*-\s*/
