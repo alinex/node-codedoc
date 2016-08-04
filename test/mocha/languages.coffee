@@ -2,7 +2,6 @@ chai = require 'chai'
 expect = chai.expect
 rewire = require 'rewire'
 ### eslint-env node, mocha ###
-util = require 'util'
 fs = require 'alinex-fs'
 path = require 'path'
 
@@ -18,14 +17,19 @@ describe "Languages", ->
     it "should detect language", ->
       test.language file, content, 'coffeescript'
     it "should read doc blocks", (cb) ->
-      test.extractDocs file, content, 1, 2, (err, doc, api) ->
-        console.log doc
+      test.extractDocs file, content, 1, 3, (err, doc, api) ->
+        console.log api
+        expect(api[2][2], 'default title in api#3').to.contain '### myCode()\n'
+        expect(api[2][2], 'auto access in api#3').to.contain '**Usage:** public `myCode()`'
         cb()
     it "should get default view", (cb) ->
       test.report file, false, (err, report, symbols) ->
+        expect(Object.keys(symbols).length, 'symbols length').to.equal 0
         cb()
     it "should get internal view", (cb) ->
       test.report file, true, (err, report, symbols) ->
+        expect(Object.keys(symbols).length, 'symbols length').to.equal 1
+        expect(Object.keys(symbols), 'symbols').to.contain 'myCode()'
         cb()
 
 
@@ -62,9 +66,9 @@ test =
 
   extractDocs: (file, content, numDoc, numApi, cb) ->
     lang = language file, content
-    doc = extractDocs file, content, {}, lang
+    doc = extractDocs file, content, {}, lang, {}
     expect(doc.length, 'found docs').to.equal numDoc
-    api = extractDocs file, content, {code: true}, lang
+    api = extractDocs file, content, {code: true}, lang, {}
     expect(api.length, 'found apis').to.equal numApi
     cb null, doc, api if cb
 
