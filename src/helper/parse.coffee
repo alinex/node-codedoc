@@ -101,10 +101,7 @@ exports.file = (file, local, setup, symbols, cb) ->
               line = content[0..pos].split('\n').length - 1
               report.p Report.style "code: style=\"counter-reset:line #{line}\""
           # add doc block
-          md = doc[2]
-          .replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
-            "#{pre}#{util.string.repeat '#', num}#{post}"
-          .replace /\n\s*?$/, ''
+          md = doc[2].replace /\n\s*?$/, ''
           report.raw "\n#{md}\n\n"
           pos = doc[1]
         if pos < content.length and setup.code
@@ -203,7 +200,7 @@ tags = (doc, lang, setup, file, symbols) ->
   # extract tags
   spec = {}
   if match = md.match /(?:^|(?:\n|[ \t\r]){2,})\s*(?=@)/
-    add = md[match.index+match[0].length..]
+    add = md[match.index+match[0].length..].trim()
     md = if match.index then md[0..match.index-1] + '\n' else ''
     for part in add.split /(?:\n|[ \t\r])(?=@)/g
       if match = part.match /^@(\S+)\s*/

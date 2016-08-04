@@ -18,7 +18,6 @@ describe "Languages", ->
       test.language file, content, 'coffeescript'
     it "should read doc blocks", (cb) ->
       test.extractDocs file, content, 1, 3, (err, doc, api) ->
-        console.log api
         expect(api[2][2], 'default title in api#3').to.contain '### myCode()\n'
         expect(api[2][2], 'auto access in api#3').to.contain '**Usage:** public `myCode()`'
         cb()

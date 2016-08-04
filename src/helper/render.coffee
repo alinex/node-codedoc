@@ -10,6 +10,12 @@ debug = require('debug') 'codedoc'
 path = require 'path'
 # include alinex modules
 fs = require 'alinex-fs'
+util = require 'alinex-util'
+
+
+# Setup
+# -------------------------------------------------
+STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 
 # Exported Methods
@@ -48,9 +54,12 @@ exports.createIndex = (dir, link, cb) ->
 # @param {Object} symbols map as `[file, anchor]` to resolve links
 # @param {Array} pages list of pages from table of contents
 # @return {String} new content
-exports.inlineTags = (report, file, symbols, pages) ->
+exports.optimize = (report, file, symbols, pages) ->
   # find inline tags
-  report.replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
+  report
+  .replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
+    "#{pre}#{util.string.repeat '#', num}#{post}"
+  .replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
     switch tag
       when 'link'
         # check for symbol
@@ -82,6 +91,25 @@ exports.inlineTags = (report, file, symbols, pages) ->
         # run inlineTags over this, too
         return exports.inlineTag content, file, symbols, pages
 
-
-# Helper methods
-# --------------------------------------------------------
+# @param {Object} file file information with report
+# @param {String} moduleName name of the complete documentation project
+# @param {Array} pages list of pages from table of contents
+# @param {function(err)} cb callback if done or error occured
+exports.writeHtml = (file, moduleName, pages, cb) ->
+  file.report.toHtml
+    style: 'codedoc'
+    context:
+      moduleName: moduleName
+      pages: pages
+  , (err, html) ->
+    html = html
+    .replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
+    , '<li class="sidebar"><a href="#further-pages">Further Pages</a></li>$1'
+    .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
+      if link.length is 0 or link.match STATIC_FILES
+        "href=\"#{link}#{end}" # keep link
+      else
+        "href=\"#{link}.html#{end}" # add .html
+    fs.mkdirs path.dirname(file.dest), (err) ->
+      return cb err if err
+      fs.writeFile file.dest, html, 'utf8', cb

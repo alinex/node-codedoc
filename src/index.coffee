@@ -69,7 +69,7 @@ parse = require './helper/parse'
 render = require './helper/render'
 
 
-# Configuration
+# Setup
 # -------------------------------------------------
 PARALLEL = 10
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
@@ -169,27 +169,10 @@ exports.run = (setup, cb) ->
                   link: e.title.replace /^.*?[-:]\s+/, ''
                   url: "#{path.relative path.dirname(name), p}.html"
                   active: p is name
-              # replace inline tags
-              file = map[name]
-              file.report.body = render.inlineTags file.report.body, file.source, symbols, pages
               # convert to html
-              file.report.toHtml
-                style: 'codedoc'
-                context:
-                  moduleName: moduleName
-                  pages: pages
-              , (err, html) ->
-                html = html
-                .replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
-                , '<li class="sidebar"><a href="#further-pages">Further Pages</a></li>$1'
-                .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
-                  if link.length is 0 or link.match STATIC_FILES
-                    "href=\"#{link}#{end}" # keep link
-                  else
-                    "href=\"#{link}.html#{end}" # add .html
-                fs.mkdirs path.dirname(file.dest), (err) ->
-                  return cb err if err
-                  fs.writeFile file.dest, html, 'utf8', cb
+              file = map[name]
+              file.report.body = render.optimize file.report.body, file.source, symbols, pages
+              render.writeHtml file, moduleName, pages, cb
             , (err) ->
               return cb err if err
               (if setup.verbose then console.log else debug) "check index page"

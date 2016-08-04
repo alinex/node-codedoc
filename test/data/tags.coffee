@@ -1,19 +1,51 @@
 ###
-Example to Test Language
-=================================================
-
-> In this examples different language specifica are used to check for correct
-> language agnostic parsing.
-
-This is a first doc block for general documentation.
+@name test()
 ###
 
-# Internal Code Documentation
-# ------------------------------------------------
-# This documentation is internal and only be used with the code-view.
+###
+@alias other()
+###
 
-# Method for auto code
-# @return {Integer} fixed number
-exports.myCode = ->
-  # This comment should be kept in code
-  return 5
+###
+@deprecated Will be removed in the future.
+###
+
+###
+@name test()
+@access private
+###
+
+###
+@name test()
+@private
+###
+
+###
+@name test()
+@protected
+###
+
+###
+@name test()
+@public
+###
+
+###
+@name test()
+@static
+###
+
+###
+@name test()
+@constant
+###
+
+###
+@name test()
+@construct
+###
+
+###
+@name test()
+@constructor
+###

@@ -216,8 +216,8 @@ Usage Line
     - `@static` flag to define as static method
     - `@constant` flag to define as constant variable
     - `@construct`, `@constructor` flag to define method as constructor
-    - also the title from the auto heading also if not used there will be used
-    - `@param` definition of possible parameter names
+    - also the title from the (auto) heading and the names of `@param` definition
+      of possible parameter names are used
 
 Definition List
 :   Different definitions:
