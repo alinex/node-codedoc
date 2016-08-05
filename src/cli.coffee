@@ -3,10 +3,9 @@
 # This is used only for command line calls to get the parameters and invoke the
 # codedoc generation process.
 
+
 # Node Modules
 # -------------------------------------------------
-
-# include base modules
 yargs = require 'yargs'
 chalk = require 'chalk'
 async = require 'async'
@@ -19,33 +18,33 @@ codedoc = require './index'
 
 # Setup
 # -------------------------------------------------
+# Set the logo for command line output.
 logo = alinex.logo 'Code Documentation Extractor'
 
 
-# Support quiet mode through switch
+# Support Quiet Mode
 # -------------------------------------------------
+# Detect quiet mode before the real initialization starts, to support it just from
+# the beginning. It should run in quiet mode for command completion or if specified so.
 quiet = false
 for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
   quiet = true if a in process.argv
 
 
-# Error management
+# Error Management
 # -------------------------------------------------
+# Initialize default error and signal handling and also add a method for an exit
+# message.
 alinex.initExit()
 process.on 'exit', ->
   console.log "Goodbye\n" unless quiet
 
 
-# Support quiet mode through switch
-# -------------------------------------------------
-quiet = false
-for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
-  quiet = true if a in process.argv
-
-
 # Helper Methods
 # -----------------------------------------------------------
 
+# Read and interpret the exclude list from `.docignore` or `.gitignore` file.
+#
 # @param {string} dir directory to search for ignore files
 # @param {function(err)} cb callback if done or failed
 readExcludes = (dir, cb) ->

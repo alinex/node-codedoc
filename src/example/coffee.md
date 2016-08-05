@@ -27,7 +27,8 @@ to the exported methods, here. Also the CLI works through this API.
 Next maybe some more explanation as subheadings with detailed description, graphs and
 overall examples:
 
-```
+``` coffee
+###
 Workflow
 -------------------------------------------------
 

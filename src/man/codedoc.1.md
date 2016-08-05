@@ -100,8 +100,15 @@ Define Ignores
 To define which files to ignore while parsing for documentation the system will use
 the same format as git in two possible files:
 
-    .docignores
-    .gitignores
+    /.docignores
+    /.gitignores
+
+Only the first file found will be used. It lists files or paths which should be ignored
+for documentation. Each line in that file specifies a pattern.
+- You may specify files or folders.
+- `*` may be used as wildcard
+- If the pattern starts with `/` it is matched from the input folder else anywhere
+  within the path.
 
 The format is more described at [gitignore](https://git-scm.com/docs/gitignore).
 

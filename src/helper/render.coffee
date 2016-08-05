@@ -1,11 +1,11 @@
 # Renderer
 # ================================================
+# Collection of methods used to generate the HTML files out of the reports and
+# structures from parsing. It will create the results on disk.
 
 
 # Node Modules
 # -------------------------------------------------
-
-# include base modules
 debug = require('debug') 'codedoc'
 path = require 'path'
 # include alinex modules

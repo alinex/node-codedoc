@@ -1,5 +1,13 @@
 # Parser
 # ================================================
+# Methods used to get the documentation out of the files and formatted as Markdown.
+# This will
+# - read the file's content
+# - extract the document parts
+# - some autodetection from code
+# - add code as highlight text (in internal view)
+# - interpret @tags
+# - create a complete report per file
 
 
 # Node modules
@@ -18,10 +26,10 @@ Report = require 'alinex-report'
 language = require './language'
 
 
-# Configuration
+# Setup
 # ------------------------------------------------
 
-# #3 Setup alternative Tags
+# #3 Alternative Tag Names
 #
 # These are aliases for other tags, implemented below.
 tagAlias =
@@ -318,6 +326,9 @@ tags = (doc, lang, setup, file, symbols) ->
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
 
+# @param {Array} spec list of tag contents
+# @param {String} title name to display for this spec type
+# @return {String} markdown to add
 tagParamEvent = (spec, title) ->
   md = "\n#{title}\n:   "
   for e in spec

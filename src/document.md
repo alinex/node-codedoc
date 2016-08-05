@@ -110,9 +110,9 @@ this by adding an exclamation mark after the opening block syntax:
 
 #### Hash Doc Fixture
 
-In hash block comments a triple hash '###' is the end of the doc comment
+In hash block comments a triple hash `###` is the end of the doc comment
 so it cant be used as it's markdown format for a heading level 3. As workarround
-you may use '#3...' which is no standard markdown but works here. The same goes
+you may use `#3...` which is no standard markdown but works here. The same goes
 with the other deeper headings level 4, 5 and 6.
 
 
@@ -161,7 +161,7 @@ parsing and therefore mostly code independent tags are supported.
 To use them you have to add them at the start or separated by an empty line from the
 heading markdown. See the examples below:
 
-- [CoffeeScript](example-coffee.md)
+- [CoffeeScript](example/coffee.md)
 
 The HTML layout of the additional information should look like:
 

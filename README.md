@@ -32,7 +32,7 @@ __Read the complete documentation under
 [https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
 <!-- {p: .hide} -->
 
-As an example you can check this documentation:
+As an example you can check this documentation at:
 - [without code](https://alinex.github.io/node-codedoc/README.md.html)
 - [with code](https://alinex.github.io/code-codedoc/README.md.html)
 
@@ -175,7 +175,12 @@ and options.
 
 ### API Usage
 
-You have to include it into your project:
+You have to
+1. include it into your project
+2. call the setup method
+3. call the {@link run()} method
+
+See the following example using CoffeeScript or JavaScript:
 
 ``` coffee
 codedoc = require 'alinex-codedoc'
@@ -228,8 +233,10 @@ codedoc.setup(function(err) {
 
 Find more information about calling the code documentation in the {@link index.coffee}.
 
+### Custom Layout / Style
+
 If you want to use your own style templates within your app's config directory
-and your already using [alinex-config](https://alinex.github.io/node-config)
+and you're already using [alinex-config](https://alinex.github.io/node-config)
 you only have to register the template type on it by putting the following on top:
 
 ``` coffee
