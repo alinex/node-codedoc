@@ -4,6 +4,28 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.0 (2016-08-05)
+-------------------------------------------------
+- Keep coffee-script because used by rewire.
+- Add support for <!-- internal --> marks in markdown.
+- Fix bug with detecting indented doc blocks.
+- Extend documentation.
+- Completed render tags.
+- Make description in @param, @arg, @arguments, @throws, @exception optional.
+- Test some tags.
+- Update test data.
+- Testing of coffee language parsing done.
+- Add test possibility for parsing.
+- Test: language definition and recognition.
+- Create test structure.
+- Add support for {@include ...} tag.
+- Add titles to the inline links.
+- Optimize floating styles.
+- Allow multiple inline tags in report.
+- Fix tag splitting.
+- Fixed tag parser with inline tags and optimized page tree view.
+- Modularize internal code.
+
 Version 1.1.1 (2016-08-03)
 -------------------------------------------------
 - Upgraded to alinex-report@2.1.10, alinex-builder@2.3.4
