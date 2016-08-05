@@ -88,7 +88,6 @@ exports.optimize = (report, file, symbols, pages) ->
         # include file
         [uri, anchor] = uri.split /#/
         inc = path.resolve path.dirname(file), uri
-        console.log 'include', file, inc
         try
           content = fs.readFileSync inc, 'UTF8'
         catch error
