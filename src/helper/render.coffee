@@ -8,6 +8,7 @@
 # -------------------------------------------------
 debug = require('debug') 'codedoc'
 path = require 'path'
+chalk = require 'chalk'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
@@ -86,13 +87,18 @@ exports.optimize = (report, file, symbols, pages) ->
       when 'include'
         # include file
         [uri, anchor] = uri.split /#/
-        file = path.resolve path.dirname(file), uri
-        content = fs.readFileSync file, 'UTF8'
+        inc = path.resolve path.dirname(file), uri
+        console.log 'include', file, inc
+        try
+          content = fs.readFileSync inc, 'UTF8'
+        catch error
+          console.error chalk.magenta "Could not include in #{file}: #{error.message}"
+          content = "@include #{uri}"
         if anchor
           [from, to] = anchor.split /\s*-\s*/
           content = anchor.split(/\n/)[from-1..to-1]
         # run inlineTags over this, too
-        return exports.inlineTag content, file, symbols, pages
+        return exports.optimize content, file, symbols, pages
 
 # @param {Object} file file information with report
 # @param {String} moduleName name of the complete documentation project

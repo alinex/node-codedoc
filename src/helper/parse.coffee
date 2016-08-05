@@ -130,8 +130,6 @@ exports.file = (file, local, setup, symbols, cb) ->
         .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
       else
         report.body.replace /<!--\s*(end )?internal\s*-->/ig, ''
-      if file.match /var/
-        console.log file, report.body
       unless report.body.trim().length
         return cb 'EMPTY'
       # add table of contents and HTML comment mark for later additions
