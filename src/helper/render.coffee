@@ -78,6 +78,9 @@ exports.optimize = (report, file, symbols, pages) ->
           url = found[0].url ? uri
           title = " \"File: #{uri}\""
           return "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
+        # alinex link
+        if m = uri.match /^alinex-(.*)/
+          return "[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
         # default
         text ? uri
       when 'include'

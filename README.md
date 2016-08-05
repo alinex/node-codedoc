@@ -236,8 +236,8 @@ Find more information about calling the code documentation in the {@link index.c
 ### Custom Layout / Style
 
 If you want to use your own style templates within your app's config directory
-and you're already using [alinex-config](https://alinex.github.io/node-config)
-you only have to register the template type on it by putting the following on top:
+and you're already using {@link alinex-config} you only have to register the
+template type on it by putting the following on top:
 
 ``` coffee
 config = require 'alinex-config'

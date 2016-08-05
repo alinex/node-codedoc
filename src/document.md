@@ -258,6 +258,19 @@ These are mostly based on CoffeeScript and JavaScript, but others will follow if
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).
 
+### Inline Link Posibilities
+
+The inline link feature `{` `@link <uri> <text>}` allows you two get the link from
+different sources in the following order (first takes precedence):
+- **known symbols** - if the uri is exactly defined as symbol (from parsing documentation)
+  a link to this documentation is added
+- **documented files** - the path and the filename is checked against all input files
+  which are integrated in the documentation
+- **alinex packages** - if the name starts with 'alinex-' it will automatically get
+  a link to an alinex package of this name
+- else it is kept as text, this means that if it is a complete URL it will become a
+  clickable link
+
 ### Include Inline Images
 
 Through a small trick you may add images as inline data. Add them as local file link

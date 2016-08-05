@@ -152,6 +152,10 @@ extractDocs = (file, content, setup, lang, symbols) ->
   # internal comments extraction
   if lang.api and setup.code
     [re, fn] = lang.api
+    if file.match /cli.coffee/
+      console.log '---------------------'
+      console.log util.inspect content
+      console.log re
     while match = re.exec content
       match[1] = fn match[1] if fn
       end = match.index + match[0].length
