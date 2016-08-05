@@ -1,7 +1,8 @@
+### eslint-env node, mocha ###
 chai = require 'chai'
 expect = chai.expect
 rewire = require 'rewire'
-### eslint-env node, mocha ###
+# require 'coffee-script' used by rewire
 fs = require 'alinex-fs'
 path = require 'path'
 

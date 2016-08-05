@@ -42,6 +42,22 @@ $$$ plantuml {.right}
   }
 $$$
 
+Based on the defined file filters the input folder is **searched for files** to check
+for documentation. All those files are **read** if not binary. The type or language
+of each file is auto detected to know how to parse it. **Documents** like markdown
+are directly added to as full report.
+
+**Code** will be analyzed and documentation blocks will be identified and **extracted**.
+This contains the document comments, api comments and part of the code.
+
+JsDoc like **tags** are interpreted and extended by autodetected information from
+code. For the internal view the code will also be added with **syntax highlighting**.
+Alltogethher will go in an report.
+
+The reports will be **sorted**, some internal tags will be replaced and each report
+will be rendered as html and stored in output folder. An additional **index page** will
+be created if missing.
+
 #3 Sorting
 
 The file links are sorted in a natural way. This is from upper to lower directories
