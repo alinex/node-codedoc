@@ -78,8 +78,6 @@ exports.file = (file, local, setup, symbols, cb) ->
     # create report
     (content, lang, cb) ->
       report = new Report()
-      report.toc()
-      report.raw '<!-- end-of-toc -->\n\n' # needed in case raw adding will follow
       if lang.name is 'markdown'
         report.raw content
       else
@@ -124,6 +122,21 @@ exports.file = (file, local, setup, symbols, cb) ->
           source += " compiled to `/lib#{match[1]}.js`"
         report.body = report.body.replace /(\n\s*={10,}\s*\n)/, "$1\n> Path: #{source}\n\n"
       cb null, report
+    # remove internal
+    (report, cb) ->
+      report.body = unless setup.code
+        report.body
+        .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
+        .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
+      else
+        report.body.replace /<!--\s*(end )?internal\s*-->/ig, ''
+      if file.match /var/
+        console.log file, report.body
+      unless report.body.trim().length
+        return cb 'EMPTY'
+      # add table of contents and HTML comment mark for later additions
+      report.body = '@[toc]\n<!-- end-of-toc -->\n\n' + report.body
+      cb null, report
   ], cb
 
 
@@ -152,10 +165,6 @@ extractDocs = (file, content, setup, lang, symbols) ->
   # internal comments extraction
   if lang.api and setup.code
     [re, fn] = lang.api
-    if file.match /cli.coffee/
-      console.log '---------------------'
-      console.log util.inspect content
-      console.log re
     while match = re.exec content
       match[1] = fn match[1] if fn
       end = match.index + match[0].length
