@@ -7,7 +7,7 @@ individual versions:
 Version 1.2.0 (2016-08-05)
 -------------------------------------------------
 - Keep coffee-script because used by rewire.
-- Add support for <!-- internal --> marks in markdown.
+- Add support for internal marks in markdown.
 - Fix bug with detecting indented doc blocks.
 - Extend documentation.
 - Completed render tags.
@@ -18,7 +18,7 @@ Version 1.2.0 (2016-08-05)
 - Add test possibility for parsing.
 - Test: language definition and recognition.
 - Create test structure.
-- Add support for {@include ...} tag.
+- Add support for @include ... tag.
 - Add titles to the inline links.
 - Optimize floating styles.
 - Allow multiple inline tags in report.
