@@ -212,14 +212,26 @@ tags = (doc, lang, setup, file, symbols) ->
   for type in ['return', 'throws']
     if spec[type]
       spec[type] = spec[type].map (e) ->
-        m = e.match /^(?:\s*\{([^}]+)\})\s*([\s\S]*)?$/
+        m = e.match /^\s*(?:\{([^}]+)\})?\s*([\s\S]+)$/
         if m then [m[1], m[2]]
         else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
   # split some tags further down into name, type and desc
   for type in ['param', 'event']
     if spec[type]
       spec[type] = spec[type].map (e) ->
-        m = e.match /^(?:\s*\{([^}]+)\})\s*(\S+)(?:\s+(?:-\s*)?([\s\S]*))?$/
+        m = e.match ///
+          ^\s*          # start of line (whitespace removed)
+          (?:           # find type
+            \{([^}]+)\} # #1: type in curly braces
+            \s+         # something has to follow
+          )?            # make it optional
+          (\S+)         # #2: name (mandatory)
+          (?:\s+        # find description
+            (?:-\s+)?   # allow optional dash as separator
+            ([\s\S]*)   # #3: description
+          )?            # make it optional
+          $             # end of line
+        ///
         throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
         if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
           m[2] = details[1]
@@ -264,14 +276,9 @@ tags = (doc, lang, setup, file, symbols) ->
         md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
       md += "\n<!-- {p:.api-usage} -->\n"
     # method definitions
-    if spec.param
-      md += "\nParameter\n:   "
-      for e in spec.param
-        md += "- "
-        md += "`#{e[1]}` - " if e[1]
-        md += "`#{e[0]}` - " if e[0]
-        md += "#{e[2]?.replace /\n/g, '\n      '}\n    "
+    md += tagParamEvent spec.param, 'Parameter' if spec.param
     if spec.return
+      e = spec.return[spec.return.length-1]
       md += "\nReturn\n:   "
       md += "`#{e[0]}` - " if e[0]
       md += "#{e[1].replace /\n/g, '\n      '}\n    "
@@ -281,13 +288,7 @@ tags = (doc, lang, setup, file, symbols) ->
         md += "- "
         md += "`#{e[0]}` - " if e[0]
         md += "#{e[1].replace /\n/g, '\n      '}\n    "
-    if spec.event
-      md += "\nEvent\n:   "
-      for e in spec.event
-        md += "- "
-        md += "`#{e[1]}` - " if e[1]
-        md += "`#{e[0]}` - " if e[0]
-        md += "#{e[2].replace /\n/g, '\n      '}\n    "
+    md += tagParamEvent spec.event, 'Event' if spec.event
     if spec.see
       md += "\nSee also\n:   "
       for e in spec.see
@@ -316,3 +317,13 @@ tags = (doc, lang, setup, file, symbols) ->
   catch error
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
+
+tagParamEvent = (spec, title) ->
+  md = "\n#{title}\n:   "
+  for e in spec
+    md += "- "
+    md += "`#{e[1]}` - " if e[1]
+    md += "`#{e[0]}` - " if e[0]
+    if e[2] then md += "#{e[2].replace /\n/g, '\n      '}\n    "
+    else md = md[..-4] + '\n    '
+  return md

@@ -222,13 +222,13 @@ Usage Line
 Definition List
 :   Different definitions:
     - `@param`, `@arg`, `@argument` a method parameter with optional type
-      given as: `@param {<type>} <name> <description>`
+      given as: `@param {<type>} <name> [<description>]`
     - `@return`, `@returns` defining what will be returned
       given as: `@return {<type>} <description>`
     - `@throws`, `@exception` descripe possible excepzions
       given as: `@throws {<type>} <description>`
-    - `@event`, `@fires` descripe events to be thrown
-      given as: `@event {<type>} <name> <description>`
+    - `@event`, `@fires` descripe events to be fired
+      given as: `@event {<type>} <name> [<description>]`
     - `@see` references additional information, use `{@link...}` within
 
 Signature Line
