@@ -126,3 +126,25 @@
 ###
 @see the manual
 ###
+
+###
+@param test1
+@describe This is a test.
+###
+
+###
+@param test1
+@description This is a test.
+###
+
+###
+@param test1
+@internal
+@param test2
+###
+
+###
+@param test1
+@internal Some internal note.
+@param test2
+###

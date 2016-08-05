@@ -12,14 +12,17 @@ extractDocs = parse.__get__ 'extractDocs'
 FILE = '../data/tags.coffee'
 
 
-describe.only "Tags", ->
+describe "Tags", ->
 
+  doc = null
   api = null
   num = 0
   before ->
     file = path.resolve __dirname, FILE
     content = fs.readFileSync file, 'utf8'
     lang = language file, content
+    doc = extractDocs file, content, {code: false}, lang, {}
+    .map (e) -> e[2]
     api = extractDocs file, content, {code: true}, lang, {}
     .map (e) -> e[2]
 #    console.log api
@@ -71,6 +74,16 @@ describe.only "Tags", ->
       test api, num++, '\nEvent\n:   - `event1` - `String` - a parameter\n    - `event2` - `String` - a parameter\n'
     it "should interpret @see", ->
       test api, num++, '\nSee also\n:   - the manual\n'
+
+  describe "special", ->
+    it "should interpret @describe, @description", ->
+      test api, num++, /Parameter\n[\s\S]*This is a test/
+      test api, num++, /Parameter\n[\s\S]*This is a test/
+    it "should interpret @internal", ->
+      test doc, num, '\nParameter\n:   - `test1`\n    \n'
+      test api, num++, '\nParameter\n:   - `test1`\n    - `test2`\n    \n'
+      test doc, num, '\nParameter\n:   - `test1`\n    \n'
+      test api, num++, /Parameter\n[\s\S]*Some internal note/
 
 
 # Test Helper
