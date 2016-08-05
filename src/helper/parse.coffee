@@ -96,7 +96,7 @@ exports.file = (file, local, setup, symbols, cb) ->
           report.quote "Path: #{local}"
           report.code stripIndent(content, lang.tab), lang.name
           report.p Report.style 'code: style="max-height:none"'
-          return cb null, report
+          return cb null, report, lang
         # create report out of docs
         pos = 0
         for doc in docs
@@ -121,9 +121,9 @@ exports.file = (file, local, setup, symbols, cb) ->
         if match = local.match /^\/src(\/.*)\.coffee$/
           source += " compiled to `/lib#{match[1]}.js`"
         report.body = report.body.replace /(\n\s*={10,}\s*\n)/, "$1\n> Path: #{source}\n\n"
-      cb null, report
+      cb null, report, lang
     # remove internal
-    (report, cb) ->
+    (report, lang, cb) ->
       report.body = unless setup.code
         report.body
         .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
@@ -134,7 +134,7 @@ exports.file = (file, local, setup, symbols, cb) ->
         return cb 'EMPTY'
       # add table of contents and HTML comment mark for later additions
       report.body = '@[toc]\n<!-- end-of-toc -->\n\n' + report.body
-      cb null, report
+      cb null, report, lang
   ], cb
 
 

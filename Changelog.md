@@ -8,7 +8,6 @@ Version 1.2.1 (2016-08-05)
 -------------------------------------------------
 - Fix Changelog, remove special markup.
 - Fix bug in include.
-- Fix bug in include.
 
 Version 1.2.0 (2016-08-05)
 -------------------------------------------------

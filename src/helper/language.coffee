@@ -248,6 +248,7 @@ languages =
       access: (c) ->
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
         null
+      linksearch: 'nodejs javascript'
   javascript:
     extensions: [ 'js', 'es6' ]
     executables: [ 'node' ]#

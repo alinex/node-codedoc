@@ -54,8 +54,9 @@ exports.createIndex = (dir, link, cb) ->
 # @param {file} file file name used for relative link creation
 # @param {Object} symbols map as `[file, anchor]` to resolve links
 # @param {Array} pages list of pages from table of contents
+# @param {String} linksearch additional search words for link resolve
 # @return {String} new content
-exports.optimize = (report, file, symbols, pages) ->
+exports.optimize = (report, file, symbols, pages, linksearch) ->
   # find inline tags
   report
   .replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
@@ -70,18 +71,25 @@ exports.optimize = (report, file, symbols, pages) ->
           title = " \"File: #{symbols[uri][0]} Element: #{uri}\""
           return "[`#{text ? uri}`](#{url + title})"
         # check for file
-        [uri, anchor] = uri.split /#/
+        [filepath, anchor] = uri.split /#/
         found = []
-        .concat pages.filter (e) -> ~e.path.indexOf uri
-        .concat pages.filter (e) -> uri is path.basename e.path
+        .concat pages.filter (e) -> ~e.path.indexOf filepath
+        .concat pages.filter (e) -> filepath is path.basename e.path
         if found.length
-          text ?= found[0].title ? uri
-          url = found[0].url ? uri
-          title = " \"File: #{uri}\""
+          text ?= found[0].title ? filepath
+          url = found[0].url ? filepath
+          title = " \"File: #{filepath}\""
           return "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
         # alinex link
         if m = uri.match /^alinex-(.*)/
           return "[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
+        # urls
+        if uri.match /^(https?):\/\//
+          return "[#{text ? uri}](#{uri})"
+        # search
+        if linksearch
+          if res = searchLink uri, linksearch
+            return  "[#{text ? res.title ? uri}](#{res.url})"
         # default
         text ? uri
       when 'include'
@@ -97,7 +105,7 @@ exports.optimize = (report, file, symbols, pages) ->
           [from, to] = anchor.split /\s*-\s*/
           content = anchor.split(/\n/)[from-1..to-1]
         # run inlineTags over this, too
-        return exports.optimize content, file, symbols, pages
+        return exports.optimize content, file, symbols, pages, linksearch
 
 # @param {Object} file file information with report
 # @param {String} moduleName name of the complete documentation project
@@ -121,3 +129,7 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
     fs.mkdirs path.dirname(file.dest), (err) ->
       return cb err if err
       fs.writeFile file.dest, html, 'utf8', cb
+
+searchLink = (link, linksearch) ->
+  console.log '##### SEARCH', "+#{link.replace /\s+/, ' +'} #{linksearch}"
+  return null

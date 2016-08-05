@@ -4,6 +4,8 @@ Controller - API Usage
 This module is used as the base API. If you load the package you will get a reference
 to the exported methods, here. Also the CLI works through this API.
 
+TEST {@link String.match()}
+
 $$$ plantuml {.right}
   :API Call;
   :run|
@@ -154,22 +156,28 @@ exports.run = (setup, cb) ->
           # create reports
           (if setup.verbose then console.log else debug) "convert files..."
           map = {}
+          linksearch = {}
           async.eachLimit list, PARALLEL, (file, cb) ->
             p = file[setup.input.length..]
-            parse.file file, p, setup, symbols, (err, report) ->
+            parse.file file, p, setup, symbols, (err, report, lang) ->
               if err
                 return cb err if err instanceof Error
                 return cb() # no real problem but abort
               map[p] =
                 report: report
+                language: lang
                 source: file
                 dest: "#{setup.output}#{p}.html"
                 parts: p[1..].toLowerCase().split /\//
                 title: report.getTitle() ? p[1..]
+              if lang.tags?.linksearch
+                for phrase in lang.tags.linksearch.split /\s+/
+                  linksearch[phrase] = true
               cb()
           , (err) ->
             return cb err if err
             # write files
+            linksearch = Object.keys(linksearch).join ' '
             map = sortMap map
             mapKeys = Object.keys map
             moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
@@ -187,7 +195,9 @@ exports.run = (setup, cb) ->
                   active: p is name
               # convert to html
               file = map[name]
-              file.report.body = render.optimize file.report.body, file.source, symbols, pages
+              search = file.language.tags?.linksearch ? linksearch
+              file.report.body = render.optimize file.report.body, file.source, symbols
+              , pages, search
               render.writeHtml file, moduleName, pages, cb
             , (err) ->
               return cb err if err
