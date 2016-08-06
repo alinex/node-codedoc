@@ -89,7 +89,7 @@ render = require './helper/render'
 
 # Setup
 # -------------------------------------------------
-PARALLEL = 10
+PARALLEL = 1
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 
 
@@ -170,18 +170,24 @@ exports.run = (setup, cb) ->
                 dest: "#{setup.output}#{p}.html"
                 parts: p[1..].toLowerCase().split /\//
                 title: report.getTitle() ? p[1..]
-              if lang.tags?.linksearch
-                for phrase in lang.tags.linksearch.split /\s+/
-                  linksearch[phrase] = true
+              if type = lang.tags?.searchtype
+                linksearch[type] ?= 0
+                linksearch[type]++
               cb()
           , (err) ->
             return cb err if err
             # write files
-            linksearch = Object.keys(linksearch).join ' '
+            linksearchDefault = null
+            max = 0
+            for type, num in linksearch
+              continue if num <= max
+              max = num
+              linksearchDefault = type
             map = sortMap map
             mapKeys = Object.keys map
             moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
             .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
+            (if setup.verbose then console.log else debug) "create html files..."
             async.eachLimit mapKeys, PARALLEL, (name, cb) ->
               # create link list
               pages = []
@@ -195,10 +201,12 @@ exports.run = (setup, cb) ->
                   active: p is name
               # convert to html
               file = map[name]
-              search = file.language.tags?.linksearch ? linksearch
-              file.report.body = render.optimize file.report.body, file.source, symbols
-              , pages, search
-              render.writeHtml file, moduleName, pages, cb
+              search = file.language.tags?.searchtype
+              search = linksearchDefault if search is 'default'
+              render.optimize file.report.body, file.source, symbols, pages, search
+              , (err, md) ->
+                file.report.body = md
+                render.writeHtml file, moduleName, pages, cb
             , (err) ->
               return cb err if err
               (if setup.verbose then console.log else debug) "check index page"

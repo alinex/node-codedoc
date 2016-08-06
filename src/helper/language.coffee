@@ -228,6 +228,9 @@ PL_DOC = [
 # - `tags`: whether to try and extract jsDoc/javaDoc-style tag elements
 #   - `title` - function to extract the function/class name from first code line
 #   - `access` - function to detect access level from first code line
+#   - `searchtype` - the default type to use in link search through google
+#     possible types are defined in {@link render.coffee} and 'default' will be
+#     most used type in this project
 languages =
   coffeescript:
     extensions: [ 'coffee' ]
@@ -248,7 +251,7 @@ languages =
       access: (c) ->
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
         null
-      linksearch: 'nodejs javascript'
+      searchtype: 'nodejs'
   javascript:
     extensions: [ 'js', 'es6' ]
     executables: [ 'node' ]#
@@ -316,6 +319,8 @@ languages =
   markdown:
     extensions: [ 'md', 'mkd', 'markdown' ]
     type: 'markdown'
+    tags:
+      searchtype: 'nodejs'
   scss:
     extensions: [ 'scss' ]
     comment: '//'

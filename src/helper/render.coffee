@@ -6,9 +6,10 @@
 
 # Node Modules
 # -------------------------------------------------
-debug = require('debug') 'codedoc'
+debug = require('debug') 'codedoc:render'
 path = require 'path'
 chalk = require 'chalk'
+asyncReplace = require 'async-replace'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
@@ -17,6 +18,8 @@ util = require 'alinex-util'
 # Setup
 # -------------------------------------------------
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
+PAGE_SEARCH =
+  nodejs: 'nodejs javascript'
 
 
 # Exported Methods
@@ -50,18 +53,18 @@ exports.createIndex = (dir, link, cb) ->
       </html>
       """, cb
 
-# @param {String} report text to replace inline tags within
-# @param {file} file file name used for relative link creation
+# @param {String} report markdown text to replace inline tags within
+# @param {String} file file name used for relative link creation
 # @param {Object} symbols map as `[file, anchor]` to resolve links
 # @param {Array} pages list of pages from table of contents
-# @param {String} linksearch additional search words for link resolve
-# @return {String} new content
-exports.optimize = (report, file, symbols, pages, linksearch) ->
+# @param {String} search additional search words for link resolve
+# @param {function(err, md)} cb callback which will get the new markdown
+exports.optimize = (report, file, symbols, pages, search, cb) ->
   # find inline tags
-  report
-  .replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
+  report = report.replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
     "#{pre}#{util.string.repeat '#', num}#{post}"
-  .replace /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g, (source, tag, uri, text) ->
+  asyncReplace report, /\{@(\w+) ([^ \t}]*)\s?(.*)?\}/g
+  , (source, tag, uri, text, offset, all, cb) ->
     switch tag
       when 'link'
         # check for symbol
@@ -69,7 +72,7 @@ exports.optimize = (report, file, symbols, pages, linksearch) ->
           url = path.relative path.dirname(file), "#{symbols[uri][0]}.html"
           url += "##{symbols[uri][1]}"
           title = " \"File: #{symbols[uri][0]} Element: #{uri}\""
-          return "[`#{text ? uri}`](#{url + title})"
+          return cb null, "[`#{text ? uri}`](#{url + title})"
         # check for file
         [filepath, anchor] = uri.split /#/
         found = []
@@ -79,57 +82,66 @@ exports.optimize = (report, file, symbols, pages, linksearch) ->
           text ?= found[0].title ? filepath
           url = found[0].url ? filepath
           title = " \"File: #{filepath}\""
-          return "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
+          return cb null, "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
         # alinex link
         if m = uri.match /^alinex-(.*)/
-          return "[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
+          return cb null, "[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
         # urls
         if uri.match /^(https?):\/\//
-          return "[#{text ? uri}](#{uri})"
+          return cb null, "[#{text ? uri}](#{uri})"
         # search
-        if linksearch
-          if res = searchLink uri, linksearch
-            return  "[#{text ? res.title ? uri}](#{res.url})"
+        if search
+          searchLink uri, search, (err, res) ->
+            return cb err if err
+            return cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
-        text ? uri
+        cb null, text ? uri
       when 'include'
         # include file
         [uri, anchor] = uri.split /#/
         inc = path.resolve path.dirname(file), uri
-        try
-          content = fs.readFileSync inc, 'UTF8'
-        catch error
-          console.error chalk.magenta "Could not include in #{file}: #{error.message}"
-          content = "@include #{uri}"
-        if anchor
-          [from, to] = anchor.split /\s*-\s*/
-          content = anchor.split(/\n/)[from-1..to-1]
-        # run inlineTags over this, too
-        return exports.optimize content, file, symbols, pages, linksearch
+        fs.readFile inc, 'UTF8', (err, content) ->
+          if err
+            console.error chalk.magenta "Could not include in #{file}: #{err.message}"
+            return cb null, "@include #{uri}"
+          if anchor
+            [from, to] = anchor.split /\s*-\s*/
+            content = content.split(/\n/)[from-1..to-1].join '\n'
+          # run inlineTags over this, too
+          exports.optimize content, file, symbols, pages, search, cb
+  , cb
 
 # @param {Object} file file information with report
 # @param {String} moduleName name of the complete documentation project
 # @param {Array} pages list of pages from table of contents
 # @param {function(err)} cb callback if done or error occured
 exports.writeHtml = (file, moduleName, pages, cb) ->
+  debug "#{file.source}: transform to html"
   file.report.toHtml
     style: 'codedoc'
     context:
       moduleName: moduleName
       pages: pages
   , (err, html) ->
-    html = html
-    .replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
+    # optimize further
+    html = html.replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
     , '<li class="sidebar"><a href="#further-pages">Further Pages</a></li>$1'
     .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
       if link.length is 0 or link.match STATIC_FILES
         "href=\"#{link}#{end}" # keep link
       else
         "href=\"#{link}.html#{end}" # add .html
+    debug "#{file.source}: write html to file"
     fs.mkdirs path.dirname(file.dest), (err) ->
       return cb err if err
       fs.writeFile file.dest, html, 'utf8', cb
 
-searchLink = (link, linksearch) ->
-  console.log '##### SEARCH', "+#{link.replace /\s+/, ' +'} #{linksearch}"
+# @param {String} link element to link to
+# @param {String} search type name to use in search
+# @return {Object} `null or result with:
+# - `title` page title to use as link text if none given
+# - `url` url for the page
+searchLink = (link, search) ->
+  return null unless PAGE_SEARCH[search]
+  console.log '##### SEARCH', "+#{link.replace /\s+/, ' +'} #{PAGE_SEARCH[search]}"
   return null
