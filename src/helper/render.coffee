@@ -10,6 +10,8 @@ debug = require('debug') 'codedoc:render'
 path = require 'path'
 chalk = require 'chalk'
 asyncReplace = require 'async-replace'
+request = require 'request'
+async = require 'async'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
@@ -19,7 +21,7 @@ util = require 'alinex-util'
 # -------------------------------------------------
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 PAGE_SEARCH =
-  nodejs: 'nodejs javascript'
+  nodejs: ['nodejs', 'javascript']
 
 
 # Exported Methods
@@ -91,9 +93,9 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           return cb null, "[#{text ? uri}](#{uri})"
         # search
         if search
-          searchLink uri, search, (err, res) ->
-            return cb err if err
-            return cb null, "[#{text ? res.title ? uri}](#{res.url})"
+          return searchLink uri, search, (err, res) ->
+            return cb err if err or not res?.url
+            cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
         cb null, text ? uri
       when 'include'
@@ -138,10 +140,30 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
 
 # @param {String} link element to link to
 # @param {String} search type name to use in search
-# @return {Object} `null or result with:
+# @param {function(err, res)} cb callback with `null` or result with:
 # - `title` page title to use as link text if none given
 # - `url` url for the page
-searchLink = (link, search) ->
-  return null unless PAGE_SEARCH[search]
-  console.log '##### SEARCH', "+#{link.replace /\s+/, ' +'} #{PAGE_SEARCH[search]}"
-  return null
+searchLink = (link, search, cb) ->
+  return cb() unless PAGE_SEARCH[search]
+  link = encodeURIComponent link
+  async.map PAGE_SEARCH[search], (type, cb) ->
+    switch type
+      when 'javascript'
+        debug "search for link to #{link} as javascript"
+        request
+          url: "https://developer.mozilla.org/de/search?q=#{link}"
+        , (err, res, body) ->
+          return cb() if err or res.statusCode isnt 200
+          match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
+          return cb() unless match
+          match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
+          return cb() unless match
+          cb null,
+            title: match[2]
+            url: match[1]
+      else
+        cb()
+  , (_, results) ->
+    for res in results
+      return cb null, res if res
+    cb()
