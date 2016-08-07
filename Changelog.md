@@ -4,6 +4,17 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.2 (2016-08-07)
+-------------------------------------------------
+- Allow all tests to run again.
+- Make tests for @include syntax.
+- Cache the request results directly.
+- Finished search for links in nodejs with tests.
+- Search link cached.
+- Add auto resolving of javascript links to MDN.
+- Made internal optimize method async.
+- Add basic methods for link search addition, later.
+
 Version 1.2.1 (2016-08-05)
 -------------------------------------------------
 - Fix Changelog, remove special markup.
