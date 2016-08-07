@@ -47,7 +47,7 @@ describe "Inline Tags", ->
       @timeout 5000
       test "{@link thisisnotanythere}", null, null, null, 'nodejs', "thisisnotanythere", cb
 
-  describe.only "include", ->
+  describe "include", ->
 
     it "should include file", (cb) ->
       test "{@include ../../.travis.yml}", """
