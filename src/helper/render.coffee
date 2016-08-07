@@ -97,7 +97,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         # search
         if search
           return searchLinkCached uri, search, (err, res) ->
-            return cb err if err or not res?.url
+            return cb null, text ? uri if err or not res?.url
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
         console.error "Could not resolve link to #{uri} in #{file}"
@@ -156,35 +156,40 @@ searchLink = (link, search, cb) ->
   link = encodeURIComponent link
   # do the search
   async.map PAGE_SEARCH[search], (type, cb) ->
-    switch type
-      when 'mdn'
-        debug "search for link to #{link} in MDN"
-        requestURL "https://developer.mozilla.org/de/search?q=#{link}", (err, body) ->
-          return cb() unless body
-          match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
-          return cb() unless match
-          match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
-          return cb() unless match
-          check = link.replace /[.]/, '\.(?:.*\.)?'
-          .replace /\(\)/, ''
-          check = new RegExp check, 'i'
-          return cb unless match[2].match check
-          cb null,
-            title: match[2]
-            url: match[1]
-      when 'nodejs'
-        debug "search for link to #{link} in NodeJS API"
-        requestURL "https://nodejs.org/dist/latest-v6.x/docs/api/index.json", (err, body) ->
-          return cb() unless body
-        cb()
-
-      else
-        cb()
+    if type is 'mdn'
+      debug "search for link to #{link} in MDN"
+      return requestURL "https://developer.mozilla.org/de/search?q=#{link}", (err, body) ->
+        return cb() unless body
+        match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
+        return cb() unless match
+        return cb() unless match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
+        check = link.replace /[.]/, '\.(?:.*\.)?'
+        .replace /\(\)/, ''
+        check = new RegExp "\\b#{check}\\b", 'i'
+        return cb() unless match[2].match check
+        cb null,
+          title: match[2]
+          url: match[1]
+    if type is 'nodejs'
+      debug "search for link to #{link} in NodeJS API"
+      [module, method] = link.split /\./
+      page = "https://nodejs.org/dist/latest-v6.x/docs/api/#{module.toLowerCase()}.html"
+      return requestURL page, (err, body) ->
+        return cb() unless body
+        check = method.replace /\(\)/, '\\([^)]+\\)'
+        check = new RegExp "<h2>(.*?\\b#{check}.*?)<.*id=\"(.*?)\"", 'i'
+        return cb() unless match = body.match check
+        cb null,
+          title: match[1].replace /\(.*?\)/, '()'
+          url: "#{page}##{match[2]}"
+    # not possible
+    cb()
   , (_, results) ->
     for res in results
       return cb null, res if res
     cb()
 
+# make caching method
 searchLinkCached = memoize searchLink,
   maxAge: 3600000
 

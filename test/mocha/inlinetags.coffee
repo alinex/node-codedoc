@@ -5,7 +5,7 @@ expect = chai.expect
 render = require '../../src/helper/render'
 
 
-describe.only "Inline Tags", ->
+describe "Inline Tags", ->
 
   describe "link", ->
 
@@ -37,10 +37,12 @@ describe.only "Inline Tags", ->
       '[String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)', cb
     it "should search nodejs link", (cb) ->
       test "{@link fs.readFile()}", null, null, null, 'nodejs',
-      'xxxxx', cb
+      '[fs.readFile()](https://nodejs.org/dist/latest-v6.x/docs/api/fs.html#fs_fs_readfile_file_options_callback)', cb
 
     it "should keep unknown text the same", (cb) ->
       test "{@link thisisnotanythere}", "thisisnotanythere", cb
+    it "should keep unknown text the same (with search)", (cb) ->
+      test "{@link thisisnotanythere}", null, null, null, 'nodejs', "thisisnotanythere", cb
 
 
 test = () ->
