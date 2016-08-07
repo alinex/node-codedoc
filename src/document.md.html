@@ -233,8 +233,17 @@ a link to this documentation is added</li>
 which are integrated in the documentation</li>
 <li><strong>alinex packages</strong> - if the name starts with ‘alinex-’ it will automatically get
 a link to an alinex package of this name</li>
-<li>else it is kept as text, this means that if it is a complete URL it will become a
-clickable link</li>
+<li><strong>internet links</strong> - they are transformed directly to markdown syntax</li>
+<li><strong>reference</strong> - if nothing of the above matches the link target is searched in
+appropriate references. Which reference to use can be given at the start before a
+colon like: <code>javascript:String.match()</code> or if the reference name is missing the
+default for the language of the file (or project for markdowns) will be used.</li>
+<li>else it is kept as text</li>
+</ul>
+<p>Possible references are:</p>
+<ul>
+<li>javascript - using the Mozilla Developer Network</li>
+<li>nodejs - using the nodeJS documentation and the Mozilla Developer Network</li>
 </ul>
 <h3 id="include-inline-images">Include Inline Images</h3>
 <p>Through a small trick you may add images as inline data. Add them as local file link
