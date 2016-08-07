@@ -106,6 +106,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
       when 'include'
         # include file
         [uri, anchor] = uri.split /#/
+        debug "include #{uri}"
         inc = path.resolve path.dirname(file), uri
         fs.readFile inc, 'UTF8', (err, content) ->
           if err

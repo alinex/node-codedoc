@@ -47,11 +47,28 @@ describe "Inline Tags", ->
       @timeout 5000
       test "{@link thisisnotanythere}", null, null, null, 'nodejs', "thisisnotanythere", cb
 
+  describe.only "include", ->
+
+    it "should include file", (cb) ->
+      test "{@include ../../.travis.yml}", """
+      language: node_js
+      node_js:
+         - "0.12" # from 2015-02 maintenance till 2017-04
+         - "4"  # LTS from 2015-10  maintenance till 2018-04
+         - "5"  # current\n
+      """, cb
+    it "should include lines from file", (cb) ->
+      test "{@include ../../.travis.yml#1-2}", """
+      language: node_js
+      node_js:
+      """, cb
+
 
 test = () ->
   args = Array.prototype.slice.call arguments
-  [goal, cb] = args[-2..]
-  [md, file, symbols, pages, search] = arguments
+  cb = args.pop()
+  goal = args.pop()
+  [md, file, symbols, pages, search] = args
   file ?= __filename
   symbols ?= {}
   pages ?= []
