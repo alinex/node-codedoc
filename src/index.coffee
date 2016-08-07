@@ -4,8 +4,6 @@ Controller - API Usage
 This module is used as the base API. If you load the package you will get a reference
 to the exported methods, here. Also the CLI works through this API.
 
-TEST {@link String.match()}
-
 $$$ plantuml {.right}
   :API Call;
   :run|
