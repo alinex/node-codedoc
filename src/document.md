@@ -280,8 +280,16 @@ different sources in the following order (first takes precedence):
   which are integrated in the documentation
 - **alinex packages** - if the name starts with 'alinex-' it will automatically get
   a link to an alinex package of this name
-- else it is kept as text, this means that if it is a complete URL it will become a
-  clickable link
+- **internet links** - they are transformed directly to markdown syntax
+- **reference** - if nothing of the above matches the link target is searched in
+  appropriate references. Which reference to use can be given at the start before a
+  colon like: `javascript:String.match()` or if the reference name is missing the
+  default for the language of the file (or project for markdowns) will be used.
+- else it is kept as text
+
+Possible references are:
+- javascript - using the Mozilla Developer Network
+- nodejs - using the nodeJS documentation and the Mozilla Developer Network
 
 ### Include Inline Images
 

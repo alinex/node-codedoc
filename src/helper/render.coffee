@@ -12,6 +12,7 @@ chalk = require 'chalk'
 asyncReplace = require 'async-replace'
 request = require 'request'
 async = require 'async'
+memoize = require 'memoizee'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
@@ -21,7 +22,8 @@ util = require 'alinex-util'
 # -------------------------------------------------
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 PAGE_SEARCH =
-  nodejs: ['nodejs', 'javascript']
+  nodejs: ['nodejs', 'mdn']
+  javascript: ['mdn']
 
 
 # Exported Methods
@@ -58,7 +60,10 @@ exports.createIndex = (dir, link, cb) ->
 # @param {String} report markdown text to replace inline tags within
 # @param {String} file file name used for relative link creation
 # @param {Object} symbols map as `[file, anchor]` to resolve links
-# @param {Array} pages list of pages from table of contents
+# @param {Array} pages list of pages from table of contents used attributes:
+# - `path` - file path
+# - `title` - title of the document
+# - `url` - generated file
 # @param {String} search additional search words for link resolve
 # @param {function(err, md)} cb callback which will get the new markdown
 exports.optimize = (report, file, symbols, pages, search, cb) ->
@@ -77,9 +82,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           return cb null, "[`#{text ? uri}`](#{url + title})"
         # check for file
         [filepath, anchor] = uri.split /#/
-        found = []
-        .concat pages.filter (e) -> ~e.path.indexOf filepath
-        .concat pages.filter (e) -> filepath is path.basename e.path
+        found = pages.filter (e) -> ~e.path.indexOf filepath
         if found.length
           text ?= found[0].title ? filepath
           url = found[0].url ? filepath
@@ -93,10 +96,11 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           return cb null, "[#{text ? uri}](#{uri})"
         # search
         if search
-          return searchLink uri, search, (err, res) ->
+          return searchLinkCached uri, search, (err, res) ->
             return cb err if err or not res?.url
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
+        console.error "Could not resolve link to #{uri} in #{file}"
         cb null, text ? uri
       when 'include'
         # include file
@@ -145,25 +149,53 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
 # - `url` url for the page
 searchLink = (link, search, cb) ->
   return cb() unless PAGE_SEARCH[search]
+  # support search type before link target
+  if match = link.match /^(\w+):(.*)$/
+    search = match[1]
+    link = match[2]
   link = encodeURIComponent link
+  # do the search
   async.map PAGE_SEARCH[search], (type, cb) ->
     switch type
-      when 'javascript'
-        debug "search for link to #{link} as javascript"
-        request
-          url: "https://developer.mozilla.org/de/search?q=#{link}"
-        , (err, res, body) ->
-          return cb() if err or res.statusCode isnt 200
+      when 'mdn'
+        debug "search for link to #{link} in MDN"
+        requestURL "https://developer.mozilla.org/de/search?q=#{link}", (err, body) ->
+          return cb() unless body
           match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
           return cb() unless match
           match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
           return cb() unless match
+          check = link.replace /[.]/, '\.(?:.*\.)?'
+          .replace /\(\)/, ''
+          check = new RegExp check, 'i'
+          return cb unless match[2].match check
           cb null,
             title: match[2]
             url: match[1]
+      when 'nodejs'
+        debug "search for link to #{link} in NodeJS API"
+        requestURL "https://nodejs.org/dist/latest-v6.x/docs/api/index.json", (err, body) ->
+          return cb() unless body
+        cb()
+
       else
         cb()
   , (_, results) ->
     for res in results
       return cb null, res if res
     cb()
+
+searchLinkCached = memoize searchLink,
+  maxAge: 3600000
+
+# @param {String} url page to grab
+# @param {function(err, body)} cb callback with body if page could be retrieved successfully
+requestURL = (url, cb) ->
+  request
+    url: url
+    headers:
+      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) \
+      Chrome/52.0.2743.116 Safari/537.36'
+  , (err, res, body) ->
+    return cb() if err or res.statusCode isnt 200
+    cb null, body
