@@ -33,15 +33,18 @@ describe "Inline Tags", ->
       test "{@link http://heise.de}", '[http://heise.de](http://heise.de)', cb
 
     it "should search mdn link", (cb) ->
+      @timeout 5000
       test "{@link String.match}", null, null, null, 'javascript',
       '[String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)', cb
     it "should search nodejs link", (cb) ->
+      @timeout 5000
       test "{@link fs.readFile()}", null, null, null, 'nodejs',
       '[fs.readFile()](https://nodejs.org/dist/latest-v6.x/docs/api/fs.html#fs_fs_readfile_file_options_callback)', cb
 
     it "should keep unknown text the same", (cb) ->
       test "{@link thisisnotanythere}", "thisisnotanythere", cb
     it "should keep unknown text the same (with search)", (cb) ->
+      @timeout 5000
       test "{@link thisisnotanythere}", null, null, null, 'nodejs', "thisisnotanythere", cb
 
 

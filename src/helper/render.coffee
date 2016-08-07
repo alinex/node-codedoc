@@ -10,9 +10,10 @@ debug = require('debug') 'codedoc:render'
 path = require 'path'
 chalk = require 'chalk'
 asyncReplace = require 'async-replace'
-request = require 'request'
-async = require 'async'
 memoize = require 'memoizee'
+# make caching method
+request = memoize require('request'), {maxAge: 3600000}
+async = require 'async'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
@@ -96,7 +97,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           return cb null, "[#{text ? uri}](#{uri})"
         # search
         if search
-          return searchLinkCached uri, search, (err, res) ->
+          return searchLink uri, search, (err, res) ->
             return cb null, text ? uri if err or not res?.url
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
@@ -188,10 +189,6 @@ searchLink = (link, search, cb) ->
     for res in results
       return cb null, res if res
     cb()
-
-# make caching method
-searchLinkCached = memoize searchLink,
-  maxAge: 3600000
 
 # @param {String} url page to grab
 # @param {function(err, body)} cb callback with body if page could be retrieved successfully
