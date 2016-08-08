@@ -270,6 +270,20 @@ These are mostly based on CoffeeScript and JavaScript, but others will follow if
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).
 
+This applied your method may look like:
+
+``` coffee
+# Sorting the page map is done by generating sort strings for each page from the
+# order in the lists above, the file depth and file name. The keys will be sorted
+# and a new object is generated in this sort order.
+#
+# @param {object} map map of pages
+# - `parts` is used to calculate the order
+# @return {object} the sorted map of pages
+sortMap = (map) ->
+  # the method content...
+```
+
 ### Inline Link Posibilities
 
 The inline link feature `{` `@link <uri> <text>}` allows you two get the link from
