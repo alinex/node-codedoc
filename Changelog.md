@@ -4,6 +4,16 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.3 (2016-08-08)
+-------------------------------------------------
+- Small docu fix.
+- Add example for tags to documentation.
+- Fix normal display.
+- Add sidebar to burger menu instead bottom links.
+- Fix bug with multiple @link in one row.
+- Allow parallel work, again.
+- Remove test link from docu.
+
 Version 1.2.2 (2016-08-07)
 -------------------------------------------------
 - Make tests for @include syntax.
