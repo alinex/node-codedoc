@@ -270,7 +270,7 @@ These are mostly based on CoffeeScript and JavaScript, but others will follow if
 Is something missing here? Don't hestitate and make an issue on the
 [GitHub Page](https://github.com/alinex/node-codedoc/issues).
 
-This applied your method may look like:
+This applied, your method may look like:
 
 ``` coffee
 # Sorting the page map is done by generating sort strings for each page from the
