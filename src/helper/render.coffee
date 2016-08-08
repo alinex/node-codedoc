@@ -132,8 +132,7 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
       pages: pages
   , (err, html) ->
     # optimize further
-    html = html.replace /(<\/ul>\n<\/p>)\n<!-- end-of-toc -->\n/
-    , '<li class="sidebar"><a href="#further-pages">Further Pages</a></li>$1'
+    html = html
     .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
       if link.length is 0 or link.match STATIC_FILES
         "href=\"#{link}#{end}" # keep link

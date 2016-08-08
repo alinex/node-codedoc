@@ -133,7 +133,7 @@ exports.file = (file, local, setup, symbols, cb) ->
       unless report.body.trim().length
         return cb 'EMPTY'
       # add table of contents and HTML comment mark for later additions
-      report.body = '@[toc]\n<!-- end-of-toc -->\n\n' + report.body
+      report.body = '@[toc]\n\n' + report.body
       cb null, report, lang
   ], cb
 
