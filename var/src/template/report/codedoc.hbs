@@ -36,6 +36,19 @@
           <form class="navbar-form navbar-right">
             <input name="q" type="text" class="form-control" placeholder="Search...">
           </form>
+          <ul class="nav sidebar-to-top">
+            {{#iterate pages}}
+              {{#if value.active}}
+                <li class="active level{{value.depth}}">
+                  <a href="{{value.url}}" title="{{value.title}} ({{value.path}})" class="btn btn-warning">{{value.link}} <span class="sr-only">(current)</span></a>
+                </li>
+              {{else}}
+                <li class="level{{value.depth}}">
+                  <a href="{{value.url}}" title="{{value.title}} ({{value.path}})" class="btn btn-primary">{{value.link}}</a>
+                </li>
+              {{/if}}
+            {{/iterate}}
+          </ul>
         </div>
       </div>
     </nav>
@@ -45,12 +58,11 @@
     <div class="container-fluid">
       <div class="row">
 
-        <div class="col-sm-9 col-sm-push-3 col-md-10 col-md-push-2 main">
+        <div class="col-sm-9 col-sm-push-3 main">
           {{include codedoc-search-result}}
           <main>{{{content}}}</main>
         </div>
-        <div class="col-sm-3 col-cm-pull-9 col-md-2 col-md-pull-10 sidebar">
-          <h1 id="further-pages">Further Pages</h1>
+        <div class="col-sm-3 col-cm-pull-9 sidebar">
           <ul class="nav nav-sidebar">
             <li class="header">
               <a href="{{pages.0.url}}">{{moduleName}}</a>

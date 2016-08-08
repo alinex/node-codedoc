@@ -21,16 +21,51 @@ $min-width = 300px
 * --------------------------------------------------------------
 */
 #topnav
+  text-align: center
+  background: #333;
+  padding-bottom: 20px
+  position: fixed;
+  margin-top: 0px;
+  width: 100%;
+  bottom: 0;
+  top: $topnav-height;
   .navbar-nav
+    margin: 0
     margin-top: 8px;
+    display: inline-flex;
+  .sidebar-to-top
+    .btn
+      text-align: left;
+    li
+      &.level2>a
+        margin-left: 20px;
+      &.level3>a
+        margin-left: 40px;
+      &.level4>a
+        margin-left: 60px;
+      &.level5>a
+        margin-left: 80px;
+      &.level6>a
+        margin-left: 100px;
+.navbar-fixed-top .navbar-collapse
+  max-height: none
 .navbar
   min-width: $min-width
 .nav>li
   padding: 2px 12px;
 .navbar-inverse
-  .navbar-nav>li>a
+  .nav>li>a
     color: black;
     font-weight: bold;
+    padding-top: 6px
+    padding-bottom: 6px
+    &:focus
+    &:hover
+      gradient: lighten($color-blue, 15);
+    &.btn-warning
+      &:focus
+      &:hover
+        gradient: darken($color-orange, 15);
 .navbar-spacer
   height: $topnav-height;
 .btn-warning
@@ -40,16 +75,9 @@ $min-width = 300px
   gradient: $color-orange;
 .btn-primary
   gradient: $color-blue;
-.navbar-inverse .navbar-nav>li>a
-  &:focus
-  &:hover
-    gradient: lighten($color-blue, 15);
-.navbar-inverse .navbar-nav>li>a.btn-warning
-  &:focus
-  &:hover
-    gradient: darken($color-orange, 15);
 
 .sidebar .nav
+  display: none
   list-style: disc;
   padding-left: 25px;
   &>li
@@ -83,11 +111,20 @@ $min-width = 300px
     &.level5>a
     &.level6>a
       padding-left: 90px;
+.navbar-inverse
+  .navbar-toggle
+    background-color: #444;
+    &:hover
+      background-color: #666;
 
 @media (min-width: 768px)
   #topnav
     .nav>li
       padding: 0 4px;
+    .sidebar-to-top
+      display: none
+    background: #222;
+    padding-bottom: 0
   .navbar-right
     margin-right: 0px;
   .navbar-nav
@@ -104,6 +141,7 @@ $min-width = 300px
     h1, h2
       display: none;
     .nav
+      display: block
       list-style: none;
       padding-left: 0;
       &>li
