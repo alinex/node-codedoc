@@ -48,7 +48,7 @@ $min-width = 300px
       &.level6>a
         margin-left: 100px;
 .navbar-fixed-top .navbar-collapse
-  max-height: none
+  max-height: 100%
 .navbar
   min-width: $min-width
 .nav>li
@@ -119,6 +119,7 @@ $min-width = 300px
 
 @media (min-width: 768px)
   #topnav
+    position: inherit
     .nav>li
       padding: 0 4px;
     .sidebar-to-top
