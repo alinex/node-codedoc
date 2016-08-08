@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.4 (2016-08-08)
+-------------------------------------------------
+- Remove end-of-toc marker.
+
 Version 1.2.3 (2016-08-08)
 -------------------------------------------------
 - Small docu fix.
