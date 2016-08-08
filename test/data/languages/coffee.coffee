@@ -12,8 +12,14 @@ This is a first doc block for general documentation.
 # ------------------------------------------------
 # This documentation is internal and only be used with the code-view.
 
-# Method for auto code
+# Function for auto code
 # @return {Integer} fixed number
 exports.myCode = ->
+  # This comment should be kept in code
+  return 5
+
+# Method for auto code
+# @return {Integer} fixed number
+myCode: =>
   # This comment should be kept in code
   return 5

@@ -18,9 +18,10 @@ describe "Languages", ->
     it "should detect language", ->
       test.language file, content, 'coffeescript'
     it "should read doc blocks", (cb) ->
-      test.extractDocs file, content, 1, 3, (err, doc, api) ->
+      test.extractDocs file, content, 1, 4, (err, doc, api) ->
         expect(api[2][2], 'default title in api#3').to.contain '### myCode()\n'
         expect(api[2][2], 'auto access in api#3').to.contain '**Usage:** public `myCode()`'
+        expect(api[3][2], 'default title in api#4').to.contain '### myCode()\n'
         cb()
     it "should get default view", (cb) ->
       test.report file, false, (err, report, symbols) ->

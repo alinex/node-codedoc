@@ -6,7 +6,6 @@ individual versions:
 
 Version 1.2.2 (2016-08-07)
 -------------------------------------------------
-- Allow all tests to run again.
 - Make tests for @include syntax.
 - Cache the request results directly.
 - Finished search for links in nodejs with tests.

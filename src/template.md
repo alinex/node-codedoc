@@ -1,7 +1,7 @@
 Templates
 =================================================
 
-As described in the [Usage](../README.md#Usage) and [Manpage](man/codedoc1.md)
+As described in the {@link README.md#Usage Usage} and {@link codedoc1.md}
 you may not only select a predefined template but also add your own.
 
 The template consists of two parts:
@@ -16,8 +16,7 @@ Delivery Network) which will be faster.
 HTML Template
 --------------------------------------------------
 The template is a basic HTML with [Handlebars](https://alinex.github.io/develop/lang/handlebars.html)
-markup language and the [alinex-handlebars](https://alinex.github.io/node-handlebars/README.md.html)
-extension.
+markup language and the {@link alinex-handlebars} extension.
 
 Within the template you may use the following variables:
 - __title__ - page title

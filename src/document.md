@@ -17,7 +17,7 @@ of `*.md` like:
     README.md
     Changelog.md
 
-Add `<!-- internal -->` at the start of a document to mark the complete document as
+Add `<!--` `internal -->` at the start of a document to mark the complete document as
 meant for the internal view only.
 
 ### Code Documentation
@@ -151,8 +151,8 @@ descriptions of the basic styles as well as extended formats like:
 
 If you mark some parts within the document as internal it will only be included in
 the internal view (using the `--code` switch):
-- add a single `<!-- internal -->` tag to mark the text from there till the end
-- use `<!-- internal -->` and `<!-- end internal -->` to mark only a part
+- add a single `<!--` `internal -->` tag to mark the text from there till the end
+- use `<!--` `internal -->` and `<!--` `end internal -->` to mark only a part
 
 The same can be also done using tags (see below) but this is the more general
 method working in all markdown sections.
@@ -201,7 +201,7 @@ Event
 
 See also
 
-:   - [trim](trim.coffee) as alternative implementation
+:   - {@link String.trim()} as alternative implementation
 
 Version 0.1.3 (C) 2016 Alexander Schilling - License: Apache 2.0
 
