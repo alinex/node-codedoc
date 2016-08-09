@@ -4,6 +4,15 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.5 (2016-08-09)
+-------------------------------------------------
+- Upgrade isbinaryfile@3.0.1
+- Allow multiple #3 headings to occure in one document.
+- Add test for npm linksearch.
+- Add docu for npm linksearch.
+- Add npm package link search.
+- Documentation update.
+
 Version 1.2.4 (2016-08-08)
 -------------------------------------------------
 - Remove end-of-toc marker.
