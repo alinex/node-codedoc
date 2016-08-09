@@ -33,9 +33,9 @@ PAGE_SEARCH =
 # If not existing create an `index.html` file which forwards to the first page
 # immediately.
 #
-# @param {string} dir base path of index file
-# @param {string} link destination for the link to the first page
-# @param {function(err)} cb callback method after done
+# @param {String} dir base path of index file
+# @param {String} link destination for the link to the first page
+# @param {function(<Error>)} cb callback method after done
 exports.createIndex = (dir, link, cb) ->
   file = path.join dir, 'index.html'
   dest = path.relative dir, link
@@ -66,7 +66,7 @@ exports.createIndex = (dir, link, cb) ->
 # - `title` - title of the document
 # - `url` - generated file
 # @param {String} search additional search words for link resolve
-# @param {function(err, md)} cb callback which will get the new markdown
+# @param {function(<Error>, <Dtring>)} cb callback which will get the new markdown
 exports.optimize = (report, file, symbols, pages, search, cb) ->
   # find inline tags
   report = report.replace /(\n\s*)#([1-6])(\s+)/, (_, pre, num, post) ->
@@ -122,7 +122,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
 # @param {Object} file file information with report
 # @param {String} moduleName name of the complete documentation project
 # @param {Array} pages list of pages from table of contents
-# @param {function(err)} cb callback if done or error occured
+# @param {function(<Error>)} cb callback if done or error occured
 exports.writeHtml = (file, moduleName, pages, cb) ->
   debug "#{file.source}: transform to html"
   file.report.toHtml
@@ -145,7 +145,7 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
 
 # @param {String} link element to link to
 # @param {String} search type name to use in search
-# @param {function(err, res)} cb callback with `null` or result with:
+# @param {function(<Error>, <Object>)} cb callback with `null` or result with:
 # - `title` page title to use as link text if none given
 # - `url` url for the page
 searchLink = (link, search, cb) ->
@@ -191,7 +191,7 @@ searchLink = (link, search, cb) ->
     cb()
 
 # @param {String} url page to grab
-# @param {function(err, body)} cb callback with body if page could be retrieved successfully
+# @param {function(<Error>, <String>)} cb callback with body if page could be retrieved successfully
 requestURL = (url, cb) ->
   request
     url: url

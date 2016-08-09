@@ -103,7 +103,7 @@ local path like known from the config module.
 ###
 
 ###
-@param {function(err)} cb method, to call with 'Error' or `null` after done.
+@param {function(<Error>)} cb method, to call with 'Error' or `null` after done.
 ###
 exports.setup = util.function.once this, (cb) ->
   debug chalk.grey "setup codedoc component"
@@ -133,7 +133,7 @@ steps to make the documentation ready to browse in the local path.
   - `exclude` - files to exclude see [alinex-fs](https://alinex.github.io/node-fs)
 - `brand` - branding name to remove from automatic titles
 - `verbose` - level of verbose mode
-@param {function(err)} cb function to be called after done
+@param {function(<Error>)} cb function to be called after done
 ###
 exports.run = (setup, cb) ->
   # set up system
@@ -263,9 +263,9 @@ orderLast = [
 # order in the lists above, the file depth and file name. The keys will be sorted
 # and a new object is generated in this sort order.
 #
-# @param {object} map map of pages
+# @param {Object} map map of pages
 # - `parts` is used to calculate the order
-# @return {object} the sorted map of pages
+# @return {Object} the sorted map of pages
 sortMap = (map) ->
   list = Object.keys(map).map (e) ->
     parts = map[e].parts[..-2].map (p) -> "/#{p}"

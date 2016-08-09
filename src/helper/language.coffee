@@ -14,9 +14,9 @@ path = require 'path'
 
 # Provides language-specific params for a given file name.
 #
-# @param {string} filename The name of the file to test
-# @param {string} contents The contents of the file (to check for shebang)
-# @return {object} Object containing all of the language-specific params
+# @param {String} filename The name of the file to test
+# @param {String} contents The contents of the file (to check for shebang)
+# @return {Object} Object containing all of the language-specific params
 module.exports = (file, contents) ->
   # First try to detect the language from the file extension
   ext = path.extname(file)[1..]

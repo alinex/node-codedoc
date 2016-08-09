@@ -49,12 +49,12 @@ tagAlias =
 
 # Parse a single file and get it's documentation as report back.
 #
-# @param {string} file absolute path of file to analyze
-# @param {string} local local path, absolute from input directory
-# @param {object} setup setup configuration from `run()` method
-# @param {object} symbol map to fill with code symbols as `[file, anchor]` to
+# @param {String} file absolute path of file to analyze
+# @param {String} local local path, absolute from input directory
+# @param {Object} setup setup configuration from `run()` method
+# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
 # resolve links later
-# @param {function(err, report)} cb callback which is called with error or `Report` instance
+# @param {function(<Error>, <Report>)} cb callback which is called with error or `Report` instance
 exports.file = (file, local, setup, symbols, cb) ->
   async.waterfall [
     # get file
@@ -143,9 +143,9 @@ exports.file = (file, local, setup, symbols, cb) ->
 
 # @param {String} file full filename for reporting
 # @param {String} content complete file content
-# @param {object} setup setup configuration from {@link run()} method
-# @param {object} lang language definition structure from {@link language.coffee}
-# @param {object} symbol map to fill with code symbols as `[file, anchor]` to
+# @param {Object} setup setup configuration from {@link run()} method
+# @param {Object} lang language definition structure from {@link language.coffee}
+# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
 # @return {Array} list of documentation extracts
 extractDocs = (file, content, setup, lang, symbols) ->
   # document comments extraction
@@ -192,9 +192,9 @@ extractDocs = (file, content, setup, lang, symbols) ->
 # Remove indents which are the same in all lines. The tab size is used to translate
 # if tabs are included.
 #
-# @param {string} code original code lines
-# @param {integer} tab number of spaces to use instead of tab
-# @return {string} optimized code view
+# @param {String} code original code lines
+# @param {Integer} tab number of spaces to use instead of tab
+# @return {String} optimized code view
 stripIndent = (code, tab) ->
   str = code.replace /^[ \t]*(?=\S)/gm, (e) ->
     e.replace '\t', util.string.repeat ' ', tab ? 2
@@ -206,11 +206,11 @@ stripIndent = (code, tab) ->
 # Replace tags in markdown with real markdown syntax and add some possible information
 # autodetected from code.
 #
-# @param {array} doc markdown document as read from file with: startpos, endpos, doc, codeline
-# @param {object} lang language definition structure from {@link language.coffee}
-# @param {object} setup setup configuration from {@link run()} method
-# @param {file} file file name used for relative link creation
-# @param {object} symbol map to fill with code symbols as `[file, anchor]` to
+# @param {Array} doc markdown document as read from file with: startpos, endpos, doc, codeline
+# @param {Object} lang language definition structure from {@link language.coffee}
+# @param {Object} setup setup configuration from {@link run()} method
+# @param {String} file file name used for relative link creation
+# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
 # resolve links later
 tags = (doc, lang, setup, file, symbols) ->
   return unless lang
