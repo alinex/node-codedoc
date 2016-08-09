@@ -23,7 +23,7 @@ util = require 'alinex-util'
 # -------------------------------------------------
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
 PAGE_SEARCH =
-  nodejs: ['nodejs', 'mdn']
+  nodejs: ['nodejs', 'npm', 'mdn']
   javascript: ['mdn']
 
 
@@ -183,6 +183,14 @@ searchLink = (link, search, cb) ->
         cb null,
           title: match[1].replace /\(.*?\)/, '()'
           url: "#{page}##{match[2]}"
+    if type is 'npm'
+      debug "search for link to #{link} in NodeJS API"
+      page = "https://www.npmjs.com/package/#{link}"
+      return requestURL page, (err, body) ->
+        return cb() unless body
+        cb null,
+          title: link
+          url: page
     # not possible
     cb()
   , (_, results) ->
