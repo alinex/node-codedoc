@@ -303,7 +303,8 @@ different sources in the following order (first takes precedence):
 
 Possible references are:
 - javascript - using the Mozilla Developer Network
-- nodejs - using the nodeJS documentation and the Mozilla Developer Network
+- nodejs - using the nodeJS documentation, the npm package list and the Mozilla
+  Developer Network
 
 ### Include Inline Images
 
