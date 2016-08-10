@@ -141,7 +141,6 @@ exports.run = (setup, cb) ->
   setup.output = path.resolve setup.output ? '.'
   setup.find ?= {}
   setup.find.type = 'file'
-  setup.brand ?= 'alinex'
   symbols = {} # document wide collection
   # start converting
   fs.mkdirs setup.output, (err) ->
@@ -184,7 +183,6 @@ exports.run = (setup, cb) ->
             map = sortMap map
             mapKeys = Object.keys map
             moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
-            .replace new RegExp("^#{setup.brand}\\s+", 'i'), ''
             (if setup.verbose then console.log else debug) "create html files..."
             async.eachLimit mapKeys, PARALLEL, (name, cb) ->
               # create link list
