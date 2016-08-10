@@ -131,7 +131,6 @@ steps to make the documentation ready to browse in the local path.
 - `find` - source search pattern
   - `include` - files to include see [alinex-fs](https://alinex.github.io/node-fs)
   - `exclude` - files to exclude see [alinex-fs](https://alinex.github.io/node-fs)
-- `brand` - branding name to remove from automatic titles
 - `verbose` - level of verbose mode
 @param {function(<Error>)} cb function to be called after done
 ###
