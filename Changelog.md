@@ -4,6 +4,17 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.6 (2016-08-11)
+-------------------------------------------------
+- Fix trim of unused dash in parameter output.
+- Update alinex-fs@2.0.7, alinex-builder@2.3.6
+- Extended internal documentation.
+- Remove unneccessary dashes in code specification.
+- Get correct symbol name also for lazy typing.
+- Add small spacing after tables.
+- Update documentation.
+- Remove support for setup.brand.
+
 Version 1.2.5 (2016-08-09)
 -------------------------------------------------
 - Upgrade isbinaryfile@3.0.1
