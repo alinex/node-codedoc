@@ -182,7 +182,7 @@ searchLink = (link, search, cb) ->
         .replace /\(\)/, ''
         check = new RegExp "\\b#{check}\\b", 'i'
         return cb() unless match[2].match check
-        cb null,
+        cb 'DONE',
           title: match[2]
           url: match[1]
     if type is 'nodejs'
@@ -194,7 +194,7 @@ searchLink = (link, search, cb) ->
         check = method.replace /\(\)/, '\\([^)]+\\)'
         check = new RegExp "<h2>(.*?\\b#{check}.*?)<.*id=\"(.*?)\"", 'i'
         return cb() unless match = body.match check
-        cb null,
+        cb 'DONE',
           title: match[1].replace /\(.*?\)/, '()'
           url: "#{page}##{match[2]}"
     if type is 'npm' and link.match /^[^()]+$/
@@ -202,7 +202,7 @@ searchLink = (link, search, cb) ->
       page = "https://www.npmjs.com/package/#{link}"
       return requestURL page, (err, body) ->
         return cb() unless body
-        cb null,
+        cb 'DONE',
           title: link
           url: page
     # not possible
