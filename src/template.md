@@ -1,7 +1,7 @@
 Templates
 =================================================
 
-As described in the {@link README.md#Usage Usage} and {@link codedoc1.md}
+As described in the {@link README.md#Usage Usage} and {@link codedoc.1.md}
 you may not only select a predefined template but also add your own.
 
 The template consists of two parts:

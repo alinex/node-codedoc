@@ -87,17 +87,17 @@ render = require './helper/render'
 
 # Setup
 # -------------------------------------------------
-PARALLEL = 10
-STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
+PARALLEL = 10 # number of maximal parallel runs in async
+STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # files to copy
 
 
 ###
 Initialize Module
 -------------------------------------------------
-To use the template search through the [alinex-config](https://alinex.github.io/node-config)
+To use the template search through the {@link alinex-config}
 path module you have to init the template type by calling this method once.
 
-This will setup the [alinex-report](https://alinex.github.io/node-report) component
+This will setup the {@link alinex-report} component
 and register the template type to search for templates in the global, user and
 local path like known from the config module.
 ###
@@ -120,18 +120,19 @@ exports.setup = util.function.once this, (cb) ->
 ###
 Create Documentation
 -------------------------------------------------
-Like described in the workflow above this is the main routine and will do all the
-steps to make the documentation ready to browse in the local path.
 ###
 
 ###
+Like described in the workflow above this is the main routine and will do all the
+steps to make the documentation ready to browse in the local path.
+
 @param {object} setup defining the document creation
-- `input` - path to read from
-- `òutput`- output directory to store to
-- `find` - source search pattern
-  - `include` - files to include see [alinex-fs](https://alinex.github.io/node-fs)
-  - `exclude` - files to exclude see [alinex-fs](https://alinex.github.io/node-fs)
-- `verbose` - level of verbose mode
+- `input` - `String` path to read from
+- `òutput`- `String` output directory to store to
+- `find` - `Object` source search pattern
+  - `include` - `String|RegExp|Array` files to include see {@link alinex-fs}
+  - `exclude` - `String|RegExp|Array` files to exclude see {@link alinex-fs}
+- `verbose` - `Integer` level of verbose mode
 @param {function(<Error>)} cb function to be called after done
 ###
 exports.run = (setup, cb) ->
@@ -172,6 +173,8 @@ exports.run = (setup, cb) ->
               cb()
           , (err) ->
             return cb err if err
+            # add the title of the symbol as element
+            s[2] = name for name, s of symbols
             # write files
             linksearchDefault = null
             max = 0
@@ -261,7 +264,7 @@ orderLast = [
 # and a new object is generated in this sort order.
 #
 # @param {Object} map map of pages
-# - `parts` is used to calculate the order
+# - `parts` - `Array<String>` is used to calculate the order
 # @return {Object} the sorted map of pages
 sortMap = (map) ->
   list = Object.keys(map).map (e) ->

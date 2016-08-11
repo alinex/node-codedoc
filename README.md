@@ -268,8 +268,7 @@ This allows you to put your templates also under:
 Debugging
 -------------------------------------------------
 If you have any problems you may debug the code with the predefined flags. It uses
-the [debug](https://github.com/visionmedia/debug/blob/master/Readme.md) module to
-let you define what to debug.
+the {@link debug} module to let you define what to debug.
 
 Call it with the `DEBUG` environment variable set to the types you want to debug.
 The most valueable flags will be:

@@ -14,9 +14,10 @@ path = require 'path'
 
 # Provides language-specific params for a given file name.
 #
-# @param {String} filename The name of the file to test
-# @param {String} contents The contents of the file (to check for shebang)
+# @param {String} filename the name of the file to test
+# @param {String} contents the contents of the file (to check for shebang)
 # @return {Object} Object containing all of the language-specific params
+# dscribed under (Language Definitions)[#language_definitions].
 module.exports = (file, contents) ->
   # First try to detect the language from the file extension
   ext = path.extname(file)[1..]
@@ -203,7 +204,7 @@ PL_DOC = [
   ///
     \s*\n       # with optional spaces
     =           # start the line with any allowed pod command
-      (pod|head[1-4]|over|item|back|begin|end|for|encoding)
+      (?:pod|head[1-4]|over|item|back|begin|end|for|encoding)
     \s*\n       # and no more in this line
     (           # content of the comment
       [\s\S]*?  # comment charactes
@@ -220,12 +221,16 @@ PL_DOC = [
 # All the languages which are parseable are in here.
 # A language can have the following properties:
 #
-# - `extensions` - all possible file extensions for the language
-# - `executables` - executables for the language that might be in a shebang
-# - `doc` - document comment parsers as list of RegExp and optimization function
-# - `api` - internal api documentation parser as list of RegExp and optimization function
-# - `tab` - number of spaces to use for tab indenting (default 2)
-# - `tags`: whether to try and extract jsDoc/javaDoc-style tag elements
+# - `extensions` - `Array<String>` all possible file extensions for the language
+# - `executables` - `Array<String>` executables for the language that might be in a shebang
+# - `doc` - `Array` document comment parsers
+#   - `0` - `RegExp` regular expression to extract comment as `$1`
+#   - `1` - `function(String)` optimization function for content
+# - `api` - `Array` internal api documentation parser
+#   - `0` - `RegExp` regular expression to extract comment as `$1`
+#   - `1` - `function(String)` optimization function for content
+# - `tab` - `Integer` number of spaces to use for tab indenting (default 2)
+# - `tags` - `Object` whether to try and extract jsDoc/javaDoc-style tag elements
 #   - `title` - function to extract the function/class name from first code line
 #   - `access` - function to detect access level from first code line
 #   - `searchtype` - the default type to use in link search through google
@@ -242,7 +247,7 @@ languages =
       title: (c) ->
         # function call
         return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/
-        # function call
+        # function call starting with arguments in this line
         return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/
         # variable setting
         return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/

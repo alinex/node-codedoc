@@ -76,11 +76,11 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
     switch tag
       when 'link'
         # check for symbol
-        if symbols[uri]
-          url = path.relative path.dirname(file), "#{symbols[uri][0]}.html"
-          url += "##{symbols[uri][1]}"
-          title = " \"File: #{symbols[uri][0]} Element: #{uri}\""
-          return cb null, "[`#{text ? uri}`](#{url + title})"
+        if symbol = symbols[uri] ? symbols["#{uri}()"]
+          url = path.relative path.dirname(file), "#{symbol[0]}.html"
+          url += "##{symbol[1]}"
+          title = " \"File: #{symbol[0]} Element: #{symbol[2]}\""
+          return cb null, "[`#{text ? symbol[2]}`](#{url + title})"
         # check for file
         [filepath, anchor] = uri.split /#/
         found = pages.filter (e) -> ~e.path.indexOf filepath
@@ -99,6 +99,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         if search
           return searchLink uri, search, (err, res) ->
             return cb null, text ? uri if err or not res?.url
+            console.error "Could not resolve link to #{uri} in #{file}"
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
         console.error "Could not resolve link to #{uri} in #{file}"
@@ -183,8 +184,8 @@ searchLink = (link, search, cb) ->
         cb null,
           title: match[1].replace /\(.*?\)/, '()'
           url: "#{page}##{match[2]}"
-    if type is 'npm'
-      debug "search for link to #{link} in NodeJS API"
+    if type is 'npm' and link.match /^[^()]+$/
+      debug "search for link to #{link} in NPM"
       page = "https://www.npmjs.com/package/#{link}"
       return requestURL page, (err, body) ->
         return cb() unless body

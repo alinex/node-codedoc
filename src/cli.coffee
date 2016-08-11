@@ -16,6 +16,7 @@ alinex = require 'alinex-core'
 # include classes and helpers
 codedoc = require './index'
 
+
 # Setup
 # -------------------------------------------------
 # Set the logo for command line output.
@@ -142,7 +143,7 @@ codedoc.setup (err) ->
 
   # ### Start processing
   #
-  # Call codedoc to do it's work.
+  # Call codedoc {@link run} to do it's work.
   argv.input ?= '.'
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err

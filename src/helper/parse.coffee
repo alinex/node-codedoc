@@ -51,8 +51,8 @@ tagAlias =
 #
 # @param {String} file absolute path of file to analyze
 # @param {String} local local path, absolute from input directory
-# @param {Object} setup setup configuration from `run()` method
-# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
+# @param {Object} setup setup configuration from {@link run} method
+# @param {Object<Array>} symbol map to fill with code symbols as `[file, anchor]` to
 # resolve links later
 # @param {function(<Error>, <Report>)} cb callback which is called with error or `Report` instance
 exports.file = (file, local, setup, symbols, cb) ->
@@ -145,8 +145,13 @@ exports.file = (file, local, setup, symbols, cb) ->
 # @param {String} content complete file content
 # @param {Object} setup setup configuration from {@link run()} method
 # @param {Object} lang language definition structure from {@link language.coffee}
-# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
-# @return {Array} list of documentation extracts
+# @param {Object<Array>} symbol map to fill with code symbols as `[file, anchor]` to
+# resolve links later
+# @return {Array<Array>} list of documentation extracts
+# - `0` - `Integer` character position from start of extraction
+# - `1` - `Integer` character position from end of extraction
+# - `2` - `String` extracted text
+# - `3` - `String` following code line
 extractDocs = (file, content, setup, lang, symbols) ->
   # document comments extraction
   docs = []
@@ -206,11 +211,11 @@ stripIndent = (code, tab) ->
 # Replace tags in markdown with real markdown syntax and add some possible information
 # autodetected from code.
 #
-# @param {Array} doc markdown document as read from file with: startpos, endpos, doc, codeline
-# @param {Object} lang language definition structure from {@link language.coffee}
+# @param {Array} doc markdown document as read from {@link extractDocs}
+# @param {Object} lang language definition structure from {@link language.coffe#exports}
 # @param {Object} setup setup configuration from {@link run()} method
 # @param {String} file file name used for relative link creation
-# @param {Object} symbol map to fill with code symbols as `[file, anchor]` to
+# @param {Object<Array>} symbol map to fill with code symbols as `[file, anchor]` to
 # resolve links later
 tags = (doc, lang, setup, file, symbols) ->
   return unless lang
@@ -277,14 +282,10 @@ tags = (doc, lang, setup, file, symbols) ->
     if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
     spec.static or spec.construct or spec.param)
       md += "\n> **Usage:** "
-      if spec.access
+      if spec.access and spec.access[spec.access.length-1] isnt 'public'
         md += "#{util.array.last spec.access} "
-      else if spec.private
-        md += 'private '
-      else if spec.protected
-        md += 'protected '
-      else if spec.public
-        md += 'public '
+      else if spec.private then md += 'private '
+      else if spec.protected then md += 'protected '
       md += 'static ' if spec.static
       md += '`'
       md += 'const ' if spec.constant
@@ -337,7 +338,9 @@ tags = (doc, lang, setup, file, symbols) ->
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
 
-# @param {Array} spec list of tag contents
+# Format @param or @event as markdown from extracted tag specification.
+#.
+# @param {Array<Array<String>>} spec list of tag contents
 # @param {String} title name to display for this spec type
 # @return {String} markdown to add
 tagParamEvent = (spec, title) ->
@@ -345,7 +348,7 @@ tagParamEvent = (spec, title) ->
   for e in spec
     md += "- "
     md += "`#{e[1]}` - " if e[1]
-    md += "`#{e[0]}` - " if e[0]
+    md += "`#{e[0]}` " if e[0]
     if e[2] then md += "#{e[2].replace /\n/g, '\n      '}\n    "
     else md = md[..-4] + '\n    '
   return md
