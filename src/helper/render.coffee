@@ -170,7 +170,7 @@ searchLink = (link, search, cb) ->
     link = match[2]
   link = encodeURIComponent link
   # do the search
-  async.map PAGE_SEARCH[search], (type, cb) ->
+  async.mapSeries PAGE_SEARCH[search], (type, cb) ->
     if type is 'mdn'
       debug "search for link to #{link} in MDN"
       return requestURL "https://developer.mozilla.org/de/search?q=#{link}", (err, body) ->
