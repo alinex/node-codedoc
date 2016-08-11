@@ -306,6 +306,51 @@ Possible references are:
 - nodejs - using the nodeJS documentation, the npm package list and the Mozilla
   Developer Network
 
+__Examples:__
+
+Here you see some tags with the converted markdown just below (no space between
+`{` and `@` allowed, this is only to don't interpret here):
+
+    # internal symbol
+    { @link test()}
+    [`test()`](../../test.coffee.html#test "File: test.coffee Element: test()")
+
+    # internal symbol (lazy written)
+    { @link test}
+    [`test()`](../../test.coffee.html#test "File: test.coffee Element: test()")
+
+    # local documentation file
+    { @link /src/test.coffee}
+    [Test Page](test.coffee.html "File: /src/test.coffee")
+
+    # local documentation file (without full path)
+    { @link test.coffee}
+    [Test Page](test.coffee.html "File: test.coffee")
+
+    # alinex package name
+    { @link alinex-config}
+    [alinex-config](https://alinex.github.io/node-config)
+
+    # internet address
+    { @link http://heise.de}
+    [http://heise.de](http://heise.de)
+
+    # javascript reference
+    { @link String.match()}
+    [String.prototype.match()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+
+    # nodeJS reference
+    { @link fs.readFile()}
+    [fs.readFile()](https://nodejs.org/dist/latest-v6.x/docs/api/fs.html#fs_fs_readfile_file_options_callback)
+
+    # NPM package
+    { @link async}
+    [async](https://www.npmjs.com/package/async)
+
+    # all other things (not linked)
+    { @link thisisnotanythere}
+    thisisnotanythere
+
 ### Include Inline Images
 
 Through a small trick you may add images as inline data. Add them as local file link
