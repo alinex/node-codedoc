@@ -300,13 +300,13 @@ tags = (doc, lang, setup, file, symbols) ->
     if spec.return
       e = spec.return[spec.return.length-1]
       md += "\nReturn\n:   "
-      md += "`#{e[0]}` - " if e[0]
+      md += "`#{e[0]}` " if e[0]
       md += "#{e[1].replace /\n/g, '\n      '}\n    "
     if spec.throws
       md += "\nThrows\n:   "
       for e in spec.throws
         md += "- "
-        md += "`#{e[0]}` - " if e[0]
+        md += "`#{e[0]}` " if e[0]
         md += "#{e[1].replace /\n/g, '\n      '}\n    "
     md += tagParamEvent spec.event, 'Event' if spec.event
     if spec.see
@@ -339,7 +339,7 @@ tags = (doc, lang, setup, file, symbols) ->
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
 
 # Format @param or @event as markdown from extracted tag specification.
-#.
+#
 # @param {Array<Array<String>>} spec list of tag contents
 # @param {String} title name to display for this spec type
 # @return {String} markdown to add

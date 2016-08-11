@@ -98,8 +98,9 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         # search
         if search
           return searchLink uri, search, (err, res) ->
-            return cb null, text ? uri if err or not res?.url
-            console.error "Could not resolve link to #{uri} in #{file}"
+            if err or not res?.url
+              console.error "Could not resolve link to #{uri} in #{file}"
+              return cb null, text ? uri
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
         # default
         console.error "Could not resolve link to #{uri} in #{file}"
@@ -165,7 +166,7 @@ searchLink = (link, search, cb) ->
         match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
         return cb() unless match
         return cb() unless match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
-        check = link.replace /[.]/, '\.(?:.*\.)?'
+        check = link.replace /[.]/, '\.(?:.*\\.)?'
         .replace /\(\)/, ''
         check = new RegExp "\\b#{check}\\b", 'i'
         return cb() unless match[2].match check
