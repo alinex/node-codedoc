@@ -21,8 +21,8 @@ util = require 'alinex-util'
 
 # Setup
 # -------------------------------------------------
-STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i
-PAGE_SEARCH =
+STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # won't get .html extension
+PAGE_SEARCH = # define the possible settings and methods to use
   nodejs: ['nodejs', 'npm', 'mdn']
   javascript: ['mdn']
 
@@ -58,15 +58,17 @@ exports.createIndex = (dir, link, cb) ->
       </html>
       """, cb
 
+# Optimize markdown of report before converting it further.
+#
 # @param {String} report markdown text to replace inline tags within
 # @param {String} file file name used for relative link creation
-# @param {Object} symbols map as `[file, anchor]` to resolve links
-# @param {Array} pages list of pages from table of contents used attributes:
-# - `path` - file path
-# - `title` - title of the document
-# - `url` - generated file
+# @param {Object<Array>} symbols map as `[file, anchor]` to resolve links
+# @param {Array<Object>} pages list of pages from table of contents used attributes:
+# - `path` - `String` file path
+# - `title` - `String` title of the document
+# - `url` - `String` generated file
 # @param {String} search additional search words for link resolve
-# @param {function(<Error>, <Dtring>)} cb callback which will get the new markdown
+# @param {function(<Error>, <String>)} cb callback which will get the new markdown
 exports.optimize = (report, file, symbols, pages, search, cb) ->
   # find inline tags
   report = report.replace /(\n\s*)#([1-6])(\s+)/g, (_, pre, num, post) ->
@@ -121,9 +123,17 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           exports.optimize content, file, symbols, pages, search, cb
   , cb
 
+# Convert report to HTML and write it to disk.
+#
 # @param {Object} file file information with report
+# - `report` - `Report` containing the content for the page
+# - `source` - `String` source path from which the report was created
+# - `dest` - `String` destination path to which to write the converted HTML
 # @param {String} moduleName name of the complete documentation project
-# @param {Array} pages list of pages from table of contents
+# @param {Array<Object>} pages list of pages from table of contents used attributes:
+# - `path` - `String` file path
+# - `title` - `String` title of the document
+# - `url` - `String` generated file
 # @param {function(<Error>)} cb callback if done or error occured
 exports.writeHtml = (file, moduleName, pages, cb) ->
   debug "#{file.source}: transform to html"
@@ -145,11 +155,13 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
       return cb err if err
       fs.writeFile file.dest, html, 'utf8', cb
 
+# Run internet search to find link destination.
+#
 # @param {String} link element to link to
 # @param {String} search type name to use in search
-# @param {function(<Error>, <Object>)} cb callback with `null` or result with:
-# - `title` page title to use as link text if none given
-# - `url` url for the page
+# @param {function(<Error>, <Object>)} cb callback with `null` or result object with:
+# - `title` - `String` page title to use as link text if none given
+# - `url` - `String` url for the page
 searchLink = (link, search, cb) ->
   return cb() unless PAGE_SEARCH[search]
   # support search type before link target
@@ -200,6 +212,8 @@ searchLink = (link, search, cb) ->
       return cb null, res if res
     cb()
 
+# Request a url and check that it was successfully retrieved.
+#
 # @param {String} url page to grab
 # @param {function(<Error>, <String>)} cb callback with body if page could be retrieved successfully
 requestURL = (url, cb) ->
