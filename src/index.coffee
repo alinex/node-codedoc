@@ -87,7 +87,7 @@ render = require './helper/render'
 
 # Setup
 # -------------------------------------------------
-PARALLEL = 1 # number of maximal parallel runs in async
+PARALLEL = 10 # number of maximal parallel runs in async
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # files to copy
 
 
