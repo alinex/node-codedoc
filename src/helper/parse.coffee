@@ -350,5 +350,5 @@ tagParamEvent = (spec, title) ->
     md += "`#{e[1]}` - " if e[1]
     md += "`#{e[0]}` " if e[0]
     if e[2] then md += "#{e[2].replace /\n/g, '\n      '}\n    "
-    else md = md[..-4] + '\n    '
+    else md = util.string.trim(md, ' -') + '\n    '
   return md

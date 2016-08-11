@@ -10,7 +10,7 @@ describe "Inline Tags", ->
   describe "link", ->
 
     it "should resolve symbol link", (cb) ->
-      test "{@link test()}", null, {'test()': ['test.coffee', 'test']},
+      test "{@link test()}", null, {'test()': ['test.coffee', 'test', 'test()']},
         '[`test()`](../../test.coffee.html#test "File: test.coffee Element: test()")', cb
 
     it "should resolve absolute file", (cb) ->

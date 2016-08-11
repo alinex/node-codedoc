@@ -20,7 +20,7 @@ describe "Languages", ->
     it "should read doc blocks", (cb) ->
       test.extractDocs file, content, 1, 4, (err, doc, api) ->
         expect(api[2][2], 'default title in api#3').to.contain '### myCode()\n'
-        expect(api[2][2], 'auto access in api#3').to.contain '**Usage:** public `myCode()`'
+        expect(api[2][2], 'auto access in api#3').to.contain '**Usage:** `myCode()`'
         expect(api[3][2], 'default title in api#4').to.contain '### myCode()\n'
         cb()
     it "should get default view", (cb) ->

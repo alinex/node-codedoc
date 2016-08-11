@@ -44,8 +44,8 @@ describe "Tags", ->
       test api, num++, '\n> **Usage:** private `test()`\n'
     it "should interpret @protected", ->
       test api, num++, '\n> **Usage:** protected `test()`\n'
-    it "should interpret @public", ->
-      test api, num++, '\n> **Usage:** public `test()`\n'
+    it "should interpret @public but do not show", ->
+      test api, num++, '\n> **Usage:** `test()`\n'
     it "should interpret @static", ->
       test api, num++, '\n> **Usage:** static `test()`\n'
     it "should interpret @constant", ->
@@ -58,21 +58,21 @@ describe "Tags", ->
     it "should interpret @param, @arg, @argument", ->
       test api, num++, '\nParameter\n:   - `test1`\n    - `test2`\n    - `test3`\n'
       test api, num++, '\nParameter\n:   - `test1` - `String`\n    - `test2` - `String`\n    - `test3` - `String`\n'
-      test api, num++, '\nParameter\n:   - `test1` - `String` - a parameter\n    - `test2` - `String` - a parameter\n    - `test3` - `String` - a parameter\n'
+      test api, num++, '\nParameter\n:   - `test1` - `String` a parameter\n    - `test2` - `String` a parameter\n    - `test3` - `String` a parameter\n'
     it "should interpret @return, @returns", ->
       test api, num++, '\nReturn\n:   a number\n'
       test api, num++, '\nReturn\n:   a number\n'
-      test api, num++, '\nReturn\n:   `Integer` - a number\n'
-      test api, num++, '\nReturn\n:   `Integer` - a number\n'
+      test api, num++, '\nReturn\n:   `Integer` a number\n'
+      test api, num++, '\nReturn\n:   `Integer` a number\n'
     it "should interpret @throws, @exception", ->
       test api, num++, '\nThrows\n:   - a number\n'
       test api, num++, '\nThrows\n:   - a number\n'
-      test api, num++, '\nThrows\n:   - `Integer` - a number\n'
-      test api, num++, '\nThrows\n:   - `Integer` - a number\n'
+      test api, num++, '\nThrows\n:   - `Integer` a number\n'
+      test api, num++, '\nThrows\n:   - `Integer` a number\n'
     it "should interpret @event, @fires", ->
       test api, num++, '\nEvent\n:   - `event1`\n    - `event2`\n'
       test api, num++, '\nEvent\n:   - `event1` - `String`\n    - `event2` - `String`\n'
-      test api, num++, '\nEvent\n:   - `event1` - `String` - a parameter\n    - `event2` - `String` - a parameter\n'
+      test api, num++, '\nEvent\n:   - `event1` - `String` a parameter\n    - `event2` - `String` a parameter\n'
     it "should interpret @see", ->
       test api, num++, '\nSee also\n:   - the manual\n'
 
