@@ -330,7 +330,8 @@ tags = (doc, lang, setup, file, symbols) ->
     if spec.internal and setup.code
       md += "\n#{spec.internal.join ' '}\n"
     # add heading 3 if not there
-    if title and not md.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
+    check = md.replace /([`$]{3,})[\s\S]*?\1/g, ''
+    if title and not check.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
       md = "### #{title}\n\n#{md}"
     # store changes
     doc[2] = md
