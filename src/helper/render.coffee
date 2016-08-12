@@ -180,7 +180,7 @@ searchLink = (link, search, cb) ->
         check = link.replace /[.]/, '\\.(?:.*\\.)?'
         .replace /\(\)/, ''
         check = new RegExp "\\b#{check}\\b", 'i'
-        for match in matches
+        for match in matches[0..4] # check only the first 5 entries
           continue unless match = match.match /href="([^"]*)"[^>]*>(.*?)</
           if match[2].match check
             return cb 'DONE',
