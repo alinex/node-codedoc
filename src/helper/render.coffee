@@ -174,17 +174,19 @@ searchLink = (link, search, cb) ->
     if type is 'mdn'
       debug "search for link to #{link} in MDN"
       return requestURL "https://developer.mozilla.org/en/search?q=#{link}", (err, body) ->
-        return cb() unless body
-        match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
-        return cb() unless match
-        return cb() unless match = match[1].match /href="([^"]*)"[^>]*>(.*?)</
-        check = link.replace /[.]/, '\.(?:.*\\.)?'
+        return cb() if err or not body
+        matches = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/g
+        return cb() unless matches
+        check = link.replace /[.]/, '\\.(?:.*\\.)?'
         .replace /\(\)/, ''
         check = new RegExp "\\b#{check}\\b", 'i'
-        return cb() unless match[2].match check
-        cb 'DONE',
-          title: match[2]
-          url: match[1]
+        for match in matches
+          continue unless match = match.match /href="([^"]*)"[^>]*>(.*?)</
+          if match[2].match check
+            return cb 'DONE',
+              title: match[2]
+              url: match[1]
+        return cb() # nothing found
     if type is 'nodejs'
       debug "search for link to #{link} in NodeJS API"
       [module, method] = link.split /\./
