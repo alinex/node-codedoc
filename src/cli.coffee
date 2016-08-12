@@ -6,6 +6,7 @@
 
 # Node Modules
 # -------------------------------------------------
+debug = require('debug') 'codedoc'
 yargs = require 'yargs'
 chalk = require 'chalk'
 async = require 'async'
@@ -102,6 +103,12 @@ codedoc.setup (err) ->
       description: "don't output header and footer"
       type: 'boolean'
       global: true
+    parallel:
+      alias: 'p'
+      description: "estimated max parallel runs"
+      type: 'number'
+      global: true
+      default: if debug.enabled then 1 else 100
     # add specific args
     input:
       alias: 'i'
@@ -155,6 +162,7 @@ codedoc.setup (err) ->
       output: argv.output
       style: argv.style
       code: argv.code
+      parallel: argv.parallel
       verbose: argv.verbose
     , (err) ->
       console.log 'Everything done.'

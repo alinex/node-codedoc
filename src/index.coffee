@@ -87,7 +87,6 @@ render = require './helper/render'
 
 # Setup
 # -------------------------------------------------
-PARALLEL = 1 # number of maximal parallel runs in async
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # files to copy
 
 
@@ -133,6 +132,8 @@ steps to make the documentation ready to browse in the local path.
   - `include` - `String|RegExp|Array` files to include see {@link alinex-fs}
   - `exclude` - `String|RegExp|Array` files to exclude see {@link alinex-fs}
 - `verbose` - `Integer` level of verbose mode
+- `parallel` - `Integer` estimated max parallel runs (default is 100 or 1 if in
+  debug mode)
 @param {function(<Error>)} cb function to be called after done
 ###
 exports.run = (setup, cb) ->
@@ -141,6 +142,7 @@ exports.run = (setup, cb) ->
   setup.output = path.resolve setup.output ? '.'
   setup.find ?= {}
   setup.find.type = 'file'
+  setup.parallel ?= if debug.enabled then 1 else 100
   symbols = {} # document wide collection
   # start converting
   fs.mkdirs setup.output, (err) ->
@@ -154,7 +156,7 @@ exports.run = (setup, cb) ->
           (if setup.verbose then console.log else debug) "convert files..."
           map = {}
           linksearch = {}
-          async.eachLimit list, PARALLEL, (file, cb) ->
+          async.eachLimit list, setup.parallel, (file, cb) ->
             p = file[setup.input.length..]
             parse.file file, p, setup, symbols, (err, report, lang) ->
               if err
@@ -186,7 +188,7 @@ exports.run = (setup, cb) ->
             mapKeys = Object.keys map
             moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
             (if setup.verbose then console.log else debug) "create html files..."
-            async.eachLimit mapKeys, PARALLEL, (name, cb) ->
+            async.eachLimit mapKeys, setup.parallel, (name, cb) ->
               # create link list
               pages = []
               for p, e of map
@@ -218,7 +220,7 @@ exports.run = (setup, cb) ->
           include: STATIC_FILES
         fs.find setup.input, filter, (err, list) ->
           return cb err if err
-          async.eachLimit list, PARALLEL, (file, cb) ->
+          async.eachLimit list, setup.parallel, (file, cb) ->
             (if setup.verbose > 1 then console.log else debugCopy) "copy #{file}"
             dest = "#{setup.output}#{file[setup.input.length..]}"
             fs.remove dest, ->

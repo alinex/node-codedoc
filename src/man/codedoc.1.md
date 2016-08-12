@@ -27,6 +27,7 @@ General Options:
     --nocolors, -C  turn of color output                                 [boolean]
     --verbose, -v   run in verbose mode (multiple makes more verbose)      [count]
     --quiet, -q     don't output header and footer                       [boolean]
+    --parallel, -p  estimated max parallel runs            [number] [default: 100]
 
 Examples:
 
@@ -92,6 +93,13 @@ Parameters
 --quiet, -q     
 
 :   Don't output header and footer. But output everything else like defined.
+
+--parallel, -p
+
+:   Set the maximum number of parallel runs. This is not a fix value but more an
+    estimation, because of multiple level of asynchroneous calls the real value may
+    be higher in some circumstances. The default is to use 100 or if DEBUG is set to
+    use 1 (meaning no parallelism).
 
 
 Define Ignores
