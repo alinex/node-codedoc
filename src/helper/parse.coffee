@@ -156,28 +156,32 @@ extractDocs = (file, content, setup, lang, symbols) ->
   # document comments extraction
   docs = []
   if lang.doc
-    [re, fn] = lang.doc
-    while match = re.exec content
-      match[1] = fn match[1] if fn
-      end = match.index + match[0].length
-      cend = content.indexOf '\n', end
-      code = if cend > 0 then content[end..cend] else content[end..]
-      docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
+    for [re, fn] in lang.doc
+      other = content
+      for doc in docs
+        start = if doc[0] then other[0..doc[0]-1] else ''
+        other = start + util.string.repeat('\n', doc[1] - doc[0]) + other[doc[1]..]
+      while match = re.exec other
+        match[1] = fn match[1] if fn
+        end = match.index + match[0].length
+        cend = content.indexOf '\n', end
+        code = if cend > 0 then content[end..cend] else content[end..]
+        docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments"
   # internal comments extraction
   if lang.api and setup.code
-    [re, fn] = lang.api
-    other = content
-    for doc in docs
-      start = if doc[0] then other[0..doc[0]] else ''
-      other = start + util.string.repeat('\n', doc[1] - doc[0]) + other[doc[1]..]
-    while match = re.exec other
-      match[1] = fn match[1] if fn
-      end = match.index + match[0].length
-      cend = content.indexOf '\n', end
-      code = if cend > 0 then content[end..cend] else content[end..]
-      docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
+    for [re, fn] in lang.api
+      other = content
+      for doc in docs
+        start = if doc[0] then other[0..doc[0]-1] else ''
+        other = start + util.string.repeat('\n', doc[1] - doc[0]) + other[doc[1]..]
+      while match = re.exec other
+        match[1] = fn match[1] if fn
+        end = match.index + match[0].length
+        cend = content.indexOf '\n', end
+        code = if cend > 0 then content[end..cend] else content[end..]
+        docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
   # interpret tags

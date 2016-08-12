@@ -78,7 +78,7 @@ Like in the above languages a lot of other ones are supported, too:
 
 |     Language       |    Doc Comment   | Internal API ^1^  | Code Comments ^2^ |
 | ------------------ | ---------------- | ----------------- | ----------------- |
-| CoffeeScript       | ### ... ###      | #...              | #...              |
+| CoffeeScript       | ### ... ### or #### + #... lines | #...              | #...              |
 | JavaScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
 | LiveScript         | /** ... */       | /*...*/, // ...   | //... or /*..*/   |
 | Ruby               | =begin ... =end  | #...              | #...              |

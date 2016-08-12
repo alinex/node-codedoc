@@ -173,7 +173,7 @@ searchLink = (link, search, cb) ->
   async.mapSeries PAGE_SEARCH[search], (type, cb) ->
     if type is 'mdn'
       debug "search for link to #{link} in MDN"
-      return requestURL "https://developer.mozilla.org/de/search?q=#{link}", (err, body) ->
+      return requestURL "https://developer.mozilla.org/en/search?q=#{link}", (err, body) ->
         return cb() unless body
         match = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/
         return cb() unless match

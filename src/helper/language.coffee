@@ -134,9 +134,8 @@ HASH_DOC = [
   ///           # ###\n ... \n###
     (?:^|\n)    # start of document or line
     \s*         # with optional spaces
-    \#{3}       # then three hashes: ###
+    \#{3,}      # then three or more hashes: ###
     (           # content of the comment
-      [^\#!]    # no more than the three hashes
       .*        # everything in that line
       (?:       # multiple lines
         \n[\t\r\ ]*\# # each following line start with an hash
@@ -220,10 +219,10 @@ PL_DOC = [
 #
 # - `extensions` - `Array<String>` all possible file extensions for the language
 # - `executables` - `Array<String>` executables for the language that might be in a shebang
-# - `doc` - `Array` document comment parsers
+# - `doc` - `Array<Array>` document comment parsers
 #   - `0` - `RegExp` regular expression to extract comment as `$1`
 #   - `1` - `function(String)` optimization function for content
-# - `api` - `Array` internal api documentation parser
+# - `api` - `Array<Array>` internal api documentation parser
 #   - `0` - `RegExp` regular expression to extract comment as `$1`
 #   - `1` - `function(String)` optimization function for content
 # - `tab` - `Integer` number of spaces to use for tab indenting (default 2)
@@ -238,8 +237,8 @@ languages =
     extensions: [ 'coffee' ]
     names: [ 'cakefile' ]
     executables: [ 'coffee' ]
-    doc: COFFEE_DOC
-    api: HASH_API
+    doc: [COFFEE_DOC, HASH_DOC]
+    api: [HASH_API]
     tags:
       title: (c) ->
         # function call
@@ -257,67 +256,67 @@ languages =
   javascript:
     extensions: [ 'js', 'es6' ]
     executables: [ 'node' ]#
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   livescript:
     extensions: [ 'ls' ]
     executables: [ 'lsc' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   ruby:
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ]
     executables: [ 'ruby' ]
     names: [ 'rakefile' ]
-    doc: RB_DOC
-    api: HASH_API
+    doc: [RB_DOC]
+    api: [HASH_API]
   python:
     extensions: [ 'py' ]
     executables: [ 'python' ]
-    doc: HASH_DOC
-    api: HASH_API
+    doc: [HASH_DOC]
+    api: [HASH_API]
   perl:
     extensions: [ 'pl', 'pm' ]
     executables: [ 'perl' ]
-    doc: PL_DOC
-    api: HASH_API
+    doc: [PL_DOC]
+    api: [HASH_API]
   c:
     extensions: [ 'c', 'h' ]
     executables: [ 'gcc' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   cpp:
     extensions: [ 'cc', 'cpp' ]
     executables: [ 'g++' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   cs:
     extensions: [ 'cs' ]
     comment: '//'
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   java:
     extensions: [ 'java' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   jsp:
     extensions: [ 'jsp' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   php:
     extensions: [ 'php', 'phtml', 'php3', 'php4', 'php5', 'php7' ]
     executables: [ 'php' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   bash:
     extensions: [ 'sh', 'kst', 'bash' ]
     names: [ '.bashrc', 'bashrc']
     executables: [ 'bash', 'sh', 'zsh' ]
-    doc: HASH_DOC
-    api: HASH_API
+    doc: [HASH_DOC]
+    api: [HASH_API]
   yaml:
     extensions: [ 'yaml', 'yml' ]
-    doc: HASH_DOC
-    api: HASH_API
+    doc: [HASH_DOC]
+    api: [HASH_API]
   markdown:
     extensions: [ 'md', 'mkd', 'markdown' ]
     type: 'markdown'
@@ -326,35 +325,35 @@ languages =
   scss:
     extensions: [ 'scss' ]
     comment: '//'
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   makefile:
     names: [ 'makefile' ]
-    doc: HASH_DOC
-    api: HASH_API
+    doc: [HASH_DOC]
+    api: [HASH_API]
   apache:
     names: [ '.htaccess', 'apache.conf', 'apache2.conf' ]
-    doc: HASH_DOC
-    api: HASH_API
+    doc: [HASH_DOC]
+    api: [HASH_API]
     tab: 8
   handlebars:
     extensions: [ 'hbs', 'handlebars' ]
   groovy:
     extensions: [ 'groovy' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   stylus:
     extensions: [ 'styl' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   css:
     extensions: [ 'css' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   less:
     extensions: [ 'less' ]
-    doc: C_DOC
-    api: C_API
+    doc: [C_DOC]
+    api: [C_API]
   html:
     extensions: [ 'html', 'htm' ]
   json:
