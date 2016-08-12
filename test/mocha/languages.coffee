@@ -45,14 +45,18 @@ test =
     expect(detect?.name, 'detected language').to.equal lang
     # doc parser
     expect(detect.doc, 'doc syntax defined').to.be.an 'array'
-    expect(detect.doc[0], "doc[0] type").to.be.a 'regexp'
-    if detect.doc[1]
-      expect(detect.doc[1], "doc[1] type").to.be.a 'function'
+    for entry, i in detect.doc
+      expect(entry, "doc[#{i}] type").to.be.an 'array'
+      expect(entry[0], "doc[#{i}][0] type").to.be.a 'regexp'
+      if entry[1]
+        expect(entry[1], "doc[#{i}][1] type").to.be.a 'function'
     # api parser
     expect(detect.api, 'api syntax defined').to.be.an 'array'
-    expect(detect.doc[0], "api[0] type").to.be.a 'regexp'
-    if detect.api[1]
-      expect(detect.api[1], "api[1] type").to.be.a 'function'
+    for entry, i in detect.api
+      expect(entry, "api[#{i}] type").to.be.an 'array'
+      expect(entry[0], "api[#{i}][0] type").to.be.a 'regexp'
+      if entry[1]
+        expect(entry[1], "api[#{i}][1] type").to.be.a 'function'
     # tabs
     if detect.tab
       expect(detect.tab, 'tab size').to.be.an 'integer'
