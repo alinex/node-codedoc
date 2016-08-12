@@ -162,35 +162,27 @@ extractDocs = (file, content, setup, lang, symbols) ->
       end = match.index + match[0].length
       cend = content.indexOf '\n', end
       code = if cend > 0 then content[end..cend] else content[end..]
-      docs.push [match.index, end, match[1], code.trim()]
+      docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments"
   # internal comments extraction
   if lang.api and setup.code
     [re, fn] = lang.api
-    other = ""
-    pos = 0
+    other = content
     for doc in docs
-      other += content[pos..doc[0]] if doc[0]
-      pos = doc[1]
-    other += content[pos..]
+      start = if doc[0] then other[0..doc[0]] else ''
+      other = start + util.string.repeat('\n', doc[1] - doc[0]) + other[doc[1]..]
     while match = re.exec other
       match[1] = fn match[1] if fn
       end = match.index + match[0].length
       cend = content.indexOf '\n', end
       code = if cend > 0 then content[end..cend] else content[end..]
-      docs.push [match.index, end, match[1], code.trim()]
+      docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
   # interpret tags
   for doc in docs
-    if file.match(/function.coffee/) and doc[2].match /Wrapper/
-      console.log '************************************************************'
-      console.log doc
     tags doc, lang.tags, setup, file, symbols
-    if file.match(/function.coffee/) and doc[2].match /Wrapper/
-      console.log '************************************************************'
-      console.log doc
   # sort found sections
   docs.sort (a, b) ->
     return -1 if a[0] < b[0]
@@ -337,7 +329,7 @@ tags = (doc, lang, setup, file, symbols) ->
       md += "\n#{spec.internal.join ' '}\n"
     # add heading 3 if not there
     if title and not check.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
-      md = "### #{title}\n\n#{md}"
+      md = "### #{title}\n#{md}"
     # store changes
     doc[2] = md
   catch error

@@ -159,16 +159,13 @@ HASH_API = [
   ///           # #\n ... \n#
     (?:^|\n)    # start of document or line
     \s*         # with optional spaces
-    \#\s?       # then three hashes: ###
     (           # content of the comment
-      [^\#!]    # no more than the three hashes
-      .*        # everything in that line
-      (?:       # multiple lines
-        \n[\t\r\ ]*\# # each following line start with an hash
-        [\t\r\ ]?.*   # and all in that line
-      )+        # at least two lines
+      (?:               # group of content lines
+        \#              # line starts with hash
+        (?:[\t\r\ ].*)? # then all in that line if seperated by space
+        (?:\n|$)        # end of line
+      ){2,}             # at least two lines
     )           # end of comment
-    \n          # end the match
   ///g
   (txt) ->      # remove optional starting asterisk
     txt.replace /\n[\t\r ]*\#[\t\r ]?/g, '\n'
