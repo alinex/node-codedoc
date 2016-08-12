@@ -4,6 +4,20 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.7 (2016-08-12)
+-------------------------------------------------
+- Update tests for new language structures.
+- Allow normal HASH_DOC additionally in CoffeeScript.
+- Fix new bug in automatic title addition.
+- Control parallel runs through API option or CLI argument.
+- Optimized extraction of api to not collide with docs extraction.
+- Fix to ignore @tags and headings in code and execute tags and ignore nested extracts.
+- Reenable parallel run.
+- Short circuit for link search implemented.
+- Fix parser to not check for heading within code highlights.
+- Add examples for link replacement.
+- Search links seriesly makes it slightly slower but reduces requests.
+
 Version 1.2.6 (2016-08-11)
 -------------------------------------------------
 - Fix trim of unused dash in parameter output.
