@@ -30,8 +30,8 @@ describe "Tags", ->
 
   describe "heading", ->
     it "should interpret @name, @alias", ->
-      test api, num++, /### test\(\)\n\n/
-      test api, num++, /### other\(\)\n\n/
+      test api, num++, /### test\(\)\n/
+      test api, num++, /### other\(\)\n/
 
   describe "warning", ->
     it "should interpret @deprecated", ->
