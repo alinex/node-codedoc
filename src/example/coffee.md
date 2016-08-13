@@ -1,8 +1,8 @@
 Example: CoffeeScript
 =================================================
 
-> In the following examples I will use code from the codedoc package. But it is slightly
-> changed to see more of the possibilities.
+> In the following examples I will use different example code from some of my
+> packages. But it is slightly changed to see more of the possibilities.
 
 Main Documentation
 --------------------------------------------------
@@ -100,7 +100,7 @@ and give it some default values.
 Tricks and Tips
 --------------------------------------------------
 
-### Problem with name detection
+### Name Detection
 
 If the system can't autoatically detect the element name you may use the `@name`
 tag to add it yourself:
@@ -114,7 +114,7 @@ tag to add it yourself:
 module.exports.stat = memoizee fs.stat
 ```
 
-### Parameters partly internal
+### Internal Parameters
 
 Sometimes you have methods, which use some additional internal parameters mostly
 in resursive calls. Add them after an `@internal` tag. Everything after this
@@ -134,3 +134,27 @@ find = module.exports.find = (source, options, cb , depth = 0 ) ->
 
 It doesn't matter that the different type of tags are scrambled, they will be output
 ordered by type.
+
+### Doc Comment Error
+
+You may get a problem if you use special character combinations not allowed in doc
+comment. This is based on the problem that they may also be transformed into JavaScript
+doc blocks. Therefore the following is not allowed:
+- `###`
+- `*/`
+
+If that is a problem for you (I had need the second example in a pattern matching)
+you may use a hash-doc-block comment as alternative:
+
+``` coffee
+####
+# You can search by using asterisk as directory placeholder or a double asterisk to
+# go multiple level depth:
+#
+#     name/*/min - within any subelement
+#     name/*/*/min - within any subelement (two level depth)
+#     name/**/min - within any subelement in any depth
+```
+
+This needs 4 or more hashes to start (marking it as general document) and each line
+have to start with an hash, too.
