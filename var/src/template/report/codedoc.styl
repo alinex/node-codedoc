@@ -393,35 +393,56 @@ div
     padding: 30px 10px 6px 10px;
     margin: 5px 0 8px 0;
     border-radius: 3px
+    padding-left: 60px
     &>p
       margin-bottom: 0;
     header
       font-weight: bold;
       position: absolute;
       margin-top: -30px;
-      margin-left: -10px;
+      margin-left: -60px;
       padding: 3px 20px 3px 10px;
       border-bottom-right-radius: 18px;
+  &:before
+    content: '\24D8';
+    color: #fff;
+    position: absolute;
+    font-size: 28px;
+    font-weight: 900;
+    padding-top: 5px;
+    margin-left: -50px;
 div.detail
   background-color: #fafafa;
   border: 2px solid #ddd;
   padding-top: 0;
 div.info
   background-color: #99ff99;
+  background-image: linear-gradient(to bottom, #BBffBB 0%, #66dd66 100%)
   border: 2px solid #66dd66;
   header
     background-color: #66dd66;
+  &:before
+    content: '\24D8';
+    text-shadow: 0 -1px 0 #66dd66;
 div.warning
   background-color: #ffcc99;
+  background-image: linear-gradient(to bottom, #ff9977 0%, #ee8866 100%)
   border: 2px solid #ee8866;
   header
     background-color: #ee8866;
+  &:before
+    content: '\2605';
+    text-shadow: 0 -1px 0 #ee8866;
 div.alert
   background-color: #ff9999;
+  background-image: linear-gradient(to bottom, #ffaaaa 0%, #cc0000 100%)
   border: 2px solid #cc0000;
   header
     background-color: #cc0000;
     color: white;
+  &:before
+    content: '\24D8';
+    text-shadow: 0 -1px 0 #cc0000;
 
 /*
 * Fontawesome, Decorator Styles

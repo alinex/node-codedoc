@@ -25,12 +25,14 @@ The main features are:
 To see what it will give you is shown here in [this documentation](https://alinex.github.io/node-codedoc)
 which is completely made with it.
 
+::: info
 As an example of the two modes (public/internal view) you can check this documentation
 in both forms:
 - [public](https://alinex.github.io/node-codedoc/README.md.html) -
   for all using the module on command line or through the API
 - [internal](https://alinex.github.io/code-codedoc/README.md.html) -
   for developers which want to change this module (to extend or fix it)
+:::
 
 > It is one of the modules of the [Alinex Namespace](https://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](https://alinex.github.io/develop).
