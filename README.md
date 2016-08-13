@@ -25,16 +25,19 @@ The main features are:
 To see what it will give you is shown here in [this documentation](https://alinex.github.io/node-codedoc)
 which is completely made with it.
 
+As an example of the two modes (public/internal view) you can check this documentation
+in both forms:
+- [public](https://alinex.github.io/node-codedoc/README.md.html) -
+  for all using the module on command line or through the API
+- [internal](https://alinex.github.io/code-codedoc/README.md.html) -
+  for developers which want to change this module (to extend or fix it)
+
 > It is one of the modules of the [Alinex Namespace](https://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](https://alinex.github.io/develop).
 
 __Read the complete documentation under
 [https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
 <!-- {p: .hide} -->
-
-As an example you can check this documentation at:
-- [without code](https://alinex.github.io/node-codedoc/README.md.html)
-- [with code](https://alinex.github.io/code-codedoc/README.md.html)
 
 
 Philosophy
@@ -43,21 +46,32 @@ How important is documentation? How should it be structured? How to write it? Th
 all depends on who will write it and mostly who should use it.
 
 In my projects I can answer the last statement easily because I write it and I will
-use it and also some other guys using my modules. After getting that clear I saw that
+use it and some other guys may be using my modules. After getting that clear I saw that
 mostly I have to decide how it should be.
 
 Someone said good code didn't need any documentation but I disagree and will say
 documentation may be extended with good code. I don't want to repeat to much information
 already in the code. The documentation should also concentrate on the things the
-user needs and don't mix internal developer API for mostly external use.
+user needs and don't mix internal developer API for mostly external users.
+Good examples are very useful because developers will often look at them
+and search the details in the text arround afterwards.
 
-With all these thoughts I created this tool as in between. It should display markdown
-documentation meant to explain how things go with external API. This all displayed in
-a modern web interface viewable on any device. So I mixed the docco/docker.js concept
-of doc + code with JsDoc tags for API and some minimal code analyzeation.  
+With all these thoughts I created this tool as in between of the existing tools.
+The documentation should be easy to write and be right beside the code (it may get
+not updated if I have to do it in a separate file). I decided to use markdown
+as documentation format and write extra files meant to explain how things go
+in general. But if it goes deeper and alongside the code I put the markdown just
+above the code in comment blocks.
+To get a consistent API display for all methods and functions I allow to use JsDoc
+tags for API and add some autodetected information from code analyzation.  
+This all have to be transformed to be displayed in a modern web interface viewable
+on any device and searchable (at least through google).
 
 As I sometimes also read documentation about the internal structure and API I added
 another mode called code view which is designed for the internal module developer.
+To decide which documentation element belongs to the internal developer and which
+to the general documentation I used different comment blocks in each language.
+I also mixed the docco/docker.js concept of doc + code for the internal documentation.
 
 
 Workflow

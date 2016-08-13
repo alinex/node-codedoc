@@ -5,7 +5,8 @@
   "copyright": "Alexander Schilling 2016",
   "keywords": [
     "documentation",
-    "api"
+    "api",
+    "markdown"
   ],
   "homepage": "http://alinex.github.io/node-codedoc",
   "repository": {
