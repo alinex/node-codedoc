@@ -4,6 +4,16 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.8 (2016-08-13)
+-------------------------------------------------
+- Upgrade alinex-util@2.4.0
+- Add border radius to boxes in default style.
+- Optimize box styling.
+- Optimize the doc for the philosophy behind.
+- Add coffee example for problematic doc block comment.
+- Check only the first 5 MDN links.
+- Check all entries from MDN search results list.
+
 Version 1.2.7 (2016-08-12)
 -------------------------------------------------
 - Update tests for new language structures.
