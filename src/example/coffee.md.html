@@ -101,16 +101,17 @@
 <li><a href="#internal-api">Internal API</a></li>
 <li><a href="#tricks-and-tips">Tricks and Tips</a>
 <ul>
-<li><a href="#problem-with-name-detection">Problem with name detection</a></li>
-<li><a href="#parameters-partly-internal">Parameters partly internal</a></li>
+<li><a href="#name-detection">Name Detection</a></li>
+<li><a href="#internal-parameters">Internal Parameters</a></li>
+<li><a href="#doc-comment-error">Doc Comment Error</a></li>
 </ul>
 </li>
 </ul>
 </p>
 <h1 id="example-coffeescript">Example: CoffeeScript</h1>
 <blockquote>
-<p>In the following examples I will use code from the codedoc package. But it is slightly
-changed to see more of the possibilities.</p>
+<p>In the following examples I will use different example code from some of my
+packages. But it is slightly changed to see more of the possibilities.</p>
 </blockquote>
 <h2 id="main-documentation">Main Documentation</h2>
 <p>First things always are the general files:</p>
@@ -182,7 +183,7 @@ As you see there are alos some parameter described.</p>
 <p>The parameter for reversed sorting also shows you how to mark an parameter as optional
 and give it some default values.</p>
 <h2 id="tricks-and-tips">Tricks and Tips</h2>
-<h3 id="problem-with-name-detection">Problem with name detection</h3>
+<h3 id="name-detection">Name Detection</h3>
 <p>If the system can’t autoatically detect the element name you may use the <code>@name</code>
 tag to add it yourself:</p>
 <pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">###</span></code>
@@ -191,7 +192,7 @@ tag to add it yourself:</p>
 <code><span class="hljs-comment">@param {function(err, stats)} cb callback which gets an `Error` or a `Stats` object.</span></code>
 <code><span class="hljs-comment">###</span></code>
 <code><span class="hljs-built_in">module</span>.exports.stat = memoizee fs.stat</code></pre>
-<h3 id="parameters-partly-internal">Parameters partly internal</h3>
+<h3 id="internal-parameters">Internal Parameters</h3>
 <p>Sometimes you have methods, which use some additional internal parameters mostly
 in resursive calls. Add them after an <code>@internal</code> tag. Everything after this
 tag will be ignored for normal View nut added in the internal documentation generation.</p>
@@ -206,6 +207,26 @@ tag will be ignored for normal View nut added in the internal documentation gene
 <code>find = <span class="hljs-built_in">module</span>.exports.find = <span class="hljs-function"><span class="hljs-params">(source, options, cb , depth = <span class="hljs-number">0</span> )</span> -&gt;</span></code></pre>
 <p>It doesn’t matter that the different type of tags are scrambled, they will be output
 ordered by type.</p>
+<h3 id="doc-comment-error">Doc Comment Error</h3>
+<p>You may get a problem if you use special character combinations not allowed in doc
+comment. This is based on the problem that they may also be transformed into JavaScript
+doc blocks. Therefore the following is not allowed:</p>
+<ul>
+<li><code>###</code></li>
+<li><code>*/</code></li>
+</ul>
+<p>If that is a problem for you (I had need the second example in a pattern matching)
+you may use a hash-doc-block comment as alternative:</p>
+<pre class="language coffeescript"><header>CoffeeScript Code</header><code><span class="hljs-comment">####</span></code>
+<code><span class="hljs-comment"># You can search by using asterisk as directory placeholder or a double asterisk to</span></code>
+<code><span class="hljs-comment"># go multiple level depth:</span></code>
+<code><span class="hljs-comment">#</span></code>
+<code><span class="hljs-comment">#     name/*/min - within any subelement</span></code>
+<code><span class="hljs-comment">#     name/*/*/min - within any subelement (two level depth)</span></code>
+<code><span class="hljs-comment">#     name/**/min - within any subelement in any depth</span></code>
+<code><span class="hljs-comment"></span></code></pre>
+<p>This needs 4 or more hashes to start (marking it as general document) and each line
+have to start with an hash, too.</p>
 </main>
         </div>
         <div class="col-sm-3 col-cm-pull-9 sidebar">

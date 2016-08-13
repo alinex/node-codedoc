@@ -128,6 +128,7 @@ documentation.</p>
 --nocolors, -C  turn of color output                                 [boolean]
 --verbose, -v   run in verbose mode (multiple makes more verbose)      [count]
 --quiet, -q     don't output header and footer                       [boolean]
+--parallel, -p  estimated max parallel runs            [number] [default: 100]
 </code></pre>
 <p>Examples:</p>
 <pre><code>coffee src/cli.coffee  to create the default documentation
@@ -177,6 +178,11 @@ problems. Set multiple times for higher verbosity:
 </dd>
 <dt>–quiet, -q</dt>
 <dd>Don’t output header and footer. But output everything else like defined.</dd>
+<dt>–parallel, -p</dt>
+<dd>Set the maximum number of parallel runs. This is not a fix value but more an
+estimation, because of multiple level of asynchroneous calls the real value may
+be higher in some circumstances. The default is to use 100 or if DEBUG is set to
+use 1 (meaning no parallelism).</dd>
 </dl>
 <h2 id="define-ignores">Define Ignores</h2>
 <p>To define which files to ignore while parsing for documentation the system will use
