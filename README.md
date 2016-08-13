@@ -25,7 +25,7 @@ The main features are:
 To see what it will give you is shown here in [this documentation](https://alinex.github.io/node-codedoc)
 which is completely made with it.
 
-::: info
+::: info text
 As an example of the two modes (public/internal view) you can check this documentation
 in both forms:
 - [public](https://alinex.github.io/node-codedoc/README.md.html) -
