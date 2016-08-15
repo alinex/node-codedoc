@@ -147,7 +147,7 @@ exports.run = (setup, cb) ->
   # start converting
   fs.mkdirs setup.output, (err) ->
     return cb err if err
-    async.parallel [
+    async.series [
       (cb) -> # search source files
         (if setup.verbose then console.log else debug) "search files in #{setup.input}"
         fs.find setup.input, setup.find, (err, list) ->
@@ -218,20 +218,13 @@ exports.run = (setup, cb) ->
         (if setup.verbose then console.log else debug) "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
           include: STATIC_FILES
-        fs.find setup.input, filter, (err, list) ->
+          noempty: true
+          overwrite: true
+          ignoreErrors: true
+        fs.copy setup.input, setup.output, filter, (err) ->
           return cb err if err
-          async.eachLimit list, setup.parallel, (file, cb) ->
-            (if setup.verbose > 1 then console.log else debugCopy) "copy #{file}"
-            dest = "#{setup.output}#{file[setup.input.length..]}"
-            fs.remove dest, ->
-#              fs.copy file, dest, cb
-              async.retry 3,
-                (cb) -> fs.copy file, dest, cb
-              , cb
-          , (err) ->
-            return cb err if err
-            (if setup.verbose then console.log else debug) "copying files done"
-            cb()
+          (if setup.verbose then console.log else debug) "copying files done"
+          cb()
     ], (err) ->
       return cb err if err
       (if setup.verbose then console.log else debug) "finished document creation"
