@@ -150,7 +150,10 @@ exports.run = (setup, cb) ->
     async.series [
       (cb) -> # search source files
         (if setup.verbose then console.log else debug) "search files in #{setup.input}"
-        fs.find setup.input, setup.find, (err, list) ->
+        fs.find setup.input,
+          filter: setup.find
+          dereference: true
+        , (err, list) ->
           return cb err if err
           # create reports
           (if setup.verbose then console.log else debug) "convert files..."
@@ -221,7 +224,11 @@ exports.run = (setup, cb) ->
           noempty: true
           overwrite: true
           ignoreErrors: true
-        fs.copy setup.input, setup.output, filter, (err) ->
+        fs.copy setup.input, setup.output,
+          filter: filter
+          dereference: true
+          overwrite: true
+        , (err) ->
           return cb err if err
           (if setup.verbose then console.log else debug) "copying files done"
           cb()
