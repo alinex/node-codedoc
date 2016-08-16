@@ -1,11 +1,20 @@
 Alinex CodeDoc: Readme
 =================================================
 
-[![Build Status](https://travis-ci.org/alinex/node-codedoc.svg?branch=master)](https://travis-ci.org/alinex/node-codedoc)
-[![Coverage Status](https://coveralls.io/repos/alinex/node-codedoc/badge.png?branch=master)](https://coveralls.io/r/alinex/node-codedoc?branch=master)
-[![Dependency Status](https://gemnasium.com/alinex/node-codedoc.png)](https://gemnasium.com/alinex/node-codedoc)
-[![GitHub](https://assets-cdn.github.com/favicon.ico)](https://github.com/alinex/node-codedoc "Code on GitHub")
-<!-- {.right} -->
+[![GitHub watchers](https://img.shields.io/github/watchers/alinex/node-codedoc.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/alinex/node-codedoc/subscription)
+[![GitHub stars](https://img.shields.io/github/stars/alinex/node-codedoc.svg?style=social&label=Star&maxAge=2592000)](https://github.com/alinex/node-codedoc)
+[![GitHub forks](https://img.shields.io/github/forks/alinex/node-codedoc.svg?style=social&label=Fork&maxAge=2592000)](https://github.com/alinex/node-codedoc)
+<!-- {p:.right} -->
+
+[![npm](https://img.shields.io/npm/v/alinex-codedoc.svg?maxAge=2592000&label=latest%20version)](https://www.npmjs.com/package/alinex-codedoc)
+[![npm](https://img.shields.io/npm/l/alinex-codedoc.svg?maxAge=2592000)]()
+[![npm](https://img.shields.io/npm/dm/alinex-codedoc.svg?maxAge=2592000)](README.md#license)
+[![node](https://img.shields.io/node/v/alinex-codedoc.svg?maxAge=2592000)]()
+
+[![Travis](https://img.shields.io/travis/alinex/node-codedoc.svg?maxAge=2592000&label=master)](https://travis-ci.org/alinex/node-codedoc)
+[![Coveralls](https://img.shields.io/coveralls/alinex/node-codedoc.svg?maxAge=2592000)](https://coveralls.io/r/alinex/node-codedoc?branch=master)
+[![Gemnasium](https://img.shields.io/gemnasium/alinex/node-codedoc.svg?maxAge=2592000)](https://gemnasium.com/alinex/node-codedoc)
+[![GitHub issues](https://img.shields.io/github/issues/alinex/node-codedoc.svg?maxAge=2592000)]()
 
 A general code documentation tool based on the concepts of
 [docco](https://jashkenas.github.io/docco/) or [docker.js](https://jbt.github.io/docker/src/docker.js.html).
