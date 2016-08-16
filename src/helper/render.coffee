@@ -71,6 +71,7 @@ exports.createIndex = (dir, link, cb) ->
 # @param {function(<Error>, <String>)} cb callback which will get the new markdown
 exports.optimize = (report, file, symbols, pages, search, cb) ->
   # find inline tags
+  debug "#{file}: optimize html"
   report = report.replace /(\n\s*)#([1-6])(\s+)/g, (_, pre, num, post) ->
     "#{pre}#{util.string.repeat '#', num}#{post}"
   asyncReplace report, /\{@(\w+) ([^ \t}]*)\s?([^}]*)?\}/g
