@@ -13,3 +13,4 @@
 /var/local/
 npm-debug.log
 /man/
+/coffeelint.json
