@@ -64,7 +64,7 @@ in both forms:
 
 __Read the complete documentation under
 [https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
-<!-- {p: .hide} -->
+<!-- {p: .hidden} -->
 
 
 Philosophy
