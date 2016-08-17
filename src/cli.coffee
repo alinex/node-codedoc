@@ -105,10 +105,9 @@ codedoc.setup (err) ->
       global: true
     parallel:
       alias: 'p'
-      description: "estimated max parallel runs"
+      description: "max parallel runs"
       type: 'number'
       global: true
-      default: if debug.enabled then 1 else 100
     # add specific args
     input:
       alias: 'i'

@@ -27,7 +27,7 @@ General Options:
     --nocolors, -C  turn of color output                                 [boolean]
     --verbose, -v   run in verbose mode (multiple makes more verbose)      [count]
     --quiet, -q     don't output header and footer                       [boolean]
-    --parallel, -p  estimated max parallel runs            [number] [default: 100]
+    --parallel, -p  max parallel runs                                     [number]
 
 Examples:
 
@@ -96,10 +96,9 @@ Parameters
 
 --parallel, -p
 
-:   Set the maximum number of parallel runs. This is not a fix value but more an
-    estimation, because of multiple level of asynchroneous calls the real value may
-    be higher in some circumstances. The default is to use 100 or if DEBUG is set to
-    use 1 (meaning no parallelism).
+:   Set the maximum number of parallel runs. Set this to 1 to run the tasks in
+    series or a value not higher than the limit of open files per process on your
+    system (`ulimit -n`). Default will be half of that.
 
 
 Define Ignores

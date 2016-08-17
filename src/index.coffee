@@ -221,13 +221,12 @@ exports.run = (setup, cb) ->
         (if setup.verbose then console.log else debug) "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
           include: STATIC_FILES
-          noempty: true
-          overwrite: true
-          ignoreErrors: true
         fs.copy setup.input, setup.output,
           filter: filter
           dereference: true
           overwrite: true
+          noempty: true
+          ignoreErrors: true
         , (err) ->
           return cb err if err
           (if setup.verbose then console.log else debug) "copying files done"
