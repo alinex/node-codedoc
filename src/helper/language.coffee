@@ -157,9 +157,9 @@ HASH_DOC = [
 HASH_API = [
   ///           # #\n ... \n#
     (?:^|\n)    # start of document or line
-    \s*         # with optional spaces
     (           # content of the comment
       (?:               # group of content lines
+        \s*             # with optional spaces
         \#              # line starts with hash
         (?:[\t\r\ ].*)? # then all in that line if seperated by space
         (?:\n|$)        # end of line
