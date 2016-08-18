@@ -4,6 +4,24 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.9 (2016-08-18)
+-------------------------------------------------
+- Fix hash-api parsing for multiple following comments.
+- Removed comment.
+- Update alinex-report@2.1.11, alinex-fs@3.0.0, yargs@5.0.0
+- Update docs.
+- Change bullet sign in sidebar navigation.
+- Fix parsing indented hash-api doc comments.
+- Update docs for parallel setting.
+- Optimize style code display.
+- New batches added with links.
+- Change badges.
+- Optimize debugging.
+- Change fs calls for next generation alinex-fs.
+- Use direct fs-copy method.
+- Small fix in Readme.
+- Change icon color in boxes.
+
 Version 1.2.8 (2016-08-13)
 -------------------------------------------------
 - Upgrade alinex-util@2.4.0
