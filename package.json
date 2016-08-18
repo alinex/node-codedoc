@@ -39,8 +39,8 @@
   "dependencies": {
     "alinex-config": "^1.2.1",
     "alinex-core": "^0.2.9",
-    "alinex-fs": "^2.0.7",
-    "alinex-report": "^2.1.10",
+    "alinex-fs": "^3.0.0",
+    "alinex-report": "^2.1.11",
     "alinex-util": "^2.4.0",
     "async": "^2.0.1",
     "async-replace": "^1.0.1",
@@ -50,7 +50,7 @@
     "memoizee": "^0.4.1",
     "request": "^2.74.0",
     "uslug": "^1.0.4",
-    "yargs": "^4.8.1"
+    "yargs": "^5.0.0"
   },
   "devDependencies": {
     "alinex-builder": "^2.3.6",
