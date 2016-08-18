@@ -202,6 +202,8 @@ To do this you install it into your own module:
 sudo npm install --save alinex-codedoc
 ```
 
+Always have a look at the latest changes in the {@link Changelog.md}
+
 
 Usage
 -------------------------------------------------
