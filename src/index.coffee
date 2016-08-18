@@ -71,7 +71,6 @@ comes before 'README.md' and the other files.
 
 # include base modules
 debug = require('debug') 'codedoc'
-debugCopy = require('debug') 'codedoc:copy'
 chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
