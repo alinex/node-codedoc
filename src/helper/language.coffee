@@ -159,7 +159,7 @@ HASH_API = [
     (?:^|\n)    # start of document or line
     (           # content of the comment
       (?:               # group of content lines
-        \s*             # with optional spaces
+        [\t\r\ ]*       # with optional spaces
         \#              # line starts with hash
         (?:[\t\r\ ].*)? # then all in that line if seperated by space
         (?:\n|$)        # end of line
