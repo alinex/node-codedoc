@@ -144,7 +144,7 @@ HASH_DOC = [
     )           # end of comment
     \n          # end the match
   ///g
-  (txt) ->      # remove optional starting asterisk
+  (txt) ->      # remove optional starting hash
     txt.replace /\n[\t\r ]*\#[\t\r ]?/g, '\n'
 ]
 
@@ -166,8 +166,8 @@ HASH_API = [
       ){2,}             # at least two lines
     )           # end of comment
   ///g
-  (txt) ->      # remove optional starting asterisk
-    txt.replace /(?:^|\n[\t\r ]*)\#[\t\r ]?/g, '\n'
+  (txt) ->      # remove optional starting hash
+    txt.replace /(?:^|\n)[\t\r ]*\#[\t\r ]?/g, '\n'
 ]
 
 # Use the RegExp from list element #0 to get all code documents and the optimization

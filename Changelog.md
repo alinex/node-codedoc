@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.10 (2016-08-19)
+-------------------------------------------------
+- Remove test output.
+- Optimize cleanup of matched hash-api docs.
+- Remove empty code elements.
+- Change sort order to put manual before code doc.
+
 Version 1.2.9 (2016-08-18)
 -------------------------------------------------
 - Fix hash-api parsing for multiple following comments.

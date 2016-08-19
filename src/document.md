@@ -355,3 +355,15 @@ Here you see some tags with the converted markdown just below (no space between
 
 Through a small trick you may add images as inline data. Add them as local file link
 `file://...` and the report component will embed them.
+
+
+Sort Order
+------------------------------------------------------------------
+Sorting the file's documents is based on a fixed ruleset. This will sort everything
+in order using the following rules:
+
+1. Readme, Manual
+2. Documents
+3. Code documentation
+4. Additional data files
+5. Changelog
