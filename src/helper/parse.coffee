@@ -102,7 +102,7 @@ exports.file = (file, local, setup, symbols, cb) ->
         for doc in docs
           if pos < doc[0] and setup.code
             # code block before doc
-            if code = content[pos..doc[0]].trim()
+            if code = content[pos..doc[0]].replace /\s+$/, ''
               report.code stripIndent(code, lang.tab), lang.name
               if pos # set correct line number
                 line = content[0..pos].split('\n').length - 1
@@ -113,7 +113,7 @@ exports.file = (file, local, setup, symbols, cb) ->
           pos = doc[1]
         if pos < content.length and setup.code
           # last code block
-          if code = content[pos..].trim()
+          if code = content[pos..].replace /\s+$/, ''
             report.code stripIndent(code, lang.tab), lang.name
             if pos # set correct line number
               line = content[0..pos].split('\n').length - 1
