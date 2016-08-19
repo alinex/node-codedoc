@@ -243,10 +243,14 @@ exports.run = (setup, cb) ->
 # This is done by patterns in the first and last listing. All undefined will be
 # between them in ordered list.
 orderFirst = [
-  'readme.*'
+  # documentation
   'readme'
+  'readme.*'
   '/man'
+  'index.md'
   '*.md'
+  '/doc'
+  # main scripts
   'index.*'
   '/src'
 ]
@@ -254,7 +258,9 @@ orderLast = [
   '/bin'
   '/lib'
   '/var'
+  # helper data
   '.travis.yml'
+  # changelog
   'changelog'
   'changelog.*'
 ]
