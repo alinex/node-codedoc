@@ -180,6 +180,10 @@ extractDocs = (file, content, setup, lang, symbols) ->
         other = start + util.string.repeat('\n', doc[1] - doc[0]) + other[doc[1]..]
       while match = re.exec other
         match[1] = fn match[1] if fn
+        if file.match /index.coffee/
+          console.log '--------------------------------'
+          console.log match[0..1]
+          console.log '--------------------------------'
         end = match.index + match[0].length
         cend = content.indexOf '\n', end
         code = if cend > 0 then content[end..cend] else content[end..]
