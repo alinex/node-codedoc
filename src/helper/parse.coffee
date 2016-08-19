@@ -102,20 +102,22 @@ exports.file = (file, local, setup, symbols, cb) ->
         for doc in docs
           if pos < doc[0] and setup.code
             # code block before doc
-            report.code stripIndent(content[pos..doc[0]], lang.tab), lang.name
-            if pos # set correct line number
-              line = content[0..pos].split('\n').length - 1
-              report.p Report.style "code: style=\"counter-reset:line #{line}\""
+            if code = content[pos..doc[0]].trim()
+              report.code stripIndent(code, lang.tab), lang.name
+              if pos # set correct line number
+                line = content[0..pos].split('\n').length - 1
+                report.p Report.style "code: style=\"counter-reset:line #{line}\""
           # add doc block
           md = doc[2].replace /\n\s*?$/, ''
           report.raw "\n#{md}\n\n"
           pos = doc[1]
         if pos < content.length and setup.code
           # last code block
-          report.code stripIndent(content[pos..], lang.tab), lang.name
-          if pos # set correct line number
-            line = content[0..pos].split('\n').length - 1
-            report.p Report.style "code: style=\"counter-reset:line #{line}\""
+          if code = content[pos..].trim()
+            report.code stripIndent(code, lang.tab), lang.name
+            if pos # set correct line number
+              line = content[0..pos].split('\n').length - 1
+              report.p Report.style "code: style=\"counter-reset:line #{line}\""
         # optimize report by adding path with compiled path
         source = "`#{local}`"
         if match = local.match /^\/src(\/.*)\.coffee$/
