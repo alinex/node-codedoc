@@ -54,17 +54,16 @@ describe "Inline Tags", ->
   describe "include", ->
 
     it "should include file", (cb) ->
-      test "{@include ../../.travis.yml}", """
-      language: node_js
-      node_js:
-         - "0.12" # from 2015-02 maintenance till 2017-04
-         - "4"  # LTS from 2015-10  maintenance till 2018-04
-         - "5"  # current\n
+      test "{@include ../data/include.txt}", """
+      This should be included.
+      - one
+      - two
+      - three\n
       """, cb
     it "should include lines from file", (cb) ->
-      test "{@include ../../.travis.yml#1-2}", """
-      language: node_js
-      node_js:
+      test "{@include ../data/include.txt#2-3}", """
+      - one
+      - two
       """, cb
 
 
