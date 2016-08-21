@@ -8,6 +8,7 @@
 /doc/
 /lib/
 /log/
+/man/
 /node_modules/
 /var/lib/
 /var/local/
