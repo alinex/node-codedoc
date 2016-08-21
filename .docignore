@@ -1,3 +1,4 @@
+.git
 .project
 .settings
 .DS_Store
@@ -5,12 +6,13 @@
 /report/
 /data/
 /doc/
-/test/
 /lib/
 /log/
 /node_modules/
 /var/lib/
 /var/local/
 npm-debug.log
-/man/
+/test/
 /coffeelint.json
+/.travis.yml
+/.*
