@@ -105,7 +105,6 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
               console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
               return cb null, text ? uri
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
-#            cb null, text ? uri
         # default
         console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
         cb null, text ? uri
@@ -123,6 +122,9 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             content = content.split(/\n/)[from-1..to-1].join '\n'
           # run inlineTags over this, too
           exports.optimize content, file, symbols, pages, search, cb
+      else
+        console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
+        cb null, source
   , cb
 
 # Convert report to HTML and write it to disk.
