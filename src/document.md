@@ -402,7 +402,11 @@ This is all to be used to generate the following markdown automatically:
 ``` markdown
 Schema Specification
 ---------------------------------------------------
-{@schema #selfcheck}
+An object. And the following keys are allowed: title, description, key, type, optional, default, sanitize, unit, round, decimals, min, max, toUnit, format, locale. The following entries have a specific format:
+
+- default: A numeric floating point number which is optional.
+- sanitize: A boolean value, which will be true for ‘true’, ‘1’, ‘on’, ‘yes’, ‘+’, 1, true and will be considered as false for ‘false’, ‘0’, ‘off’, ‘no’, ‘-’, 0, false. It’s optional.
+- unit: A text entry which is optional.Control characters will be removed. It has to be at least 1 characters long.
 ```
 
 

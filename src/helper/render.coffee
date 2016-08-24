@@ -11,12 +11,13 @@ path = require 'path'
 chalk = require 'chalk'
 asyncReplace = require 'async-replace'
 memoize = require 'memoizee'
+async = require 'async'
 # make caching method
 request = memoize require('request'), {maxAge: 3600000}
-async = require 'async'
 # include alinex modules
 fs = require 'alinex-fs'
 util = require 'alinex-util'
+validator = require 'alinex-validator'
 
 
 # Setup
@@ -122,6 +123,17 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             content = content.split(/\n/)[from-1..to-1].join '\n'
           # run inlineTags over this, too
           exports.optimize content, file, symbols, pages, search, cb
+      when 'schema'
+        # get schema description
+        [uri, anchor] = uri.split /#/
+        uri = path.resolve file, uri
+        debug "analyze schema at #{uri}.#{anchor}"
+        schema = require uri
+        schema = schema[anchor] if anchor
+        validator.describe
+          name: "#{path.basename uri}.#{anchor}"
+          schema: schema
+        , cb 
       else
         console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
         cb null, source
