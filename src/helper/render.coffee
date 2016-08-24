@@ -102,11 +102,12 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         if search
           return searchLink uri, search, (err, res) ->
             if err or not res?.url
-              console.error "Could not resolve link to #{uri} in #{file}"
+              console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
               return cb null, text ? uri
             cb null, "[#{text ? res.title ? uri}](#{res.url})"
+#            cb null, text ? uri
         # default
-        console.error "Could not resolve link to #{uri} in #{file}"
+        console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
         cb null, text ? uri
       when 'include'
         # include file
@@ -220,6 +221,7 @@ searchLink = (link, search, cb) ->
 # @param {String} url page to grab
 # @param {function(<Error>, <String>)} cb callback with body if page could be retrieved successfully
 requestURL = (url, cb) ->
+  return cb()
   request
     url: url
     headers:
@@ -227,4 +229,4 @@ requestURL = (url, cb) ->
       Chrome/52.0.2743.116 Safari/537.36'
   , (err, res, body) ->
     return cb() if err or res.statusCode isnt 200
-    cb null, body
+    cb null, body.toString()

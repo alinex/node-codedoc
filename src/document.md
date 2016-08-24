@@ -261,6 +261,8 @@ Inline Tags
       optional title: `{` `@link <symbol> <text>}`.
     - `@include` can be used to include some lines from another source given as
       filename with optional line reference like: `{` `@include <file>#<from>-<to>}`
+    - `@schema` can be used to describe data structures based on {@link alinex-validator}
+      schema definitions like: `{` `@schema <file>#<exports.access>}`
 
 The `@param` format also allows to easily define optional parameters and default values:
 `@param {integer} [max=5] maximum number of...`. You add square brackets to the variable
@@ -355,6 +357,53 @@ Here you see some tags with the converted markdown just below (no space between
 
 Through a small trick you may add images as inline data. Add them as local file link
 `file://...` and the report component will embed them.
+
+### Describe alinex-validator Schema
+
+If you already made a schema definition for technical checking your input data you
+may also use the same information to automatically generate your documentation for
+it:
+
+``` coffee Schema to be used in file.coffee
+exports.selfcheck =
+  title: "Float"
+  description: "a float schema definition"
+  type: 'object'
+  allowedKeys: true
+  keys: util.extend rules.baseSchema,
+    default:
+      title: "Default Value"
+      description: "the default value use if nothing given"
+      type: 'float'
+      optional: true
+    sanitize:
+      title: "Sanitize"
+      description: "a flag which allows removing of non numeric characters before evaluating"
+      type: 'boolean'
+      optional: true
+    unit:
+      title: "Source Unit"
+      description: "the unit in which an only numeric value is given, will transform to base unit"
+      type: 'string'
+      optional: true
+      minLength: 1
+```
+
+This may be included in your doc like:
+
+``` markdown
+Schema Specification
+---------------------------------------------------
+{@schema #selfcheck}
+```
+
+This is all to be used to generate the following markdown automatically:
+
+``` markdown
+Schema Specification
+---------------------------------------------------
+{@schema #selfcheck}
+```
 
 
 Sort Order
