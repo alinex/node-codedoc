@@ -133,7 +133,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema
-        , cb 
+        , cb
       else
         console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
         cb null, source
@@ -235,7 +235,6 @@ searchLink = (link, search, cb) ->
 # @param {String} url page to grab
 # @param {function(<Error>, <String>)} cb callback with body if page could be retrieved successfully
 requestURL = (url, cb) ->
-  return cb()
   request
     url: url
     headers:
