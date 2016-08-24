@@ -4,6 +4,23 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.11 (2016-08-24)
+-------------------------------------------------
+- Fix new bug in link search.
+- Update alinex-core@0.2.10
+- Allow include of schema documentation from code.
+- Six error messages for unknown internal tag.
+- Fix response buffer keeps connection open.
+- Updated ignore files.
+- Updated ignore files.
+- Fix test of include.
+- Remove .docignore from npm package.
+- Update travis.
+- Update travis.
+- Optimize trim of code to work only on the end.
+- Merge branch 'master' of https://github.com/alinex/node-codedoc
+- Add changelog link in doc.
+
 Version 1.2.10 (2016-08-19)
 -------------------------------------------------
 - Remove test output.
