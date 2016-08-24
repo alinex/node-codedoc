@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "alinex-config": "^1.2.1",
-    "alinex-core": "^0.2.9",
+    "alinex-core": "^0.2.10",
     "alinex-fs": "^3.0.0",
     "alinex-report": "^2.1.11",
     "alinex-util": "^2.4.0",
