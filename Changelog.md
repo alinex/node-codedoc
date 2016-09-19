@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.12 (2016-09-19)
+-------------------------------------------------
+- Update alinex-util@2.4.1, request@2.75.0
+- Add error message if schema could not be evaluated.
+
 Version 1.2.11 (2016-08-24)
 -------------------------------------------------
 - Fix new bug in link search.
