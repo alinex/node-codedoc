@@ -207,6 +207,7 @@ exports.run = (setup, cb) ->
               search = linksearchDefault if search is 'default'
               render.optimize file.report.body, file.source, symbols, pages, search
               , (err, md) ->
+                return cb err if err
                 file.report.body = md
                 render.writeHtml file, moduleName, pages, cb
             , (err) ->

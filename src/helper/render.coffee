@@ -133,7 +133,16 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema
-        , cb
+        , (err, md) ->
+          if err
+            md = """
+            :::alert Invalid Schema
+            The Schema could not be evaluated into a description:
+
+            __#{err.message}__
+            :::
+            """
+          cb null, md
       else
         console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
         cb null, source
