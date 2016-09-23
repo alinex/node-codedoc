@@ -194,8 +194,11 @@ exports.run = (setup, cb) ->
               # create link list
               pages = []
               for p, e of map
+                depth = e.parts.length - 1
+                depth-- if path.basename(p, path.extname p) is 'index'
+                depth = 0 if depth < 0
                 pages.push
-                  depth: if e.parts.length > 1 then e.parts.length - 1 else 0
+                  depth: depth
                   title: e.title
                   path: p
                   link: e.title.replace /^.*?[-:]\s+/, ''
