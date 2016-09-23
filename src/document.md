@@ -420,3 +420,7 @@ in order using the following rules:
 3. Code documentation
 4. Additional data files
 5. Changelog
+
+Within each type the 'index.*' files will be put first and one level higher in
+the tree than the rest of the same folder.
+ 
