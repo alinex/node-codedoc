@@ -142,6 +142,8 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             __#{err.message}__
             :::
             """
+          console.log '------------------------------------------------------------'
+          console.log md
           cb null, md
       else
         console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
