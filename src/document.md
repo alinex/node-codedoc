@@ -394,7 +394,7 @@ This may be included in your doc like:
 ``` markdown
 Schema Specification
 ---------------------------------------------------
-{@schema #selfcheck}
+{ @schema #selfcheck}
 ```
 
 This is all to be used to generate the following markdown automatically:
@@ -423,4 +423,3 @@ in order using the following rules:
 
 Within each type the 'index.*' files will be put first and one level higher in
 the tree than the rest of the same folder.
- 
