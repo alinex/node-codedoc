@@ -4,6 +4,14 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.13 (2016-09-27)
+-------------------------------------------------
+- Update alinex-validator@2.0.0, alinex-util@2.4.1, alinex-builder@2.3.8, request@2.75.0, coffee-script@1.11.0
+- Update style and debug output.
+- Debugging in schema documentation.
+- Document new ordering with index files.
+- Move index.* one level higher in tree.
+
 Version 1.2.12 (2016-09-19)
 -------------------------------------------------
 - Update alinex-util@2.4.1, request@2.75.0
