@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.14 (2016-09-27)
+-------------------------------------------------
+- Fix document to not invoke schema.
+
 Version 1.2.13 (2016-09-27)
 -------------------------------------------------
 - Update alinex-validator@2.0.0, alinex-util@2.4.1, alinex-builder@2.3.8, request@2.75.0, coffee-script@1.11.0
