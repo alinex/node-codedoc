@@ -128,8 +128,14 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         [uri, anchor] = uri.split /#/
         uri = path.resolve file, uri
         debug "analyze schema at #{uri}.#{anchor}"
-        schema = require uri
-        schema = schema[anchor] if anchor
+        require 'coffee-script'
+        try
+          schema = require uri
+        catch error
+          debug chalk.magenta "Could not parse #{uri} to get schema specification"
+        schema = schema?[anchor] if anchor
+        console.log 'xxxx', source
+        return cb null, source unless schema
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema

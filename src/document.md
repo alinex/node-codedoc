@@ -394,7 +394,7 @@ This may be included in your doc like:
 ``` markdown
 Schema Specification
 ---------------------------------------------------
-{ @schema #selfcheck}
+{@schema #selfcheck}
 ```
 
 This is all to be used to generate the following markdown automatically:
