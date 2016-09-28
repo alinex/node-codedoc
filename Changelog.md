@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.15 (2016-09-28)
+-------------------------------------------------
+- More failure tolerant for wrong syntax.
+- Ignore not working schema references.
+
 Version 1.2.14 (2016-09-27)
 -------------------------------------------------
 - Fix document to not invoke schema.
