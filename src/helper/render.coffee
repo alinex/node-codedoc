@@ -134,8 +134,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         catch error
           debug chalk.magenta "Could not parse #{uri} to get schema specification"
         schema = schema?[anchor] if anchor
-        console.log 'xxxx', source
-        return cb null, source unless schema
+        return cb null, source unless schema # brak if not parseable or not found
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema
