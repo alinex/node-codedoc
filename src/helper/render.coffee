@@ -12,6 +12,7 @@ chalk = require 'chalk'
 asyncReplace = require 'async-replace'
 memoize = require 'memoizee'
 async = require 'async'
+coffee = null # load on demand
 # make caching method
 request = memoize require('request'), {maxAge: 3600000}
 # include alinex modules
@@ -128,7 +129,9 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         [uri, anchor] = uri.split /#/
         uri = path.resolve file, uri
         debug "analyze schema at #{uri}.#{anchor}" if debug.enabled
-        require 'coffee-script'
+        unless coffee
+          coffee = require 'coffee-script'
+          coffee.register()
         try
           schema = require uri
         catch error
