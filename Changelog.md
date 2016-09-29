@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.16 (2016-09-29)
+-------------------------------------------------
+- Optimize debug calls to be more performant if not used.
+
 Version 1.2.15 (2016-09-28)
 -------------------------------------------------
 - More failure tolerant for wrong syntax.
