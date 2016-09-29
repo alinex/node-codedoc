@@ -6,7 +6,6 @@
 
 # Node Modules
 # -------------------------------------------------
-debug = require('debug') 'codedoc'
 yargs = require 'yargs'
 chalk = require 'chalk'
 async = require 'async'

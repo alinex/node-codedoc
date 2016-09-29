@@ -72,7 +72,7 @@ exports.createIndex = (dir, link, cb) ->
 # @param {function(<Error>, <String>)} cb callback which will get the new markdown
 exports.optimize = (report, file, symbols, pages, search, cb) ->
   # find inline tags
-  debug "#{file}: optimize html"
+  debug "#{file}: optimize html" if debug.enabled
   report = report.replace /(\n\s*)#([1-6])(\s+)/g, (_, pre, num, post) ->
     "#{pre}#{util.string.repeat '#', num}#{post}"
   asyncReplace report, /\{@(\w+) ([^ \t}]*)\s?([^}]*)?\}/g
@@ -127,12 +127,14 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         # get schema description
         [uri, anchor] = uri.split /#/
         uri = path.resolve file, uri
-        debug "analyze schema at #{uri}.#{anchor}"
+        debug "analyze schema at #{uri}.#{anchor}" if debug.enabled
         require 'coffee-script'
         try
           schema = require uri
         catch error
-          debug chalk.magenta "Could not parse #{uri} to get schema specification"
+          if debug.enabled
+            debug chalk.magenta "Could not parse #{uri} to get schema specification"
+            debug chalk.magenta error.message
         schema = schema?[anchor] if anchor
         return cb null, source unless schema # brak if not parseable or not found
         validator.describe
@@ -166,7 +168,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
 # - `url` - `String` generated file
 # @param {function(<Error>)} cb callback if done or error occured
 exports.writeHtml = (file, moduleName, pages, cb) ->
-  debug "#{file.source}: transform to html"
+  debug "#{file.source}: transform to html" if debug.enabled
   file.report.toHtml
     style: 'codedoc'
     context:
@@ -180,7 +182,7 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
         "href=\"#{link}#{end}" # keep link
       else
         "href=\"#{link}.html#{end}" # add .html
-    debug "#{file.source}: write html to file"
+    debug "#{file.source}: write html to file" if debug.enabled
     fs.mkdirs path.dirname(file.dest), (err) ->
       return cb err if err
       fs.writeFile file.dest, html, 'utf8', cb
@@ -202,7 +204,7 @@ searchLink = (link, search, cb) ->
   # do the search
   async.mapSeries PAGE_SEARCH[search], (type, cb) ->
     if type is 'mdn'
-      debug "search for link to #{link} in MDN"
+      debug "search for link to #{link} in MDN" if debug.enabled
       return requestURL "https://developer.mozilla.org/en/search?q=#{link}", (err, body) ->
         return cb() if err or not body
         matches = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/g
@@ -218,7 +220,7 @@ searchLink = (link, search, cb) ->
               url: match[1]
         return cb() # nothing found
     if type is 'nodejs'
-      debug "search for link to #{link} in NodeJS API"
+      debug "search for link to #{link} in NodeJS API" if debug.enabled
       [module, method] = link.split /\./
       page = "https://nodejs.org/dist/latest-v6.x/docs/api/#{module.toLowerCase()}.html"
       return requestURL page, (err, body) ->
@@ -230,7 +232,7 @@ searchLink = (link, search, cb) ->
           title: match[1].replace /\(.*?\)/, '()'
           url: "#{page}##{match[2]}"
     if type is 'npm' and link.match /^[^()]+$/
-      debug "search for link to #{link} in NPM"
+      debug "search for link to #{link} in NPM" if debug.enabled
       page = "https://www.npmjs.com/package/#{link}"
       return requestURL page, (err, body) ->
         return cb() unless body

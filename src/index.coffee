@@ -104,7 +104,7 @@ local path like known from the config module.
 @param {function(<Error>)} cb method, to call with 'Error' or `null` after done.
 ###
 exports.setup = util.function.once this, (cb) ->
-  debug chalk.grey "setup codedoc component"
+  debug chalk.grey "setup codedoc component" if debug.enabled
   async.each [Report], (mod, cb) ->
     mod.setup cb
   , (err) ->

@@ -85,8 +85,9 @@ exports.file = (file, local, setup, symbols, cb) ->
         try
           docs = extractDocs file, content, setup, lang, symbols
         catch error
-          debug chalk.magenta "Could not parse documentation at #{file}: \
-          #{chalk.grey error.message + error.stack}"
+          if debug.enabled
+            debug chalk.magenta "Could not parse documentation at #{file}: \
+            #{chalk.grey error.message + error.stack}"
           return cb new Error "Could not parse documentation at #{file}: \
           #{chalk.grey error.message}"
         # create report for undocumented code
