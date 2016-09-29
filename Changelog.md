@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.17 (2016-09-29)
+-------------------------------------------------
+- Register coffeescript for schema validation.
+
 Version 1.2.16 (2016-09-29)
 -------------------------------------------------
 - Optimize debug calls to be more performant if not used.
