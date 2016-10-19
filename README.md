@@ -3,13 +3,15 @@ Alinex CodeDoc: Readme
 
 [![GitHub watchers](
   https://img.shields.io/github/watchers/alinex/node-codedoc.svg?style=social&label=Watch&maxAge=2592000)](
-  https://github.com/alinex/node-codedoc/subscription)<!-- {.hidden-small} -->
+  https://github.com/alinex/node-codedoc/subscription)
+<!-- {.hidden-small} -->
 [![GitHub stars](
   https://img.shields.io/github/stars/alinex/node-codedoc.svg?style=social&label=Star&maxAge=2592000)](
   https://github.com/alinex/node-codedoc)
 [![GitHub forks](
   https://img.shields.io/github/forks/alinex/node-codedoc.svg?style=social&label=Fork&maxAge=2592000)](
-  https://github.com/alinex/node-codedoc)<!-- {.hidden-small} -->
+  https://github.com/alinex/node-codedoc)
+<!-- {.hidden-small} -->
 <!-- {p:.right} -->
 
 [![npm package](
@@ -17,7 +19,8 @@ Alinex CodeDoc: Readme
   https://www.npmjs.com/package/alinex-codedoc)
 [![latest version](
   https://img.shields.io/npm/l/alinex-codedoc.svg?maxAge=2592000)](
-  #license)<!-- {.hidden-small} -->
+  #license)
+<!-- {.hidden-small} -->
 [![Travis status](
   https://img.shields.io/travis/alinex/node-codedoc.svg?maxAge=2592000&label=develop)](
   https://travis-ci.org/alinex/node-codedoc)
@@ -29,7 +32,8 @@ Alinex CodeDoc: Readme
   https://gemnasium.com/alinex/node-codedoc)
 [![GitHub issues](
   https://img.shields.io/github/issues/alinex/node-codedoc.svg?maxAge=2592000)](
-  https://github.com/alinex/node-codedoc/issues)<!-- {.hidden-small} -->
+  https://github.com/alinex/node-codedoc/issues)
+<!-- {.hidden-small} -->
 
 
 A general code documentation tool based on the concepts of
