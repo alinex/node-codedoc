@@ -128,7 +128,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         # get schema description
         [uri, anchor] = uri.split /#/
         uri = path.resolve file, uri
-        debug "analyze schema at #{uri}.#{anchor}" if debug.enabled
+        debug "analyze schema at #{uri}##{anchor}" if debug.enabled
         unless coffee
           coffee = require 'coffee-script'
           coffee.register()
@@ -138,7 +138,8 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           if debug.enabled
             debug chalk.magenta "Could not parse #{uri} to get schema specification"
             debug chalk.magenta error.message
-        schema = schema?[anchor] if anchor
+        schema = util.object.path schema, anchor if anchor
+        debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
         return cb null, source unless schema # brak if not parseable or not found
         validator.describe
           name: "#{path.basename uri}.#{anchor}"

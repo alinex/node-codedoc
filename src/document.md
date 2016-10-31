@@ -262,7 +262,8 @@ Inline Tags
     - `@include` can be used to include some lines from another source given as
       filename with optional line reference like: `{` `@include <file>#<from>-<to>}`
     - `@schema` can be used to describe data structures based on {@link alinex-validator}
-      schema definitions like: `{` `@schema <file>#<exports.access>}`
+      schema definitions like: `{` `@schema <file>#<access/person>}`. The anchor defines
+      the path to the schema from the exported object.
 
 The `@param` format also allows to easily define optional parameters and default values:
 `@param {integer} [max=5] maximum number of...`. You add square brackets to the variable
