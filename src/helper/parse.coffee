@@ -241,7 +241,7 @@ tags = (doc, lang, setup, file, symbols) ->
         spec[name].push part[match[0].length..]
       break if match[1] is 'internal' and not setup.code
   # split some tags further down into name and desc
-  for type in ['return', 'throws']
+  for type in ['return', 'throws', 'type']
     if spec[type]
       spec[type] = spec[type].map (e) ->
         m = e.match /^\s*(?:\{([^}]+)\})?\s*([\s\S]+)$/
@@ -306,6 +306,11 @@ tags = (doc, lang, setup, file, symbols) ->
       md += "\n<!-- {p:.api-usage} -->\n"
     # method definitions
     md += tagParamEvent spec.param, 'Parameter' if spec.param
+    if spec.type
+      md += "\nType\n:   "
+      for e in spec.type
+        md += "`#{e[0]}` " if e[0]
+        md += "#{e[1].replace /\n/g, '\n      '}\n    "
     if spec.return
       e = spec.return[spec.return.length-1]
       md += "\nReturn\n:   "

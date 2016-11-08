@@ -235,6 +235,8 @@ Definition List
 :   Different definitions:
     - `@param`, `@arg`, `@argument` a method parameter with optional type
       given as: `@param {<type>} <name> [<description>]`
+    - `@type` defining the type of variables or attributes
+      given as: `@type {<type>} <description>`
     - `@return`, `@returns` defining what will be returned
       given as: `@return {<type>} <description>`
     - `@throws`, `@exception` descripe possible excepzions
