@@ -127,7 +127,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
       when 'schema'
         # get schema description
         [uri, anchor] = uri.split /#/
-        uri = path.resolve file, uri
+        uri = if uri then path.resolve path.dirname(file), uri else file
         debug "analyze schema at #{uri}##{anchor}" if debug.enabled
         unless coffee
           coffee = require 'coffee-script'
