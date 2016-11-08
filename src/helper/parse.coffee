@@ -288,7 +288,8 @@ tags = (doc, lang, setup, file, symbols) ->
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
   try
     # create usage line
-    if title and (spec.access or spec.private or spec.protected or spec.public or spec.constant or
+    if title and (spec.access?.join('') isnt 'public' or spec.private or
+    spec.protected or spec.constant or
     spec.static or spec.construct or spec.param)
       md += "\n> **Usage:** "
       if spec.access and spec.access[spec.access.length-1] isnt 'public'
