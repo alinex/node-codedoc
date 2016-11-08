@@ -189,6 +189,9 @@ extractDocs = (file, content, setup, lang, symbols) ->
       chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
   # interpret tags
   for doc in docs
+    from = content[0..doc[0]].split('\n').length
+    to = content[0..doc[1]].split('\n').length - 1
+    doc.line = "line #{from}..#{to}"
     tags doc, lang.tags, setup, file, symbols
   # sort found sections
   docs.sort (a, b) ->
@@ -243,7 +246,7 @@ tags = (doc, lang, setup, file, symbols) ->
       spec[type] = spec[type].map (e) ->
         m = e.match /^\s*(?:\{([^}]+)\})?\s*([\s\S]+)$/
         if m then [m[1], m[2]]
-        else throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+        else throw new Error "tag is not formatted properly: @#{type} at #{doc.line}" unless m
   # split some tags further down into name, type and desc
   for type in ['param', 'event']
     if spec[type]
@@ -261,7 +264,8 @@ tags = (doc, lang, setup, file, symbols) ->
           )?            # make it optional
           $             # end of line
         ///
-        throw new Error "tag is not formatted properly: @#{type} #{e}" unless m
+        unless m
+          throw new Error "tag is not formatted properly: @#{type} at #{doc.line}"
         if details = m[2].match /^\[([^=]*?)(?:\s*=\s*(.*))?\]$/
           m[2] = details[1]
           # interpret optional and default for params
