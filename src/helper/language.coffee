@@ -242,15 +242,19 @@ languages =
     tags:
       title: (c) ->
         # function call
-        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/
+        if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:].*?[-=]>.*/
+          return "#{m[1]}()".replace /^@/, ''
         # function call starting with arguments in this line
-        return "#{m[1]}()" if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/
+        if m = c.match /^\s*(?:module\.)?(?:exports\.)?(\S+)\s*[=:]\s*\(/
+          return "#{m[1]}()".replace /^@/, ''
         # variable setting
-        return m[1] if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/
+        if m = c.match /^\s*(?:module.)?(?:exports.)?(\S+)\s*[=:]/
+          return m[1].replace /^@/, ''
         return "Class #{m[1]}" if m = c.match /^\s*Class\s*(\S+)/ # class definition
         null
       access: (c) ->
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
+        return 'static' if c.match /^@/
         null
       searchtype: 'nodejs'
   javascript:
