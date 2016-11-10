@@ -4,6 +4,18 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.18 (2016-11-10)
+-------------------------------------------------
+- Fix test code for code behaviour changes.
+- Fix schema file resolver.
+- Don't show Usage line if no special information contained.
+- Auto interpret @... methods and attributes in coffeescript.
+- Add support for @type tags.
+- Log line number of problematic tags.
+- Allow paths as anchor with / as separator.
+- Fix documentation to hide style comments in github view.
+- Change travis nodejs version comments.
+
 Version 1.2.17 (2016-09-29)
 -------------------------------------------------
 - Register coffeescript for schema validation.
