@@ -256,6 +256,9 @@ languages =
         return 'public' if c.match /^\s*(module\.)?exports([. \t=])/
         return 'static' if c.match /^@/
         null
+      construct: (c) ->
+        return true if c.match /\bconstructor:/
+        null
       searchtype: 'nodejs'
   javascript:
     extensions: [ 'js', 'es6' ]

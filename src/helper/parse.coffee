@@ -272,14 +272,19 @@ tags = (doc, lang, setup, file, symbols) ->
           m[3] = "optional #{m[3] ? ''}"
           m[3] += " (default: #{details[2]})" if details[2]
         if m then [m[1], m[2], m[3]] else [null, spec[type]]
+  # boolean tags
+  for type in ['construct']
+    spec[type] = true if spec[type]?
   # tags spec with auto detect
   if lang.access and not spec.access
     spec.access = [access] if access = lang.access code
+  if lang.construct
+    spec.construct ?= lang.construct code
   # get title
   title = if lang.title then lang.title code else code
   if spec.name
     for e in spec.name
-      title = e
+      title = e.trim()
   # register in symbol table
   if title
     symbols[title] = [ file, uslug title ]
@@ -300,11 +305,13 @@ tags = (doc, lang, setup, file, symbols) ->
       md += '`'
       md += 'const ' if spec.constant
       md += 'new ' if spec.construct
-      md += "#{title}`"
+      md += "#{title}"
       if spec.param
-        md = md.replace /(\(\))?`$/, ''
-        md += "(#{spec.param.map((e) -> e[1]).join ', '})`\n"
-      md += "\n<!-- {p:.api-usage} -->\n"
+        md = md.replace /(\(\))?$/, ''
+        md += "(#{spec.param.map((e) -> e[1]).join ', '})\n"
+      else if spec.construct
+        md += '()'
+      md += "`\n<!-- {p:.api-usage} -->\n"
     # method definitions
     md += tagParamEvent spec.param, 'Parameter' if spec.param
     if spec.type
