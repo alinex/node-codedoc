@@ -169,7 +169,7 @@ extractDocs = (file, content, setup, lang, symbols) ->
         end = match.index + match[0].length
         cend = content.indexOf '\n', end
         code = if cend > 0 then content[end..cend] else content[end..]
-        docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
+        docs.push [match.index, end, "\n#{match[1]}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments"
   # internal comments extraction
@@ -184,7 +184,7 @@ extractDocs = (file, content, setup, lang, symbols) ->
         end = match.index + match[0].length
         cend = content.indexOf '\n', end
         code = if cend > 0 then content[end..cend] else content[end..]
-        docs.push [match.index, end, "\n#{match[1].trim()}\n", code.trim()]
+        docs.push [match.index, end, "\n#{match[1]}\n", code.trim()]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
   # interpret tags
@@ -226,7 +226,7 @@ stripIndent = (code, tab) ->
 # resolve links later
 tags = (doc, lang, setup, file, symbols) ->
   return unless lang
-  md = doc[2]
+  md = stripIndent doc[2]
   code = doc[3]
   # extract tags
   spec = {}
@@ -238,7 +238,7 @@ tags = (doc, lang, setup, file, symbols) ->
       if match = part.match /^@(\S+)\s*/
         name = tagAlias[match[1]] ? match[1]
         spec[name] ?= []
-        spec[name].push part[match[0].length..]
+        spec[name].push part[match[0].length..].trim()
       break if match[1] is 'internal' and not setup.code
   # split some tags further down into name and desc
   for type in ['return', 'throws', 'type']
@@ -308,7 +308,7 @@ tags = (doc, lang, setup, file, symbols) ->
       md += "#{title}"
       if spec.param
         md = md.replace /(\(\))?$/, ''
-        md += "(#{spec.param.map((e) -> e[1]).join ', '})\n"
+        md += "(#{spec.param.map((e) -> e[1]).join ', '})"
       else if spec.construct
         md += '()'
       md += "`\n<!-- {p:.api-usage} -->\n"
@@ -323,7 +323,7 @@ tags = (doc, lang, setup, file, symbols) ->
       e = spec.return[spec.return.length-1]
       md += "\nReturn\n:   "
       md += "`#{e[0]}` " if e[0]
-      md += "#{e[1].replace /\n/g, '\n      '}\n    "
+      md += "#{e[1].replace /\n/g, '\n    '}\n    "
     if spec.throws
       md += "\nThrows\n:   "
       for e in spec.throws
