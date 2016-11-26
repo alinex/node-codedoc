@@ -4,6 +4,16 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.19 (2016-11-26)
+-------------------------------------------------
+- Fix duplicate braces in name of constructor.
+- Update alinex-validator@2.1.1, yargs@6.4.0
+- Optimize search results display.
+- Make schema recognize and use indention.
+- Better display source of error in case of schema problems.
+- Fix display of subblist in tags.
+- Fix display of constructor usage and remove spaces in others.
+
 Version 1.2.18 (2016-11-10)
 -------------------------------------------------
 - Fix test code for code behaviour changes.
