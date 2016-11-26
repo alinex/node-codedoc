@@ -76,8 +76,8 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
   debug "#{file}: optimize for html conversion" if debug.enabled
   report = report.replace /(\n\s*)#([1-6])(\s+)/g, (_, pre, num, post) ->
     "#{pre}#{util.string.repeat '#', num}#{post}"
-  asyncReplace report, /\{@(\w+) ([^ \t}]*)\s?([^}]*)?\}/g
-  , (source, tag, uri, text, offset, all, cb) ->
+  asyncReplace report, /([ \t]*)\{@(\w+) ([^ \t}]*)\s?([^}]*)?\}/g
+  , (source, indent, tag, uri, text, offset, all, cb) ->
     switch tag
       when 'link'
         # check for symbol
@@ -140,7 +140,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             debug chalk.magenta "#{error.message}\n#{error.stack.split(/\n/)[1..5].join '\n'}"
         schema = util.object.path schema, anchor if schema and anchor
         debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
-        return cb null, source unless schema # brak if not parseable or not found
+        return cb null, source unless schema # brake if not parseable or not found
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema
@@ -153,7 +153,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             __#{err.message}__
             :::
             """
-          cb null, md
+          cb null, indent + md.replace /\n/g, "\n#{indent}"
       else
         console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
         cb null, source
