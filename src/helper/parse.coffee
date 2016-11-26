@@ -310,7 +310,7 @@ tags = (doc, lang, setup, file, symbols) ->
         md = md.replace /(\(\))?$/, ''
         md += "(#{spec.param.map((e) -> e[1]).join ', '})"
       else if spec.construct
-        md += '()'
+        md += '()' unless md.match /\(.*\)/
       md += "`\n<!-- {p:.api-usage} -->\n"
     # method definitions
     md += tagParamEvent spec.param, 'Parameter' if spec.param
