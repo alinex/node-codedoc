@@ -137,8 +137,8 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         catch error
           if debug.enabled
             debug chalk.magenta "Could not parse #{uri} to get schema specification"
-            debug chalk.magenta error.message
-        schema = util.object.path schema, anchor if anchor
+            debug chalk.magenta "#{error.message}\n#{error.stack.split(/\n/)[1..5].join '\n'}"
+        schema = util.object.path schema, anchor if schema and anchor
         debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
         return cb null, source unless schema # brak if not parseable or not found
         validator.describe
