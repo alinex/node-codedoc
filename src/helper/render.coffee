@@ -140,7 +140,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
             debug chalk.magenta "#{error.message}\n#{error.stack.split(/\n/)[1..5].join '\n'}"
         schema = util.object.path schema, anchor if schema and anchor
         debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
-        return cb null, source unless schema # brake if not parseable or not found
+        return cb null, source unless schema # broken if not parseable or not found
         validator.describe
           name: "#{path.basename uri}.#{anchor}"
           schema: schema
