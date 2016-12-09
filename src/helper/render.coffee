@@ -85,7 +85,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           url = path.relative path.dirname(file), "#{symbol[0]}.html"
           url += "##{symbol[1]}"
           title = " \"File: #{symbol[0]} Element: #{symbol[2]}\""
-          return cb null, "[`#{text ? symbol[2]}`](#{url + title})"
+          return cb null, "#{indent}[`#{text ? symbol[2]}`](#{url + title})"
         # check for file
         [filepath, anchor] = uri.split /#/
         found = pages.filter (e) -> ~e.path.indexOf filepath
@@ -93,10 +93,10 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           text ?= found[0].title ? filepath
           url = found[0].url ? filepath
           title = " \"File: #{filepath}\""
-          return cb null, "[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
+          return cb null, "#{indent}[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
         # alinex link
         if m = uri.match /^alinex-(.*)/
-          return cb null, "[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
+          return cb null, "#{indent}[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
         # urls
         if uri.match /^(https?):\/\//
           return cb null, "[#{text ? uri}](#{uri})"

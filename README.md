@@ -229,6 +229,7 @@ You have to
 
 See the following example using CoffeeScript or JavaScript:
 
+::: detail {size=max}
 ``` coffee
 codedoc = require 'alinex-codedoc'
 # setup the template search paths
@@ -251,7 +252,9 @@ codedoc.setup (err) ->
       process.exit 16  
     console.log 'Documents created.'
 ```
+:::
 
+::: detail
 ``` js
 codedoc = require('alinex-codedoc');
 // setup the template search paths
@@ -277,6 +280,7 @@ codedoc.setup(function(err) {
   });
 });
 ```
+:::
 
 Find more information about calling the code documentation in the {@link index.coffee}.
 
@@ -286,6 +290,7 @@ If you want to use your own style templates within your app's config directory
 and you're already using {@link alinex-config} you only have to register the
 template type on it by putting the following on top:
 
+::: detail
 ``` coffee
 config = require 'alinex-config'
 # set module search path
@@ -294,7 +299,9 @@ config.register 'codedoc', __dirname,
   folder: 'template'
   type: 'template'
 ```
+:::
 
+::: detail
 ``` js
 config = require('alinex-config');
 // set module search path
@@ -304,6 +311,7 @@ config.register('codedoc', __dirname, {
   type: 'template'
 });
 ```
+:::
 
 This allows you to put your templates also under:
 - var/src/template/report/...
