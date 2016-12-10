@@ -87,7 +87,7 @@ here. But you need a normal stylesheet.
 
 __Preprocessor__
 
-If you want you may use some preprocessor like styles, less or scssto create the
+If you want you may use some preprocessor like styles, less or scss to create the
 stylesheets on your own. The default stylesheets are generated using stylus.
 
 ### Default codedoc Style
