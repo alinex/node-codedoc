@@ -4,6 +4,20 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.3.0 (2016-12-10)
+-------------------------------------------------
+- Automatically add .html to alinex links.
+- Automatically add .html to alinex links.
+- Fixed smaller problems in documentation.
+- Allow transforming coffee2js automatically.
+- Fix bug with missing spaces before links.
+- Optimize style for new report module.
+- Update alinex-report@2.2.1, coffee-script@1.12.1
+- Update alinex-report@2.2.0, yargs@6.5.0, coffee-script@1.12.0
+- Remove unused style.
+- Output schema problems as error.
+- Fix doxumentation which was broken.
+
 Version 1.2.19 (2016-11-26)
 -------------------------------------------------
 - Fix duplicate braces in name of constructor.
