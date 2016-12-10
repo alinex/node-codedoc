@@ -255,30 +255,7 @@ codedoc.setup (err) ->
 :::
 
 ::: detail
-``` js
-codedoc = require('alinex-codedoc');
-// setup the template search paths
-codedoc.setup(function(err) {
-  // do something on error like exit or reporting
-  if (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
-  // run documentation generation
-  return codedoc.run({
-    input: argv.input,
-    find: { exclude: list },
-    output: argv.output,
-    style: argv.style,
-    code: argv.code
-  }, function(err) {
-    if (err) {
-      console.error(err.message);
-      process.exit(16);
-    }
-    return console.log('Documents created.');
-  });
-});
+``` coffee2js
 ```
 :::
 
