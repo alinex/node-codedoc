@@ -161,13 +161,13 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
     return cb err if err
     # fill empty transform code from previous
     report = report.replace ///
-      \n(\ *`{3,})\ +       # start1
+      \n(\ *`{3,})\ *       # start1
       (\w+)                 # lang1
       ([^\n]*\n)            # addon1
       ([\s\S]*?\n)          # code1
       \1\ *\n               # end
       ([\s\S]*?\n)          # other
-      (\ *`{3,})\ +       # start2
+      (\ *`{3,})\ *       # start2
       \2[2](\w+)            # lang2
       ([^\n]*\n)            # addon2
       \6\ *\n               # end
@@ -176,7 +176,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
       #{start2} #{lang1}2#{lang2}#{addon2}#{code1}#{start2}\n"
     # transform code
     .replace ///
-      \n(\ *`{3,})\ +       # start
+      \n(\ *`{3,})\ *       # start
       (\w+)2                # lang1
       (\w+)                 # lang2
       ([^\n]*\n)            # addon
