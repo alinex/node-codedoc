@@ -96,7 +96,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
           return cb null, "#{indent}[#{text}](#{url}#{if anchor then '#' + anchor else ''}#{title})"
         # alinex link
         if m = uri.match /^alinex-(.*)/
-          m[1] += '.html' if not m[1].match /\.(gif|html|png|jpg)$/
+          m[1] += '.html' if m[1].match /\/./ and not m[1].match /\.(gif|html|png|jpg)$/
           return cb null, "#{indent}[#{text ? uri}](https://alinex.github.io/node-#{m[1]})"
         # urls
         if uri.match /^(https?):\/\//
