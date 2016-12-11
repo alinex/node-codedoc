@@ -296,7 +296,7 @@ tags = (doc, lang, setup, file, symbols) ->
     if title and (spec.access?.join('') isnt 'public' or spec.private or
     spec.protected or spec.constant or
     spec.static or spec.construct or spec.param)
-      md += "\n> **Usage**: "
+      md += "\n> **Usage:** "
       if spec.access and spec.access[spec.access.length-1] isnt 'public'
         md += "#{util.array.last spec.access} "
       else if spec.private then md += 'private '
