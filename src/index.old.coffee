@@ -177,7 +177,6 @@ exports.run = (setup, cb) ->
               cb()
           , (err) ->
             return cb err if err
-            console.log '---------------------------------------'
             # add the title of the symbol as element
             s[2] = name for name, s of symbols
             # write files

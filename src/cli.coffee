@@ -14,6 +14,7 @@ path = require 'path'
 fs = require 'alinex-fs'
 alinex = require 'alinex-core'
 config = require 'alinex-config'
+Report = require 'alinex-report'
 # include classes and helpers
 codedoc = require './index'
 
@@ -65,7 +66,7 @@ readExcludes = (dir, cb) ->
         e.replace /^\//, "^"
         .replace /\./, '\\.'
         .replace /\*+/, '.*'
-      cb null, new RegExp "(#{list.join '|'})"
+      cb null, new RegExp list.join '|'
 
 # Main routine
 # -------------------------------------------------
@@ -155,16 +156,18 @@ codedoc.setup (err) ->
     alinex.exit err if err
     config.init (err) ->
       alinex.exit err if err
-      console.log "Output to #{argv.output}..."
-      codedoc.run
-        input: argv.input
-        find:
-          exclude: list
-        output: argv.output
-        style: argv.style
-        code: argv.code
-        parallel: argv.parallel
-        verbose: argv.verbose
-      , (err) ->
-        console.log 'Everything done.'
-        alinex.exit err
+      Report.init (err) ->
+        alinex.exit err if err
+        console.log "Output to #{argv.output}..."
+        codedoc.run
+          input: argv.input
+          find:
+            exclude: list
+          output: argv.output
+          style: argv.style
+          code: argv.code
+          parallel: argv.parallel
+          verbose: argv.verbose
+        , (err) ->
+          console.log 'Everything done.'
+          alinex.exit err
