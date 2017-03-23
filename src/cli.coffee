@@ -13,6 +13,7 @@ path = require 'path'
 # include alinex modules
 fs = require 'alinex-fs'
 alinex = require 'alinex-core'
+config = require 'alinex-config'
 # include classes and helpers
 codedoc = require './index'
 
@@ -152,16 +153,18 @@ codedoc.setup (err) ->
   argv.input ?= '.'
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err
-    console.log "Output to #{argv.output}..."
-    codedoc.run
-      input: argv.input
-      find:
-        exclude: list
-      output: argv.output
-      style: argv.style
-      code: argv.code
-      parallel: argv.parallel
-      verbose: argv.verbose
-    , (err) ->
-      console.log 'Everything done.'
-      alinex.exit err
+    config.init (err) ->
+      alinex.exit err if err
+      console.log "Output to #{argv.output}..."
+      codedoc.run
+        input: argv.input
+        find:
+          exclude: list
+        output: argv.output
+        style: argv.style
+        code: argv.code
+        parallel: argv.parallel
+        verbose: argv.verbose
+      , (err) ->
+        console.log 'Everything done.'
+        alinex.exit err

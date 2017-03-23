@@ -79,7 +79,7 @@ exports.file = (file, local, setup, symbols, cb) ->
     (content, lang, cb) ->
       report = new Report()
       if lang.name is 'markdown'
-        report.raw content
+        report.markdown content
       else
         # extract docs
         try
@@ -96,7 +96,7 @@ exports.file = (file, local, setup, symbols, cb) ->
           report.h1 "File: #{path.basename local}"
           report.quote "Path: #{local}"
           report.code stripIndent(content, lang.tab), lang.name
-          report.p Report.style 'code: style="max-height:none"'
+          report.style 'pre:style="max-height:none"'
           return cb null, report, lang
         # create report out of docs
         pos = 0
@@ -107,10 +107,10 @@ exports.file = (file, local, setup, symbols, cb) ->
               report.code stripIndent(code, lang.tab), lang.name
               if pos # set correct line number
                 line = content[0..pos].split('\n').length - 1
-                report.p Report.style "code: style=\"counter-reset:line #{line}\""
+                report.style "pre:style=\"counter-reset:line #{line}\""
           # add doc block
           md = doc[2].replace /\n\s*?$/, ''
-          report.raw "\n#{md}\n\n"
+          report.markdown "\n#{md}\n\n"
           pos = doc[1]
         if pos < content.length and setup.code
           # last code block
@@ -118,26 +118,29 @@ exports.file = (file, local, setup, symbols, cb) ->
             report.code stripIndent(code, lang.tab), lang.name
             if pos # set correct line number
               line = content[0..pos].split('\n').length - 1
-              report.p Report.style "code: style=\"counter-reset:line #{line}\""
+              report.style "pre:style=\"counter-reset:line #{line}\""
         # optimize report by adding path with compiled path
         source = "`#{local}`"
         if match = local.match /^\/src(\/.*)\.coffee$/
           source += " compiled to `/lib#{match[1]}.js`"
-        report.body = report.body.replace /(\n\s*={10,}\s*\n)/, "$1\n> Path: #{source}\n\n"
+        report.top()
+        report.next {type: 'heading', nesting: -1}
+        report.next()
+        report.quote "Path: #{source}"
       cb null, report, lang
-    # remove internal
-    (report, lang, cb) ->
-      report.body = unless setup.code
-        report.body
-        .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
-        .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
-      else
-        report.body.replace /<!--\s*(end )?internal\s*-->/ig, ''
-      unless report.body.trim().length
-        return cb 'EMPTY'
-      # add table of contents and HTML comment mark for later additions
-      report.body = '@[toc]\n\n' + report.body
-      cb null, report, lang
+#    # remove internal
+#    (report, lang, cb) ->
+#      report.body = unless setup.code
+#        report.body
+#        .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
+#        .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
+#      else
+#        report.body.replace /<!--\s*(end )?internal\s*-->/ig, ''
+#      unless report.body.trim().length
+#        return cb 'EMPTY'
+#      # add table of contents and HTML comment mark for later additions
+#      report.body = '@[toc]\n\n' + report.body
+#      cb null, report, lang
   ], cb
 
 
