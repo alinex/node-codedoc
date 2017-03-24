@@ -164,20 +164,22 @@ exports.run = (setup, cb) ->
               if err
                 return cb err if err instanceof Error
                 return cb() # no real problem but abort
-              map[p] =
-                report: report
-                language: lang
-                source: file
-                dest: "#{setup.output}#{p}.html"
-                parts: p[1..].toLowerCase().split /\//
-                title: report.getTitle() ? p[1..]
-              if type = lang.tags?.searchtype
-                linksearch[type] ?= 0
-                linksearch[type]++
-              cb()
+              report.format 'md', (err, report) ->
+                return cb err if err
+                title = if m = report.match /([^\n]+)\n=+/ then m[1] else null
+                map[p] =
+                  report: report
+                  language: lang
+                  source: file
+                  dest: "#{setup.output}#{p}.html"
+                  parts: p[1..].toLowerCase().split /\//
+                  title: title ? p[1..]
+                if type = lang.tags?.searchtype
+                  linksearch[type] ?= 0
+                  linksearch[type]++
+                cb()
           , (err) ->
             return cb err if err
-            console.log '---------------------------------------'
             # add the title of the symbol as element
             s[2] = name for name, s of symbols
             # write files
