@@ -2,6 +2,12 @@
 # ============================================
 # This contains the default for different settings.
 
+md:
+  type: md
+  extension: '.md'
+  width: 100
+  keep_soft_breaks: true
+  use_references: false
 
 html_api:
   type: html
