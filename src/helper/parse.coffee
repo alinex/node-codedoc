@@ -128,19 +128,6 @@ exports.file = (file, local, setup, symbols, cb) ->
         report.next()
         report.quote "Path: #{source}"
       cb null, report, lang
-#    # remove internal
-#    (report, lang, cb) ->
-#      report.body = unless setup.code
-#        report.body
-#        .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
-#        .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
-#      else
-#        report.body.replace /<!--\s*(end )?internal\s*-->/ig, ''
-#      unless report.body.trim().length
-#        return cb 'EMPTY'
-#      # add table of contents and HTML comment mark for later additions
-#      report.body = '@[toc]\n\n' + report.body
-#      cb null, report, lang
   ], cb
 
 

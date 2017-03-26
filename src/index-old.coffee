@@ -142,14 +142,10 @@ exports.run = (setup, cb) ->
   setup.find ?= {}
   setup.find.type = 'file'
   setup.parallel ?= if debug.enabled then 1 else 100
+  symbols = {} # document wide collection
   # start converting
   fs.mkdirs setup.output, (err) ->
     return cb err if err
-    work =
-      list: []
-      map: {}
-      symbols: {}
-      linksearch: {}
     async.series [
       (cb) -> # search source files
         (if setup.verbose then console.log else debug) "search files in #{setup.input}"
@@ -157,78 +153,86 @@ exports.run = (setup, cb) ->
           filter: setup.find
           dereference: true
         , (err, list) ->
+          return cb err if err
           ###########################################################################################################
-#          list = ['/home/alex/github/node-codedoc/README.md']
-          console.log list
-          work.list = list
-          cb()
-      (cb) -> # search source files
-        (if setup.verbose then console.log else debug) "analyze files..."
-        async.eachLimit work.list, setup.parallel, (file, cb) ->
-          localPath = file[setup.input.length..]
-          parse.file file, localPath, setup, work.symbols, (err, report, lang) ->
-            if err
-              return cb err if err instanceof Error
-              return cb() # no real problem but abort
-            report.format 'md', (err, md) ->
+          list = ['/home/alex/github/node-codedoc/README.md']
+          # create reports
+          (if setup.verbose then console.log else debug) "convert files..."
+          map = {}
+          linksearch = {}
+          async.eachLimit list, setup.parallel, (file, cb) ->
+            p = file[setup.input.length..]
+            parse.file file, p, setup, symbols, (err, report, lang) ->
+              if err
+                return cb err if err instanceof Error
+                return cb() # no real problem but abort
+              report.format 'md', (err, report) ->
+#                console.log report
+                return cb err if err
+                title = if m = report.match /([^\n]+)\n=+/ then m[1] else null
+                map[p] =
+                  report: report
+                  language: lang
+                  source: file
+                  dest: "#{setup.output}#{p}.html"
+                  parts: p[1..].toLowerCase().split /\//
+                  title: title ? p[1..]
+                if type = lang.tags?.searchtype
+                  linksearch[type] ?= 0
+                  linksearch[type]++
+                cb()
+          , (err) ->
+            return cb err if err
+            # add the title of the symbol as element
+            s[2] = name for name, s of symbols
+            # write files
+            linksearchDefault = null
+            max = 0
+            for type, num in linksearch
+              continue if num <= max
+              max = num
+              linksearchDefault = type
+            map = sortMap map
+            mapKeys = Object.keys map
+            moduleName = map[mapKeys[0]].title.replace /\s*[-:].*/, ''
+            (if setup.verbose then console.log else debug) "create html files..."
+            async.eachLimit mapKeys, setup.parallel, (name, cb) ->
+              # create link list
+              pages = []
+              for p, e of map
+                depth = e.parts.length - 1
+                depth-- if path.basename(p, path.extname p) is 'index'
+                depth = 0 if depth < 0
+                pages.push
+                  depth: depth
+                  title: e.title
+                  path: p
+                  link: e.title.replace /^.*?[-:]\s+/, ''
+                  url: "#{path.relative path.dirname(name), p}.html"
+                  active: p is name
+              # convert to html
+              file = map[name]
+              search = file.language.tags?.searchtype
+              search = linksearchDefault if search is 'default'
+              render.optimize file.report, file.source, symbols, pages, search
+              , (err, md) ->
+                return cb err if err
+                file.report = new Report()
+                file.report.markdown md
+                render.writeHtml file, moduleName, pages, cb
+            , (err) ->
               return cb err if err
-              title = if m = md.match /([^\n]+)\n=+/ then m[1] else null
-              work.map[localPath] =
-                md: md
-                language: lang
-                source: file
-                dest: "#{setup.output}#{localPath}.html"
-                parts: localPath[1..].toLowerCase().split /\//
-                title: title ? localPath[1..]
-              if type = lang.tags?.searchtype
-                work.linksearch[type] ?= 0
-                work.linksearch[type]++
-            cb()
-        , cb
-      (cb) -> # remove internal
-        (if setup.verbose then console.log else debug) "remove internal doc or marker..."
-        for name, map of work.map
-          map.md = unless setup.code
-            map.md
-            .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
-            .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
-          else
-            map.md.replace /<!--\s*(end )?internal\s*-->/ig, ''
-            unless map.md.trim().length
-              delete work.map[name]
-        cb()
-      (cb) -> # optimize links
-        # add the title of the symbol as element
-        s[2] = name for name, s of work.symbols
-        console.log work.symbols
-        cb()
-      (cb) -> # convert to html
-        (if setup.verbose then console.log else debug) "create html files..."
-        report = new Report()
-        async.eachLimit Object.keys(work.map), setup.parallel, (name, cb) ->
-          map = work.map[name]
-          report.markdown map.md
-          report.toFile 'html', map.dest, cb
-        , cb
-      (cb) -> # copy resources from code
+              (if setup.verbose then console.log else debug) "check index page"
+              render.createIndex setup.output, map[mapKeys[0]].dest, (err) ->
+                return cb err if err
+                (if setup.verbose then console.log else debug) "page creation done"
+                cb()
+      (cb) -> # copy resources
         (if setup.verbose then console.log else debug) "copy static files from #{setup.input}"
         filter = util.extend util.clone(setup.find),
           include: STATIC_FILES
         fs.copy setup.input, setup.output,
           filter: filter
-          dereference: true
-          overwrite: true
-          noempty: true
-          ignoreErrors: true
-        , (err) ->
-          return cb err if err
-          (if setup.verbose then console.log else debug) "copying files done"
-          cb()
-      (cb) -> # copy additional resources
-        return unless setup.resources?.include
-        (if setup.verbose then console.log else debug) "copy additional static files"
-        fs.copy setup.input, setup.output,
-          filter: setup.resources
           dereference: true
           overwrite: true
           noempty: true

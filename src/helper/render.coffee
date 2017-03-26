@@ -111,20 +111,6 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
         # default
         console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
         cb null, text ? uri
-      when 'include'
-        # include file
-        [uri, anchor] = uri.split /#/
-        debug "include #{uri}"
-        inc = path.resolve path.dirname(file), uri
-        fs.readFile inc, 'UTF8', (err, content) ->
-          if err
-            console.error chalk.magenta "Could not include in #{file}: #{err.message}"
-            return cb null, "@include #{uri}"
-          if anchor
-            [from, to] = anchor.split /\s*-\s*/
-            content = content.split(/\n/)[from-1..to-1].join '\n'
-          # run inlineTags over this, too
-          exports.optimize content, file, symbols, pages, search, cb
       when 'schema'
         # get schema description
         [uri, anchor] = uri.split /#/
@@ -220,12 +206,14 @@ transform =
 # @param {function(<Error>)} cb callback if done or error occured
 exports.writeHtml = (file, moduleName, pages, cb) ->
   debug "#{file.source}: transform to html" if debug.enabled
-  file.report.toHtml
-    style: 'codedoc'
-    context:
-      moduleName: moduleName
-      pages: pages
-  , (err, html) ->
+#  file.report.toHtml
+#    style: 'codedoc'
+#    context:
+#      moduleName: moduleName
+#      pages: pages
+#  , (err, html) ->
+  file.report.format 'html', (err, html) ->
+#    return cb()
     # optimize further
     html = html
     .replace ///href=\"(?!https?://|/)(.*?)(["#])///gi, (_, link, end) ->
@@ -234,9 +222,8 @@ exports.writeHtml = (file, moduleName, pages, cb) ->
       else
         "href=\"#{link}.html#{end}" # add .html
     debug "#{file.source}: write html to file" if debug.enabled
-    fs.mkdirs path.dirname(file.dest), (err) ->
-      return cb err if err
-      fs.writeFile file.dest, html, 'utf8', cb
+    console.log '------------------------------------------------', path.dirname(file.dest)
+    fs.writeFile file.dest, html, 'utf8', cb
 
 # Run internet search to find link destination.
 #
@@ -255,7 +242,7 @@ searchLink = (link, search, cb) ->
   # do the search
   async.mapSeries PAGE_SEARCH[search], (type, cb) ->
     if type is 'mdn'
-      debug "search for link to #{link} in MDN" if debug.enabled
+      debug chalk.grey "search for link to #{link} in MDN" if debug.enabled
       return requestURL "https://developer.mozilla.org/en/search?q=#{link}", (err, body) ->
         return cb() if err or not body
         matches = body.match /<div class="column-5 result-list-item">([\s\S]+?)<\/div>/g
@@ -271,7 +258,7 @@ searchLink = (link, search, cb) ->
               url: match[1]
         return cb() # nothing found
     if type is 'nodejs'
-      debug "search for link to #{link} in NodeJS API" if debug.enabled
+      debug chalk.grey "search for link to #{link} in NodeJS API" if debug.enabled
       [module, method] = link.split /\./
       page = "https://nodejs.org/dist/latest-v6.x/docs/api/#{module.toLowerCase()}.html"
       return requestURL page, (err, body) ->
@@ -283,7 +270,7 @@ searchLink = (link, search, cb) ->
           title: match[1].replace /\(.*?\)/, '()'
           url: "#{page}##{match[2]}"
     if type is 'npm' and link.match /^[^()]+$/
-      debug "search for link to #{link} in NPM" if debug.enabled
+      debug chalk.grey "search for link to #{link} in NPM" if debug.enabled
       page = "https://www.npmjs.com/package/#{link}"
       return requestURL page, (err, body) ->
         return cb() unless body

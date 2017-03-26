@@ -157,6 +157,8 @@ $$$
 Which files to use firstly depends on the selection of the input folder and the
 filter conditions. These filter conditions can be set indirectly using the `.docignore`
 or `.gitignore` files or be given in the API.
+Additional resources in other directories not included in code abalyzation can be
+given as `.docresource` list.
 
 All files matching this conditions will be **analyzed**. Depending if you generate the normal
 view or the developer view document elements are extracted. Therefore the predefined

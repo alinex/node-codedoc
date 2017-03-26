@@ -18,6 +18,8 @@ Report = require 'alinex-report'
 # include classes and helpers
 codedoc = require './index'
 
+SegfaultHandler = require 'segfault-handler'
+SegfaultHandler.registerHandler "crash.log"
 
 # Setup
 # -------------------------------------------------
@@ -61,6 +63,23 @@ readExcludes = (dir, cb) ->
         console.error chalk.magenta "Could not read #{file} for excludes"
         return cb()
       list = ".git/\n#{res}".split /\s*\n\s*/
+      .filter (e) -> e.trim().length
+      .map (e) ->
+        e.replace /^\//, "^"
+        .replace /\./, '\\.'
+        .replace /\*+/, '.*'
+      cb null, new RegExp list.join '|'
+
+readResources = (dir, cb) ->
+  dir = path.resolve dir
+  file = "#{dir}/.docresource"
+  fs.exists file, (exists) ->
+    return cb() unless exists
+    fs.readFile file, 'utf8', (err, res) ->
+      if err
+        console.error chalk.magenta "Could not read #{file} for resources"
+        return cb()
+      list = res.split /\s*\n\s*/
       .filter (e) -> e.trim().length
       .map (e) ->
         e.replace /^\//, "^"
@@ -154,20 +173,23 @@ codedoc.setup (err) ->
   argv.input ?= '.'
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err
-    config.init (err) ->
-      alinex.exit err if err
-      Report.init (err) ->
+    readResources argv.input, (err, res) ->
+      config.init (err) ->
         alinex.exit err if err
-        console.log "Output to #{argv.output}..."
-        codedoc.run
-          input: argv.input
-          find:
-            exclude: list
-          output: argv.output
-          style: argv.style
-          code: argv.code
-          parallel: argv.parallel
-          verbose: argv.verbose
-        , (err) ->
-          console.log 'Everything done.'
-          alinex.exit err
+        Report.init (err) ->
+          alinex.exit err if err
+          console.log "Output to #{argv.output}..."
+          codedoc.run
+            input: argv.input
+            find:
+              exclude: list
+            resources:
+              include: res
+            output: argv.output
+            style: argv.style
+            code: argv.code
+            parallel: argv.parallel
+            verbose: argv.verbose
+          , (err) ->
+            console.log 'Everything done.'
+            alinex.exit err
