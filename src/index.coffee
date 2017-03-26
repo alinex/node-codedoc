@@ -150,6 +150,7 @@ exports.run = (setup, cb) ->
       map: {}
       symbols: {}
       linksearch: {}
+      pages: []
     async.series [
       (cb) -> # search source files
         (if setup.verbose then console.log else debug) "search files in #{setup.input}"
@@ -159,10 +160,9 @@ exports.run = (setup, cb) ->
         , (err, list) ->
           ###########################################################################################################
 #          list = ['/home/alex/github/node-codedoc/README.md']
-          console.log list
           work.list = list
           cb()
-      (cb) -> # search source files
+      (cb) -> # read and parse source files
         (if setup.verbose then console.log else debug) "analyze files..."
         async.eachLimit work.list, setup.parallel, (file, cb) ->
           localPath = file[setup.input.length..]
@@ -196,11 +196,50 @@ exports.run = (setup, cb) ->
             map.md.replace /<!--\s*(end )?internal\s*-->/ig, ''
             unless map.md.trim().length
               delete work.map[name]
+        # sort map for index
+        work.map = sortMap work.map
         cb()
+      (cb) -> # create page index
+        (if setup.verbose then console.log else debug) "create page index..."
+        mapKeys = Object.keys work.map
+        moduleName = work.map[mapKeys[0]].title.replace /\s*[-:].*/, ''
+        async.eachLimit mapKeys, setup.parallel, (name, cb) ->
+          # create link list
+          for p, e of work.map
+            depth = e.parts.length - 1
+            depth-- if path.basename(p, path.extname p) is 'index'
+            depth = 0 if depth < 0
+            work.pages.push
+              depth: depth
+              title: e.title
+              path: p
+              link: e.title.replace /^.*?[-:]\s+/, ''
+              url: "#{path.relative path.dirname(name), p}.html"
+              active: p is name
+          cb()
+        , cb
       (cb) -> # optimize links
         # add the title of the symbol as element
         s[2] = name for name, s of work.symbols
-        console.log work.symbols
+        # default search
+        linksearchDefault = null
+        max = 0
+        for type, num in work.linksearch
+          continue if num <= max
+          max = num
+          linksearchDefault = type
+        async.eachLimit Object.keys(work.map), setup.parallel, (name, cb) ->
+          file = work.map[name]
+          search = file.language.tags?.searchtype
+          search = linksearchDefault if search is 'default'
+          render.optimize file.md, file.source, work.symbols, work.pages, search, (err, md) ->
+            return cb err if err
+            file.md = md
+            cb()
+        , cb
+      (cb) -> # add page tree
+
+
         cb()
       (cb) -> # convert to html
         (if setup.verbose then console.log else debug) "create html files..."
@@ -210,8 +249,11 @@ exports.run = (setup, cb) ->
           report.markdown map.md
           report.toFile 'html', map.dest, cb
         , cb
+      (cb) -> # create index
+        (if setup.verbose then console.log else debug) "check index page..."
+        render.createIndex setup.output, work.map[Object.keys(work.map)[0]].dest, cb
       (cb) -> # copy resources from code
-        (if setup.verbose then console.log else debug) "copy static files from #{setup.input}"
+        (if setup.verbose then console.log else debug) "copy static files from #{setup.input}..."
         filter = util.extend util.clone(setup.find),
           include: STATIC_FILES
         fs.copy setup.input, setup.output,
@@ -220,23 +262,17 @@ exports.run = (setup, cb) ->
           overwrite: true
           noempty: true
           ignoreErrors: true
-        , (err) ->
-          return cb err if err
-          (if setup.verbose then console.log else debug) "copying files done"
-          cb()
+        , cb
       (cb) -> # copy additional resources
         return unless setup.resources?.include
-        (if setup.verbose then console.log else debug) "copy additional static files"
+        (if setup.verbose then console.log else debug) "copy additional static files..."
         fs.copy setup.input, setup.output,
           filter: setup.resources
           dereference: true
           overwrite: true
           noempty: true
           ignoreErrors: true
-        , (err) ->
-          return cb err if err
-          (if setup.verbose then console.log else debug) "copying files done"
-          cb()
+        , cb
     ], (err) ->
       return cb err if err
       (if setup.verbose then console.log else debug) "finished document creation"
