@@ -243,9 +243,10 @@ exports.run = (setup, cb) ->
         cb()
       (cb) -> # convert to html
         (if setup.verbose then console.log else debug) "create html files..."
-        report = new Report()
         async.eachLimit Object.keys(work.map), setup.parallel, (name, cb) ->
+#        async.eachLimit Object.keys(work.map), 1, (name, cb) ->
           map = work.map[name]
+          report = new Report()
           report.markdown map.md
           report.toFile 'html', map.dest, cb
         , cb
@@ -264,7 +265,7 @@ exports.run = (setup, cb) ->
           ignoreErrors: true
         , cb
       (cb) -> # copy additional resources
-        return unless setup.resources?.include
+        return cb() unless setup.resources?.include
         (if setup.verbose then console.log else debug) "copy additional static files..."
         fs.copy setup.input, setup.output,
           filter: setup.resources
