@@ -110,6 +110,7 @@ exports.setup = util.function.once this, (cb) ->
   , (err) ->
     return cb err if err
     # set module search path
+    config.register 'codedoc', path.dirname __dirname
     config.register 'codedoc', path.dirname(__dirname),
       folder: 'template'
       type: 'template'
@@ -244,7 +245,6 @@ exports.run = (setup, cb) ->
       (cb) -> # convert to html
         (if setup.verbose then console.log else debug) "create html files..."
         async.eachLimit Object.keys(work.map), setup.parallel, (name, cb) ->
-#        async.eachLimit Object.keys(work.map), 1, (name, cb) ->
           map = work.map[name]
           report = new Report()
           report.markdown map.md
