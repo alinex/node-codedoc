@@ -37,6 +37,7 @@ chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
 isBinaryFile = require 'isbinaryfile'
+uslug = require 'uslug'
 # include alinex modules
 util = require 'alinex-util'
 fs = require 'alinex-fs'
@@ -112,10 +113,10 @@ The `work` context contains:
   - `api`
 - `devel`
   - `pages`
-  - `symbols`
+  - `links`
 - `api`
   - `pages`
-  - `symbols`
+  - `links`
 ###
 exports.run = (setup, cb) ->
   # set up system
@@ -175,7 +176,7 @@ find = (work, setup, cb) ->
   , (err, list) ->
     ###########################################################################################################
 #    list = ['/home/alex/github/node-codedoc/README.md']
-#    list = ['/home/alex/github/node-codedoc/src/index.coffee']
+    list = ['/home/alex/github/node-codedoc/src/index.coffee']
     work.files = list.map (e) ->
       source: e
       local: e[setup.input.length..]
@@ -217,6 +218,7 @@ createReport = (file, setup, cb) ->
   .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
   .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
   .trim()
+  return cb() unless api
   file.api = new Report()
   file.api.markdown api
   cb()
@@ -233,7 +235,23 @@ writeFile = (file, setup, cb) ->
   , cb
 
 collectLinks = (file, setup, cb) ->
-  cb()
+  file.links = {}
+  async.each ['api', 'devel'], (type, cb) ->
+    links = file.links[type] = {}
+    heading = null
+    for token in file[type].tokens.data
+      if token.type is 'heading'
+        if token.nesting is 1
+          heading = ''
+        else if token.nesting is -1
+          links[heading] = uslug heading
+          heading = null
+        continue
+      continue unless heading?
+      heading += token.content if token.content
+    cb()
+  , cb
+
 
 # #3 Setup Page Order
 #
