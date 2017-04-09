@@ -1,0 +1,356 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="UTF-8" />
+
+<title>Controller - API Usage</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style type="text/css">div#page{border:1px solid #aaa;-webkit-box-shadow:0 8px 16px 0 rgba(0,0,0,0.4),0 12px 40px 0 rgba(0,0,0,0.4);box-shadow:0 8px 16px 0 rgba(0,0,0,0.4),0 12px 40px 0 rgba(0,0,0,0.4);max-width:800px;display:inline-block;background:#fff;padding:17px;overflow:auto;}div#page > h1{margin-top:0}html{background:#ddd;padding:20px}body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-size:16px;line-height:1.2;-ms-word-break:break-all;word-break:break-all;word-break:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;-ms-hyphens:auto;hyphens:auto;-webkit-hyphenate-before:2;-webkit-hyphenate-after:3;hyphenate-lines:3;word-wrap:break-word}h1,h2,h3,h4,h5,h6{font-weight:bold;}h1:before,h2:before,h3:before,h4:before,h5:before,h6:before{display:block;content:" ";margin-top:-66px;height:66px;visibility:hidden}h1,h2,h3{clear:both}h1{border-bottom:3px solid #222;padding-bottom:5px}h2{border-bottom:2px dotted #222;padding-bottom:3px}h3{border-bottom:2px dotted #aaa;padding-bottom:2px}h4{border-bottom:1px dotted #aaa}a{color:#00008b}dt{font-weight:bold;margin-top:8px}dd{margin-left:20px}svg{max-width:100%}img{max-width:100%;vertical-align:middle}.emoji{height:1em}abbr,acronym{border-bottom:dotted 1px}blockquote{border:1px solid #ddd;border-radius:3px;border-left:5px solid #337ab7;padding:5px 15px;margin:10px 0;}blockquote :first-child{margin-top:5px}blockquote :last-child{margin-bottom:5px}blockquote blockquote{margin-right:-16px;border-left-color:#eb9214;}blockquote blockquote blockquote{border-left-color:#5295cf;}blockquote blockquote blockquote blockquote{border-left-color:#f0ad4e;}blockquote blockquote blockquote blockquote blockquote{border-left-color:#7db0db;}blockquote blockquote blockquote blockquote blockquote blockquote{border-left-color:#f3bd71;}blockquote blockquote blockquote blockquote blockquote blockquote blockquote{border-left-color:#a9cae7}blockquote ul li p{margin-bottom:0}ul > li.task{list-style-type:none}li.taks input.task-checkbox{margin:0 .2em .25em -1.6em;vertical-align:middle}table{border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:keep-all;margin-bottom:10px;}table th,table td{padding:6px 13px;border:1px solid #ddd}table th{background-color:rgba(0,0,0,0.04);font-weight:bold;border-bottom:3px solid #999}table tr{background-color:#fff;border-top:1px solid #ccc;}table tr:nth-child(2n){background-color:rgba(0,0,0,0.04)}a code{color:#337ab7}code,tt{background-color:#eee;border-radius:4px;font-size:85%;margin:0;padding:.2em 0}pre{background-color:#eee;border-radius:10px;border:1px solid #a4a4a4;font-size:85%;margin:20px;padding:10px;}pre code,pre tt{background:none}pre.language{counter-reset:line;padding-top:0;padding-bottom:0;overflow-x:hidden;}pre.language code,pre.language tt{display:block;position:relative;float:left;width:100%;border-left:45px solid #ddd;margin-left:-10px;padding-left:5px;}pre.language code:nth-child(2n),pre.language tt:nth-child(2n){border-left:45px solid #c7c7c7;background-color:#ededed}pre.language code:before,pre.language tt:before{counter-increment:line;content:counter(line);min-width:35px;float:left;text-align:right;padding-right:5px;color:#808080;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin-left:-45px}pre.language code:first-of-type,pre.language tt:first-of-type{padding-top:10px}pre.language code:last-child,pre.language tt:last-child{padding-bottom:10px}ul.table-of-contents{border:2px solid #ddd;border-radius:10px;margin-top:0;padding:10px 10px 10px 25px;background:#fafafa;font-size:90%;float:right;}ul.table-of-contents header{font-weight:bold;font-size:120%;display:block;background:#ddd;margin:-10px -10px 4px -25px;border-top-left-radius:10px;border-top-right-radius:10px;padding:3px 10px}ul.table-of-contents ul{padding-left:15px}ul.table-of-contents a{text-decoration:none}.toplink{float:right;color:#222}.container{padding:0;margin-bottom:10px;}.container:after{content:'';display:table;clear:both}.container input.tab,.container input.tabs-size{display:none}.container input.tab + label{position:relative;z-index:1;display:block;float:left;cursor:pointer;padding:5px 10px;margin-bottom:-1px;border:1px solid #222;border-top-left-radius:10px;border-top-right-radius:10px;background:#ddd;-webkit-transition:all 0.5s;-moz-transition:all 0.5s;-o-transition:all 0.5s;-ms-transition:all 0.5s;transition:all 0.5s;opacity:.5;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);font-weight:bold}.container input.tab + label:hover,.container input.tab:hover + label{opacity:1;-ms-filter:none;filter:none}.container .box{display:none;position:relative;clear:both;border:1px solid #222;border-top-right-radius:10px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;padding:0 15px;-webkit-transition:all 0.5s;-moz-transition:all 0.5s;-o-transition:all 0.5s;-ms-transition:all 0.5s;transition:all 0.5s;overflow:auto;max-height:300px;}.container .box > p{margin-top:10px}.container input.tab:checked + label{cursor:default;border-bottom:1px solid #fff;opacity:1;-ms-filter:none;filter:none}.container .tab1:checked ~ .box1,.container .tab2:checked ~ .box2,.container .tab3:checked ~ .box3,.container .tab4:checked ~ .box4,.container .tab5:checked ~ .box5,.container .tab6:checked ~ .box6,.container .tab7:checked ~ .box7,.container .tab8:checked ~ .box8{display:block}.container .tabs-size + label{cursor:pointer;float:right;padding:5px 5px 0 5px;font-size:80%}.container .tabs-size-min:checked + label,.container .tabs-size-scroll:checked + label,.container .tabs-size-max:checked + label{display:none}.container .tabs-size-min:checked ~ .box{height:0}.container .tabs-size-max:checked ~ .box{max-height:none}@media print{input.tab + label{opacity:1 !important;-ms-filter:none !important;filter:none !important}.tabs-size-min + label,.tabs-size-scroll + label,.tabs-size-max + label{display:none}.box{display:block !important;max-height:none !important;height:auto !important}}.container input.tab + label.detail{background-image:-webkit-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-moz-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-o-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-ms-linear-gradient(top, #fafafa 0%, #999 100%);background-image:linear-gradient(to bottom, #fafafa 0%, #999 100%);border-bottom-color:#999}.container div.detail{background-image:-webkit-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-moz-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-o-linear-gradient(top, #fafafa 0%, #999 100%);background-image:-ms-linear-gradient(top, #fafafa 0%, #999 100%);background-image:linear-gradient(to bottom, #fafafa 0%, #999 100%)}.container input.tab + label.info{background-image:-webkit-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-moz-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-o-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-ms-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:linear-gradient(to bottom, #bedef0 0%, #7cbde1 100%);border-bottom-color:#7cbde1}.container div.info{background-image:-webkit-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-moz-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-o-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:-ms-linear-gradient(top, #bedef0 0%, #7cbde1 100%);background-image:linear-gradient(to bottom, #bedef0 0%, #7cbde1 100%)}.container input.tab + label.ok{background-image:-webkit-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-moz-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-o-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-ms-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:linear-gradient(to bottom, #cfc 0%, #9f9 100%);border-bottom-color:#9f9}.container div.ok{background-image:-webkit-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-moz-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-o-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:-ms-linear-gradient(top, #cfc 0%, #9f9 100%);background-image:linear-gradient(to bottom, #cfc 0%, #9f9 100%)}.container input.tab + label.warning{background-image:-webkit-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-moz-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-o-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-ms-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:linear-gradient(to bottom, #fde6a5 0%, #fbcd4a 100%);border-bottom-color:#fbcd4a}.container div.warning{background-image:-webkit-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-moz-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-o-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:-ms-linear-gradient(top, #fde6a5 0%, #fbcd4a 100%);background-image:linear-gradient(to bottom, #fde6a5 0%, #fbcd4a 100%)}.container input.tab + label.alert{background-image:-webkit-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-moz-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-o-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-ms-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:linear-gradient(to bottom, #f7c4b3 0%, #e86 100%);border-bottom-color:#e86}.container div.alert{background-image:-webkit-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-moz-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-o-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:-ms-linear-gradient(top, #f7c4b3 0%, #e86 100%);background-image:linear-gradient(to bottom, #f7c4b3 0%, #e86 100%)}.container .box.pre{padding:0;}.container .box.pre pre,.container .box.pre table{margin:0;border:0;border-radius:0}.container input.tab + label.coffeescript,.container input.tab + label.javascript,.container input.tab + label.ruby,.container input.tab + label.python,.container input.tab + label.perl,.container input.tab + label.cc,.container input.tab + label.cpp,.container input.tab + label.cs,.container input.tab + label.java,.container input.tab + label.groovy,.container input.tab + label.php,.container input.tab + label.bash,.container input.tab + label.sql,.container input.tab + label.makefile{background-image:-webkit-linear-gradient(top, #f8d6a7 0%, #f0ad4e 100%);background-image:-moz-linear-gradient(top, #f8d6a7 0%, #f0ad4e 100%);background-image:-o-linear-gradient(top, #f8d6a7 0%, #f0ad4e 100%);background-image:-ms-linear-gradient(top, #f8d6a7 0%, #f0ad4e 100%);background-image:linear-gradient(to bottom, #f8d6a7 0%, #f0ad4e 100%);border-bottom-color:#f0ad4e}.container input.tab + label.json,.container input.tab + label.cson,.container input.tab + label.yaml{background-image:-webkit-linear-gradient(top, #93bde1 0%, #337ab7 100%);background-image:-moz-linear-gradient(top, #93bde1 0%, #337ab7 100%);background-image:-o-linear-gradient(top, #93bde1 0%, #337ab7 100%);background-image:-ms-linear-gradient(top, #93bde1 0%, #337ab7 100%);background-image:linear-gradient(to bottom, #93bde1 0%, #337ab7 100%);border-bottom-color:#337ab7}.container input.tab + label.jsp,.container input.tab + label.handlebars,.container input.tab + label.css,.container input.tab + label.stylus,.container input.tab + label.scss,.container input.tab + label.less{background-image:-webkit-linear-gradient(top, #75e5e2 0%, #1d9a96 100%);background-image:-moz-linear-gradient(top, #75e5e2 0%, #1d9a96 100%);background-image:-o-linear-gradient(top, #75e5e2 0%, #1d9a96 100%);background-image:-ms-linear-gradient(top, #75e5e2 0%, #1d9a96 100%);background-image:linear-gradient(to bottom, #75e5e2 0%, #1d9a96 100%);border-bottom-color:#1d9a96}.container input.tab + label.markdown,.container input.tab + label.html{background-image:-webkit-linear-gradient(top, #9bd09b 0%, #459245 100%);background-image:-moz-linear-gradient(top, #9bd09b 0%, #459245 100%);background-image:-o-linear-gradient(top, #9bd09b 0%, #459245 100%);background-image:-ms-linear-gradient(top, #9bd09b 0%, #459245 100%);background-image:linear-gradient(to bottom, #9bd09b 0%, #459245 100%);border-bottom-color:#459245}.text-red{color:#d13f19}.text-green{color:#2ecc40}.text-yellow{color:#ffdc00}.text-blue{color:#0074d9}.text-magenta{color:#f0f}.text-cyan{color:#0ff}.text-gray{color:#aaa}.bg-white{background-color:#fff}.center{text-align:center}.left{float:left}.right{float:right}.spacing{padding:10px}.hidden{display:none}.hljs{display:block;overflow-x:auto;padding:.5em;color:#333;background:#f8f8f8}.hljs-comment,.hljs-quote{color:#998;font-style:italic}.hljs-keyword,.hljs-selector-tag,.hljs-subst{color:#333;font-weight:bold}.hljs-number,.hljs-literal,.hljs-variable,.hljs-template-variable,.hljs-tag .hljs-attr{color:#008080}.hljs-string,.hljs-doctag{color:#d14}.hljs-title,.hljs-section,.hljs-selector-id{color:#900;font-weight:bold}.hljs-subst{font-weight:normal}.hljs-type,.hljs-class .hljs-title{color:#458;font-weight:bold}.hljs-tag,.hljs-name,.hljs-attribute{color:#000080;font-weight:normal}.hljs-regexp,.hljs-link{color:#009926}.hljs-symbol,.hljs-bullet{color:#990073}.hljs-built_in,.hljs-builtin-name{color:#0086b3}.hljs-meta{color:#999;font-weight:bold}.hljs-deletion{background:#fdd}.hljs-addition{background:#dfd}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:bold}</style>
+<meta name="generator" content="alinex-report" />
+</head>
+
+<body><div id="page">
+<h1 id="controller-api-usage">Controller - API Usage</h1>
+<p>This module is used as the base API. If you load the package you will get a reference
+to the exported methods, here. Also the CLI works through this API.</p>
+<p>Based on the defined file filters the input folder is <strong>searched for files</strong> to check
+for documentation. All those files are <strong>read</strong> if not binary. The type or language
+of each file is auto detected to know how to parse it. <strong>Documents</strong> like markdown
+are directly added to as full report.</p>
+<p><strong>Code</strong> will be analyzed and documentation blocks will be identified and <strong>extracted</strong>.
+This contains the document comments, api comments and part of the code.</p>
+<p>JsDoc like <strong>tags</strong> are interpreted and extended by autodetected information from
+code. For the internal view the code will also be added with <strong>syntax highlighting</strong>.
+Alltogethher will go in an report.</p>
+<p>The reports will be <strong>sorted</strong>, some internal tags will be replaced and each report
+will be rendered as html and stored in output folder. An additional <strong>index page</strong> will
+be created if missing.</p>
+<p>#3 Sorting</p>
+<p>The file links are sorted in a natural way. This is from upper to lower directories
+and alphabetically but with some defined orders. This means that “index.*” always
+comes before “README.md” and the other files.</p>
+
+<!-- internal -->
+<h2 id="node-modules">Node Modules</h2>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>
+# include base modules
+debug = require('debug') 'codedoc'
+chalk = require 'chalk'
+path = require 'path'
+async = require 'async'
+isBinaryFile = require 'isbinaryfile'
+# include alinex modules
+util = require 'alinex-util'
+fs = require 'alinex-fs'
+Report = require 'alinex-report'
+config = require 'alinex-config'
+# internal methods
+language = require './helper/language'
+parser = require './helper/parser'
+
+render = require './helper/render'</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<h2 id="setup">Setup</h2>
+<blockquote><p><strong>Usage:</strong> <code>STATIC_FILES</code>
+{.api-usage}</p>
+</blockquote>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # files to copy</code></pre>
+
+<!-- end internal -->
+<h2 id="initialize-module">Initialize Module</h2>
+<p>To use the template search through the {@link alinex-config}
+path module you have to init the template type by calling this method once.</p>
+<p>This will setup the {@link alinex-report} component
+and register the template type to search for templates in the global, user and
+local path like known from the config module.</p>
+<h3 id="setup-1">setup()</h3>
+<blockquote><p><strong>Usage:</strong> <code>setup(cb)</code>
+{.api-usage}</p>
+</blockquote>
+<dl class="api-spec">
+<dt>Parameter</dt>
+<dd><ul>
+<li><code>cb</code> - <code>function(&lt;Error&gt;)</code> method, to call with “Error” or <code>null</code> after done.</li>
+</ul>
+</dd>
+</dl>
+
+<!-- internal -->
+<pre class="language lang.name"><code>exports.setup = util.function.once this, (cb) ->
+  debug chalk.grey "setup codedoc component" if debug.enabled
+  async.each [Report], (mod, cb) ->
+    mod.setup cb
+  , (err) ->
+    return cb err if err
+    # set module search path
+    config.register 'codedoc', path.dirname __dirname
+    config.register 'codedoc', path.dirname(__dirname),
+      folder: 'template'
+      type: 'template'
+    cb()</code></pre>
+
+<!-- end internal -->
+<h2 id="create-documentation">Create Documentation</h2>
+<h3 id="run">run()</h3>
+<p>Like described in the workflow above this is the main routine and will do all the
+steps to make the documentation ready to browse in the local path.</p>
+<blockquote><p><strong>Usage:</strong> <code>run(setup, cb)</code>
+{.api-usage}</p>
+</blockquote>
+<dl class="api-spec">
+<dt>Parameter</dt>
+<dd><ul>
+<li><code>setup</code> - <code>object</code> defining the document creation<ul>
+<li><code>input</code> - <code>String</code> path to read from</li>
+<li><code>òutput</code>- <code>String</code> output directory to store to</li>
+<li><code>find</code> - <code>Object</code> source search pattern<ul>
+<li><code>include</code> - <code>String|RegExp|Array</code> files to include see {@link alinex-fs}</li>
+<li><code>exclude</code> - <code>String|RegExp|Array</code> files to exclude see {@link alinex-fs}</li>
+</ul></li>
+<li><code>verbose</code> - <code>Integer</code> level of verbose mode</li>
+<li><code>parallel</code> - <code>Integer</code> estimated max parallel runs (default is 100 or 1 if in
+debug mode)</li>
+</ul></li>
+<li><code>cb</code> - <code>function(&lt;Error&gt;)</code> function to be called after done</li>
+</ul>
+</dd>
+</dl>
+
+<!-- internal -->
+<pre class="language lang.name"><code>exports.run = (setup, cb) ->
+  # set up system
+  setup.input = path.resolve setup.input ? '.'
+  setup.output = path.resolve setup.output ? '.'
+  setup.find ?= {}
+  setup.find.type = 'file'
+  setup.parallel ?= if debug.enabled then 1 else 100
+  # work context
+  work = {}
+  # run steps
+  async.series [
+    (cb) -> mkdirs work, setup, cb
+    (cb) -> find work, setup, cb</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<p>find resources
+copy resources</p>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>(cb) ->
+  # each file in parallel
+  async.each work.files, (file, cb) ->
+    async.series [
+      (cb) -> loadFile file, setup, cb
+      (cb) -> fileInfo file, setup, cb
+      (cb) -> createDevel file, setup, cb
+      (cb) -> createApi file, setup, cb
+      # collect heading links
+    ], cb
+  , cb</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<p>make page tree
+replace links
+write to file</p>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>  (cb) ->
+    # each file in parallel
+    async.each work.files, (file, cb) ->
+      async.series [
+        (cb) -> writeDevel file, setup, cb
+        (cb) -> writeApi file, setup, cb
+      ], cb
+    , cb
+  # create index
+], (err) ->
+  return cb err if err
+  console.log util.inspect work, {depth: null}
+  cb()</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<h2 id="helper-methods">Helper methods</h2>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>
+mkdirs = (work, setup, cb) ->
+  fs.mkdirs setup.output, cb
+
+find = (work, setup, cb) ->
+  (if setup.verbose then console.log else debug) "search files in #{setup.input}"
+  fs.find setup.input,
+    filter: setup.find
+    dereference: true
+  , (err, list) -></code></pre>
+
+<!-- end internal -->
+<h3 id="list">list</h3>
+<p>list = [’/home/alex/github/node-codedoc/README.md’]</p>
+<blockquote><p><strong>Usage:</strong> <code>list</code>
+{.api-usage}</p>
+</blockquote>
+
+<!-- internal -->
+<pre class="language lang.name"><code>    list = ['/home/alex/github/node-codedoc/src/index.coffee']
+    work.files = list.map (e) ->
+      source: e
+      local: e[setup.input.length..]
+    cb()
+
+loadFile = (file, setup, cb) ->
+  (if setup.verbose > 1 then console.log else debug) "load #{file.source}"
+  fs.readFile file.source, (err, buffer) ->
+    return cb err if err
+    isBinaryFile buffer, buffer.length, (err, binary) ->
+      return cb err if err
+      file.content = if binary then 'BINARY' else buffer.toString 'utf8'
+      cb null, file
+
+fileInfo = (file, setup, cb) ->
+  lang = language file.local, file.content
+  unless lang
+    (if setup.verbose then console.log else debug) \
+      chalk.magenta "could not detect language of #{file.source}"
+    return cb 'UNKNOWN'
+  (if setup.verbose > 2 then console.log else debug) \
+    chalk.grey "#{file.source}: detected as #{lang.name}"
+  file.lang = lang
+  cb()
+
+createDevel = (file, setup, cb) ->
+  if file.lang.name is 'markdown'
+    file.devel = file.content # don't change anything
+  else
+    try
+      file.devel = parser file, setup
+    catch error
+      return cb error
+  cb()
+
+createApi = (file, setup, cb) ->
+  file.api = file.devel
+  .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
+  .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
+  cb()
+
+writeDevel = (file, setup, cb) ->
+  report = new Report()
+  report.markdown file.devel
+  console.log "#{setup.out}/develop#{file.local}.html"
+  report.toFile 'html', "#{setup.out}/develop#{file.local}.html", cb
+
+writeApi = (file, setup, cb) ->
+  report = new Report()
+  report.markdown file.api
+  report.toFile 'html', "#{setup.out}/api#{file.local}.html", cb</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<p>#3 Setup Page Order</p>
+<p>This is done by patterns in the first and last listing. All undefined will be
+between them in ordered list.</p>
+<blockquote><p><strong>Usage:</strong> <code>orderFirst</code>
+{.api-usage}</p>
+</blockquote>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>orderFirst = [
+  # documentation
+  'readme'
+  'readme.*'
+  '/man'
+  'index.md'
+  '*.md'
+  '/doc'
+  # main scripts
+  'index.*'
+  '/src'
+]
+orderLast = [
+  '/bin'
+  '/lib'
+  '/var'
+  # helper data
+  '.travis.yml'
+  # changelog
+  'changelog'
+  'changelog.*'
+]</code></pre>
+
+<!-- end internal -->
+
+<!-- internal -->
+<h3 id="sortmap">sortMap()</h3>
+<p>Sorting the page map is done by generating sort strings for each page from the
+order in the lists above, the file depth and file name. The keys will be sorted
+and a new object is generated in this sort order.</p>
+<blockquote><p><strong>Usage:</strong> <code>sortMap(map)</code>
+{.api-usage}</p>
+</blockquote>
+<dl class="api-spec">
+<dt>Parameter</dt>
+<dd><ul>
+<li><code>map</code> - <code>Object</code> map of pages<ul>
+<li><code>parts</code> - <code>Array&lt;String&gt;</code> is used to calculate the order</li>
+</ul></li>
+</ul>
+</dd>
+<dt>Return</dt>
+<dd><code>Object</code> the sorted map of pages</dd>
+</dl>
+
+<!-- end internal -->
+
+<!-- internal -->
+<pre class="language lang.name"><code>sortMap = (map) ->
+  list = Object.keys(map).map (e) ->
+    parts = map[e].parts[..-2].map (p) -> "/#{p}"
+    parts.push map[e].parts[map[e].parts.length-1]
+    sortnum = parts.map (p) ->
+      check = [p]
+      if ~p.indexOf '.'
+        check.push "*#{path.extname p}"
+        check.push "#{path.basename p, path.extname p}.*"
+      for v, i in orderLast
+        continue unless v in check
+        return util.string.lpad(51 + i, 2, '0') + util.string.rpad(p, 10, '_')
+      for v, i in orderFirst
+        continue unless v in check
+        return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
+      50 + util.string.rpad(p, 10, '_')
+    .join ''
+    "#{sortnum} => #{e}"
+  list.sort()
+  list = list.map (e) -> e.split(/ => /)[1]
+  sorted = {}
+  sorted[k] = map[k] for k in list
+  sorted
+```<!-- {pre:style="counter-reset:line 265"} -->
+<!-- end internal --></code></pre>
+</div></body>
+</html>

@@ -326,7 +326,6 @@ languages =
     api: [HASH_API]
   markdown:
     extensions: [ 'md', 'mkd', 'markdown' ]
-    type: 'markdown'
     tags:
       searchtype: 'nodejs'
   scss:

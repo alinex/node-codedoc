@@ -18,8 +18,6 @@ Report = require 'alinex-report'
 # include classes and helpers
 codedoc = require './index'
 
-SegfaultHandler = require 'segfault-handler'
-SegfaultHandler.registerHandler "crash.log"
 
 # Setup
 # -------------------------------------------------
@@ -73,19 +71,20 @@ readExcludes = (dir, cb) ->
 readResources = (dir, cb) ->
   dir = path.resolve dir
   file = "#{dir}/.docresource"
-  fs.exists file, (exists) ->
-    return cb() unless exists
-    fs.readFile file, 'utf8', (err, res) ->
-      if err
+  fs.readFile file, 'utf8', (err, res) ->
+    if err
+      if err.code isnt 'ENOENT'
+        console.log err.code
         console.error chalk.magenta "Could not read #{file} for resources"
-        return cb()
-      list = res.split /\s*\n\s*/
-      .filter (e) -> e.trim().length
-      .map (e) ->
-        e.replace /^\//, "^"
-        .replace /\./, '\\.'
-        .replace /\*+/, '.*'
-      cb null, new RegExp list.join '|'
+      return cb()
+    list = res.split /\s*\n\s*/
+    .filter (e) -> e.trim().length
+    .map (e) ->
+      e.replace /^\//, "^"
+      .replace /\./, '\\.'
+      .replace /\*+/, '.*'
+    cb null, new RegExp list.join '|'
+
 
 # Main routine
 # -------------------------------------------------

@@ -21,7 +21,6 @@ uslug = require 'uslug'
 # include alinex modules
 util = require 'alinex-util'
 fs = require 'alinex-fs'
-Report = require 'alinex-report'
 # internal methods
 language = require './language'
 
@@ -47,88 +46,62 @@ tagAlias =
 # External Methods
 # ================================================
 
-# Parse a single file and get it's documentation as report back.
-#
-# @param {String} file absolute path of file to analyze
-# @param {String} local local path, absolute from input directory
-# @param {Object} setup setup configuration from {@link run} method
-# @param {Object<Array>} symbol map to fill with code symbols as `[file, anchor]` to
-# resolve links later
-# @param {function(<Error>, <Report>)} cb callback which is called with error or `Report` instance
-exports.file = (file, local, setup, symbols, cb) ->
-  async.waterfall [
-    # get file
-    (cb) ->
-      (if setup.verbose > 1 then console.log else debug) "analyze #{file}"
-      fs.readFile file, (err, buffer) ->
-        return cb err if err
-        isBinaryFile buffer, buffer.length, (err, binary) ->
-          return cb err ? 'BINARY' if err or binary
-          cb null, buffer.toString 'utf8'
-    # analyze language
-    (content, cb) ->
-      lang = language file, content
-      unless lang
-        (if setup.verbose then console.log else debug) \
-          chalk.magenta "could not detect language of #{file}"
-        return cb 'UNKNOWN'
-      (if setup.verbose > 2 then console.log else debug) \
-        chalk.grey "#{file}: detected as #{lang.name}"
-      cb null, content, lang
-    # create report
-    (content, lang, cb) ->
-      report = new Report()
-      if lang.name is 'markdown'
-        report.markdown content
-      else
-        # extract docs
-        try
-          docs = extractDocs file, content, setup, lang, symbols
-        catch error
-          if debug.enabled
-            debug chalk.magenta "Could not parse documentation at #{file}: \
-            #{chalk.grey error.message + error.stack}"
-          return cb new Error "Could not parse documentation at #{file}: \
-          #{chalk.grey error.message}"
-        # create report for undocumented code
-        unless docs.length
-          return cb 'CODE_DISABLED' unless setup.code
-          report.h1 "File: #{path.basename local}"
-          report.quote "Path: #{local}"
-          report.code stripIndent(content, lang.tab), lang.name
-          report.style 'pre:style="max-height:none"'
-          return cb null, report, lang
-        # create report out of docs
-        pos = 0
-        for doc in docs
-          if pos < doc[0] and setup.code
-            # code block before doc
-            if code = content[pos..doc[0]].replace /\s+$/, ''
-              report.code stripIndent(code, lang.tab), lang.name
-              if pos # set correct line number
-                line = content[0..pos].split('\n').length - 1
-                report.style "pre:style=\"counter-reset:line #{line}\""
-          # add doc block
-          md = doc[2].replace /\n\s*?$/, ''
-          report.markdown "\n#{md}\n\n"
-          pos = doc[1]
-        if pos < content.length and setup.code
-          # last code block
-          if code = content[pos..].replace /\s+$/, ''
-            report.code stripIndent(code, lang.tab), lang.name
-            if pos # set correct line number
-              line = content[0..pos].split('\n').length - 1
-              report.style "pre:style=\"counter-reset:line #{line}\""
-        # optimize report by adding path with compiled path
-        source = "`#{local}`"
-        if match = local.match /^\/src(\/.*)\.coffee$/
-          source += " compiled to `/lib#{match[1]}.js`"
-        report.top()
-        report.next {type: 'heading', nesting: -1}
-        report.next()
-        report.quote "Path: #{source}"
-      cb null, report, lang
-  ], cb
+module.exports = (file, setup) ->
+  content = file.content
+  lang = file.lang
+  # extract docs
+  try
+    docs = extractDocs file.source, content, setup, lang
+  catch error
+    if debug.enabled
+      debug chalk.magenta "Could not parse documentation at #{file.source}: \
+      #{chalk.grey error.stack}"
+    throw new Error "Could not parse documentation at #{file.source}: \
+    #{chalk.grey error.message}"
+  # create report for undocumented code
+  unless docs.length
+    return """
+      # File: #{path.basename file.local}
+
+      > Path: #{file.local}
+
+      ``` #{lang.name}
+      #{stripIndent(content, lang.tab)}-
+      ```
+      """
+  # create out of api docs
+  report = ''
+  pos = 0
+  for doc in docs
+    if pos < doc[0]
+      # code block before doc
+      if code = content[pos..doc[0]].replace /\s+$/, ''
+        report += """
+          <!-- internal -->
+          ``` #{lang.name}
+          #{stripIndent(code, lang.tab)}
+          ```
+          <!-- end internal -->
+
+          """
+    # add doc block
+    report += "\n#{doc[2].replace /\n\s*?$/, ''}\n"
+    pos = doc[1]
+  if pos < content.length
+    # last code block
+    if code = content[pos..].replace /\s+$/, ''
+      report += """
+        <!-- internal -->
+        ``` #{lang.name}
+        #{stripIndent(code, lang.tab)}
+        ```
+        """
+      if pos # set correct line number
+        line = content[0..pos].split('\n').length - 1
+        report += "<!-- {pre:style=\"counter-reset:line #{line}\"} -->"
+      report +=  "\n<!-- end internal -->\n"
+  # return resulting doc
+  report
 
 
 # Helper methods
@@ -145,6 +118,7 @@ exports.file = (file, local, setup, symbols, cb) ->
 # - `1` - `Integer` character position from end of extraction
 # - `2` - `String` extracted text
 # - `3` - `String` following code line
+# - `4` - `Boolean` developer documentation only
 extractDocs = (file, content, setup, lang, symbols) ->
   # document comments extraction
   docs = []
@@ -159,11 +133,11 @@ extractDocs = (file, content, setup, lang, symbols) ->
         end = match.index + match[0].length
         cend = content.indexOf '\n', end
         code = if cend > 0 then content[end..cend] else content[end..]
-        docs.push [match.index, end, "\n#{match[1]}\n", code.trim()]
+        docs.push [match.index, end, "\n#{match[1]}\n", code.trim(), false]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments"
   # internal comments extraction
-  if lang.api and setup.code
+  if lang.api
     for [re, fn] in lang.api
       other = content
       for doc in docs
@@ -174,7 +148,7 @@ extractDocs = (file, content, setup, lang, symbols) ->
         end = match.index + match[0].length
         cend = content.indexOf '\n', end
         code = if cend > 0 then content[end..cend] else content[end..]
-        docs.push [match.index, end, "\n#{match[1]}\n", code.trim()]
+        docs.push [match.index, end, "\n#{match[1]}\n", code.trim(), true]
     (if setup.verbose > 2 then console.log else debug) \
       chalk.grey "#{file}: #{docs.length} doc comments (with internal)"
   # interpret tags
@@ -276,8 +250,8 @@ tags = (doc, lang, setup, file, symbols) ->
     for e in spec.name
       title = e.trim()
   # register in symbol table
-  if title
-    symbols[title] = [ file, uslug title ]
+#  if title
+#    symbols[title] = [ file, uslug title ]
   # deprecation warning
   if spec.deprecated
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
@@ -345,7 +319,7 @@ tags = (doc, lang, setup, file, symbols) ->
     if title and not check.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
       md = "### #{title}\n#{md}"
     # store changes
-    doc[2] = md
+    doc[2] = if doc[4] then "<!-- internal -->\n#{md}\n<!-- end internal -->" else md
   catch error
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"
