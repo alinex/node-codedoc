@@ -109,8 +109,14 @@ The `work` context contains:
   - `local` - local path (from given directory)
   - `content` - source content
   - `lang` - language settings
-  - `devel`
-  - `api`
+  - `devel` - report
+  - `api` - report
+  - `title`
+    - `devel`
+    - `api`
+  - `links`
+    - `devel`
+    - `api`
 - `devel`
   - `pages`
   - `links`
@@ -253,18 +259,20 @@ analyzePage = (file, setup, cb) ->
 
 summarize = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "create complete index..."
-  work.devel =
-    links: {}
-    pages: []
-  work.api =
-    links: {}
-    pages: []
-  for file in work.files
-    for type in ['api', 'devel']
+  for type in ['api', 'devel']
+    work[type] =
+      links: {}
+      pages: []
+    for file in work.files
+      # get links
+      for n, l of file.links[type]
+        work[type].links[n] = [file.local, l]
+      # get pages
       work[type].pages.push
         parts: file.local[1..].toLowerCase().split /\//
         title: file.title[type]
-  console.log work.api
+    # sort pages
+    work[type].pages = sortPages work[type].pages
   cb()
 
 
@@ -299,13 +307,14 @@ orderLast = [
 # order in the lists above, the file depth and file name. The keys will be sorted
 # and a new object is generated in this sort order.
 #
-# @param {Object} map map of pages
+# @param {Array} list of pages
 # - `parts` - `Array<String>` is used to calculate the order
 # @return {Object} the sorted map of pages
-sortMap = (map) ->
-  list = Object.keys(map).map (e) ->
-    parts = map[e].parts[..-2].map (p) -> "/#{p}"
-    parts.push map[e].parts[map[e].parts.length-1]
+sortPages = (list) ->
+  num = 0
+  names = list.map (e) ->
+    parts = e.parts[..-2].map (p) -> "/#{p}"
+    parts.push e.parts[e.parts.length-1]
     sortnum = parts.map (p) ->
       check = [p]
       if ~p.indexOf '.'
@@ -319,9 +328,6 @@ sortMap = (map) ->
         return util.string.lpad(i, 2, '0') + util.string.rpad(p, 10, '_')
       50 + util.string.rpad(p, 10, '_')
     .join ''
-    "#{sortnum} => #{e}"
-  list.sort()
-  list = list.map (e) -> e.split(/ => /)[1]
-  sorted = {}
-  sorted[k] = map[k] for k in list
-  sorted
+    "#{sortnum} => #{num++}"
+  names.sort()
+  names.map (e) -> list[e.split(/ => /)[1]]
