@@ -38,11 +38,13 @@ path = require 'path'
 async = require 'async'
 isBinaryFile = require 'isbinaryfile'
 uslug = require 'uslug'
+handlebars = require 'handlebars'
 # include alinex modules
 util = require 'alinex-util'
 fs = require 'alinex-fs'
 Report = require 'alinex-report'
 config = require 'alinex-config'
+require('alinex-handlebars').register handlebars
 # internal methods
 language = require './helper/language'
 parser = require './helper/parser'
@@ -152,16 +154,14 @@ exports.run = (setup, cb) ->
           return cb() if err and typeof err is 'string'
           cb err
       , cb
-    # make page tree
     (cb) -> summarize work, setup, cb
     # replace links
-    # write to file
     (cb) ->
       # each file in parallel
       (if setup.verbose > 1 then console.log else debug) "write docs..."
       async.each work.files, (file, cb) ->
         async.series [
-          (cb) -> writeFile file, setup, cb
+          (cb) -> writeFile work, file, setup, cb
         ], cb
       , cb
     # create index
@@ -231,16 +231,6 @@ createReport = (file, setup, cb) ->
   file.api.markdown api
   cb()
 
-writeFile = (file, setup, cb) ->
-  async.each ['devel', 'api'], (type, cb) ->
-    async.each ['html', 'md'], (format, cb) ->
-      return cb() unless file[type]
-      debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
-      file[type].toFile format,
-      "#{setup.output}/#{format}/#{type}#{file.local}.#{format}", cb
-    , cb
-  , cb
-
 analyzePage = (file, setup, cb) ->
   file.links = {}
   file.title = {}
@@ -274,6 +264,23 @@ summarize = (work, setup, cb) ->
     # sort pages
     work[type].pages = sortPages work[type].pages
   cb()
+
+writeFile = (work, file, setup, cb) ->
+  async.each ['devel', 'api'], (type, cb) ->
+    async.each ['html', 'md'], (format, cb) ->
+      return cb() unless file[type]
+      debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
+      file[type].format format, (err, data) ->
+        if format is 'html'
+          # replace template variables
+          data = handlebars.compile(data)
+            test: 'alex'
+            pages: work[type].pages
+        # write file
+        fs.writeFile "#{setup.output}/#{format}/#{type}#{file.local}.#{format}",
+          data, 'utf8', cb
+    , cb
+  , cb
 
 
 # #3 Setup Page Order
