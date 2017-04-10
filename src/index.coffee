@@ -37,7 +37,6 @@ chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
 isBinaryFile = require 'isbinaryfile'
-uslug = require 'uslug'
 handlebars = require 'handlebars'
 # include alinex modules
 util = require 'alinex-util'
@@ -259,6 +258,7 @@ summarize = (work, setup, cb) ->
         work[type].links[n] = [file.local, l]
       # get pages
       work[type].pages.push
+        local: file.local
         parts: file.local[1..].toLowerCase().split /\//
         title: file.title[type]
     # sort pages
@@ -272,10 +272,21 @@ writeFile = (work, file, setup, cb) ->
       debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].format format, (err, data) ->
         if format is 'html'
+          pages = work[type].pages.map (e) ->
+            depth = e.parts.length - 1
+            depth-- if path.basename(e.local, path.extname e.local) is 'index'
+            depth = 0 if depth < 0
+            # result
+            depth: depth
+            title: e.title
+            path: e.local
+            link: e.title.replace /^.*?[-:]\s+/, ''
+            url: "#{path.relative path.dirname(file.local), e.local}.html"
+            active: e.local is file.local
           # replace template variables
           data = handlebars.compile(data)
             test: 'alex'
-            pages: work[type].pages
+            pages: pages
         # write file
         fs.writeFile "#{setup.output}/#{format}/#{type}#{file.local}.#{format}",
           data, 'utf8', cb
