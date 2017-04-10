@@ -135,21 +135,24 @@ exports.run = (setup, cb) ->
     # copy resources
     (cb) ->
       # each file in parallel
+      (if setup.verbose > 1 then console.log else debug) "load file docs..."
       async.each work.files, (file, cb) ->
         async.series [
           (cb) -> loadFile file, setup, cb
           (cb) -> fileInfo file, setup, cb
           (cb) -> createReport file, setup, cb
-          (cb) -> collectLinks file, setup, cb
+          (cb) -> analyzePage file, setup, cb
         ], (err) ->
           return cb() if err and typeof err is 'string'
           cb err
       , cb
     # make page tree
+    (cb) -> summarize work, setup, cb
     # replace links
     # write to file
     (cb) ->
       # each file in parallel
+      (if setup.verbose > 1 then console.log else debug) "write docs..."
       async.each work.files, (file, cb) ->
         async.series [
           (cb) -> writeFile file, setup, cb
@@ -169,7 +172,7 @@ mkdirs = (work, setup, cb) ->
   fs.mkdirs setup.output, cb
 
 find = (work, setup, cb) ->
-  (if setup.verbose then console.log else debug) "search files in #{setup.input}"
+  (if setup.verbose then console.log else debug) "search files in #{setup.input}..."
   fs.find setup.input,
     filter: setup.find
     dereference: true
@@ -183,7 +186,7 @@ find = (work, setup, cb) ->
     cb()
 
 loadFile = (file, setup, cb) ->
-  (if setup.verbose > 1 then console.log else debug) "load #{file.source}"
+  debug chalk.grey "load #{file.source}"
   fs.readFile file.source, (err, buffer) ->
     return cb err if err
     isBinaryFile buffer, buffer.length, (err, binary) ->
@@ -197,8 +200,7 @@ fileInfo = (file, setup, cb) ->
     (if setup.verbose then console.log else debug) \
       chalk.magenta "could not detect language of #{file.local}"
     return cb 'UNKNOWN'
-  (if setup.verbose > 2 then console.log else debug) \
-    chalk.grey "#{file.source}: detected as #{lang.name}"
+  debug chalk.grey "#{file.source}: detected as #{lang.name}"
   file.lang = lang
   cb()
 
@@ -207,7 +209,7 @@ createReport = (file, setup, cb) ->
     devel = file.content # don't change anything
   else
     try
-      (if setup.verbose then console.log else debug) "convert #{file.local} to markdoen"
+      debug chalk.grey "convert #{file.local} to markdown"
       devel = parser file, setup
     catch error
       return cb error
@@ -227,30 +229,43 @@ writeFile = (file, setup, cb) ->
   async.each ['devel', 'api'], (type, cb) ->
     async.each ['html', 'md'], (format, cb) ->
       return cb() unless file[type]
-      (if setup.verbose then console.log else debug) "write #{setup.output}\
-      /#{format}/#{type}#{file.local}.#{format}"
+      debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].toFile format,
       "#{setup.output}/#{format}/#{type}#{file.local}.#{format}", cb
     , cb
   , cb
 
-collectLinks = (file, setup, cb) ->
+analyzePage = (file, setup, cb) ->
   file.links = {}
+  file.title = {}
   async.each ['api', 'devel'], (type, cb) ->
-    links = file.links[type] = {}
-    heading = null
-    for token in file[type].tokens.data
-      if token.type is 'heading'
-        if token.nesting is 1
-          heading = ''
-        else if token.nesting is -1
-          links[heading] = uslug heading
-          heading = null
-        continue
-      continue unless heading?
-      heading += token.content if token.content
-    cb()
+    return cb() unless file[type]
+    # convert to html and get title + links
+    file[type].format 'html', (err) ->
+      return cb err if err
+      document = file[type].formatter.html.tokens.data[0]
+      file.title[type] = document.title
+      file.links[type] = {}
+      for link, e of document.heading
+        file.links[type][e.title] = link
+      cb()
   , cb
+
+summarize = (work, setup, cb) ->
+  (if setup.verbose then console.log else debug) "create complete index..."
+  work.devel =
+    links: {}
+    pages: []
+  work.api =
+    links: {}
+    pages: []
+  for file in work.files
+    for type in ['api', 'devel']
+      work[type].pages.push
+        parts: file.local[1..].toLowerCase().split /\//
+        title: file.title[type]
+  console.log work.api
+  cb()
 
 
 # #3 Setup Page Order
