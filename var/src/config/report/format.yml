@@ -85,7 +85,18 @@ html:
         <div class="row">
 
           <div class="col-sm-9 col-sm-push-3 main">
-            {{include codedoc-search-result}}
+            <script>
+              (function() {
+                var cx = '010539487162786288372:chxqbheanxc';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+              })();
+            </script>
+            <gcse:searchresults-only></gcse:searchresults-only>
             <main>
   body_end: |+
             </main>

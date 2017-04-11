@@ -3,5 +3,266 @@
 * ===============================================================
 */
 
+// import nib snap-in for more browser compatibility
+@import 'nib'
+
+
+/*
+* Variable setup
+* ---------------------------------------------------------
+*/
+// layout
+$topnav-height = 51px
+$min-width = 300px
+// colors
+$color-background = #ddd
+$color-orange = #f0ad4e
+$color-blue = #337ab7
+
+/*
+* Page Layout
+* --------------------------------------------------------------
+*/
+#topnav
+  text-align: center
+  background: #333
+  padding-bottom: 20px
+  position: fixed
+  margin-top: 0px
+  width: 100%
+  bottom: 0
+  top: $topnav-height
+  .navbar-nav
+    margin: 0
+    margin-top: 8px
+    display: inline-flex
+  .sidebar-to-top
+    .btn
+      text-align: left
+    li
+      &.level2>a
+        margin-left: 20px
+      &.level3>a
+        margin-left: 40px
+      &.level4>a
+        margin-left: 60px
+      &.level5>a
+        margin-left: 80px
+      &.level6>a
+        margin-left: 100px
+.navbar-fixed-top .navbar-collapse
+  max-height: 100%
+.navbar
+  min-width: $min-width
+.nav>li
+  padding: 2px 12px
+.navbar-inverse
+  .nav>li>a
+    color: black
+    font-weight: bold
+    padding-top: 6px
+    padding-bottom: 6px
+    &:focus
+    &:hover
+      gradient: lighten($color-blue, 15)
+    &.btn-warning
+      &:focus
+      &:hover
+        gradient: darken($color-orange, 15)
+.navbar-spacer
+  height: $topnav-height
+.btn-warning
+.btn-primary
+  click-shrink()
+.btn-warning
+  gradient: $color-orange
+.btn-primary
+  gradient: $color-blue
+
+.sidebar .nav
+  display: none
+  list-style: disc
+  padding-left: 25px
+  &>li
+    display: list-item
+    &>a
+      color: black
+      click-shadow()
+      &:hover
+        gradient: $color-blue
+        color: white
+    &.header
+    &.active
+      display: none
+    &.active>a
+      gradient: lighten($color-blue, 15)
+      &:hover
+        gradient: $color-blue
+        color: white
+    &.header>a
+      font-weight: bold
+      gradient: $color-orange
+      &:hover
+        gradient: darken($color-orange, 15)
+        color: white
+    &.level2>a
+      padding-left: 30px
+    &.level3>a
+      padding-left: 50px
+    &.level4>a
+      padding-left: 70px
+    &.level5>a
+    &.level6>a
+      padding-left: 90px
+.navbar-inverse
+  .navbar-toggle
+    background-color: #444
+    &:hover
+      background-color: #666
+
+@media (min-width: 768px)
+  #topnav
+    position: inherit
+    .nav>li
+      padding: 0 4px
+    .sidebar-to-top
+      display: none
+    background: #222
+    padding-bottom: 0
+  .navbar-right
+    margin-right: 0px
+  .navbar-nav
+    >li>a
+      padding: 6px 10px
+  .sidebar
+    overflow: auto
+    position: fixed
+    top: $topnav-height
+    left: 0
+    bottom: 0
+    background: #ddd
+    padding: 0
+    h1, h2
+      display: none
+    .nav
+      display: block
+      list-style: none
+      padding-left: 0
+      &>li
+        padding: 0
+        &.header
+        &.active
+          display: block
+          &.level2>a:before
+          &.level3>a:before
+          &.level4>a:before
+          &.level5>a:before
+          &.level6>a:before
+            content: "•"
+        &>a
+          padding-top: 8px
+          padding-bottom: 8px
+        &.level2>a:before
+        &.level3>a:before
+        &.level4>a:before
+        &.level5>a:before
+        &.level6>a:before
+          content: "◦"
+          font-size: 150%
+          line-height: 10%
+          font-weight: bold
+          padding-right: 5px
+          display: block
+          float: left
+          margin-top: 8px
+          margin-left: -15px
+          color: #666
+
 .preload
   display: none
+
+/*
+* Format for Tags
+* --------------------------------------------------------------
+*/
+
+body
+  min-width: $min-width
+
+/*
+* Table of Contents
+* --------------------------------------------------------------
+*/
+ul.table-of-contents
+  max-width: 100px
+  max-height: 30px
+  overflow: hidden
+  position: fixed
+  top: $topnav-height
+  right: 0px
+  background: #ddd
+  padding: 5px 15px
+  transition: max-width 100ms ease 1.2s, max-height 1s ease 200ms
+  border-left: 2px solid #999
+  border-bottom: 2px solid #999
+  border-bottom-left-radius: 10px
+  list-style-type: none
+  white-space: nowrap
+  z-index: 100
+  &:hover
+    max-width: 285px
+    max-height: 248px
+    transition: max-width 100ms ease, max-height 1s ease 100ms
+    overflow-y: auto
+  header
+    background: #999
+    font-weight: bold
+    margin: -5px -15px
+    padding: 5px 15px
+  &>li
+    padding-bottom: 2px
+    padding-right: 8px
+    &:first-of-type
+      padding-top: 10px
+  a
+    color: black
+  li.sidebar
+    display: list-item
+  .toplink
+    float: right
+    color: black
+@media (min-width: 768px)
+  ul.table-of-contents
+    li.sidebar
+      display: none
+
+/*
+* Search Form
+* --------------------------------------------------------------
+*/
+.cse .gsc-control-cse, .gsc-control-cse
+  padding: 0px !important
+  table
+    tr, th, td
+      border: 0
+  .gsc-cursor-current-page
+    color: white !important
+  .gsc-webResult.gsc-result:hover, .gsc-imageResult:hover
+    border-left: 5px solid $color-blue
+    padding-left: 3px
+  .gcsc-branding
+    display: none !important
+.gsc-adBlock
+  display: none !important
+.gsc-above-wrapper-area-container
+.gsc-above-wrapper-area
+  display: none
+div::before
+  display: none !important
+
+
+
+@media (max-width: 767px)
+  .hidden-small {display: none}
+@media (min-width: 768px)
+  .hidden-large {display: none}
