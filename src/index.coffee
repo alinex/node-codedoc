@@ -184,7 +184,7 @@ find = (work, setup, cb) ->
   , (err, list) ->
     ###########################################################################################################
 #    list = ['/home/alex/github/node-codedoc/README.md']
-    list = ['/home/alex/github/node-codedoc/src/index.coffee']
+#    list = ['/home/alex/github/node-codedoc/src/index.coffee']
     work.files = list.map (e) ->
       source: e
       local: e[setup.input.length..]
@@ -253,6 +253,7 @@ summarize = (work, setup, cb) ->
       links: {}
       pages: []
     for file in work.files
+      continue unless file[type]
       # get links
       for n, l of file.links[type]
         work[type].links[n] = [file.local, l]
@@ -267,6 +268,7 @@ summarize = (work, setup, cb) ->
 
 writeFile = (work, file, setup, cb) ->
   async.each ['devel', 'api'], (type, cb) ->
+    return cb() unless file[type]
     async.each ['html', 'md'], (format, cb) ->
       return cb() unless file[type]
       debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
@@ -285,11 +287,14 @@ writeFile = (work, file, setup, cb) ->
             active: e.local is file.local
           # replace template variables
           data = handlebars.compile(data)
-            test: 'alex'
+            moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
         # write file
-        fs.writeFile "#{setup.output}/#{format}/#{type}#{file.local}.#{format}",
-          data, 'utf8', cb
+        dest = "#{setup.output}/#{format}/#{type}#{file.local}.#{format}"
+        fs.mkdirs path.dirname(dest), (err) ->
+          return cb err if err
+          fs.writeFile dest,
+            data, 'utf8', cb
     , cb
   , cb
 
