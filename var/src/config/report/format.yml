@@ -98,8 +98,10 @@ html:
             </script>
             <gcse:searchresults-only></gcse:searchresults-only>
             <main>
+            <!-- START CONTENT -->
   body_end: |+
-            </main>
+            <!-- END CONTENT -->
+            </main>
           </div>
           <div class="col-sm-3 col-cm-pull-9 sidebar">
             <ul class="nav nav-sidebar">
@@ -131,7 +133,7 @@ html:
       //--></script>
     </body>
   style:
-#    - MODE ARRAY_REPLACE
+    - MODE ARRAY_REPLACE
     - https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css
     - https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
     #  included inline in the moment

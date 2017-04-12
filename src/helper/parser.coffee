@@ -14,15 +14,9 @@
 # ------------------------------------------------
 debug = require('debug') 'codedoc:parse'
 chalk = require 'chalk'
-async = require 'async'
 path = require 'path'
-isBinaryFile = require 'isbinaryfile'
-uslug = require 'uslug'
 # include alinex modules
 util = require 'alinex-util'
-fs = require 'alinex-fs'
-# internal methods
-language = require './language'
 
 
 # Setup
@@ -102,6 +96,7 @@ module.exports = (file, setup) ->
       report +=  "\n<!-- end internal -->\n"
   # return resulting doc
   report
+  .replace /\n#3 /g, '\n### ' # replace special syntax for coffee files
 
 
 # Helper methods
@@ -186,9 +181,7 @@ stripIndent = (code, tab) ->
 # @param {Object} lang language definition structure from {@link language.coffe#exports}
 # @param {Object} setup setup configuration from {@link run()} method
 # @param {String} file file name used for relative link creation
-# @param {Object<Array>} symbol map to fill with code symbols as `[file, anchor]` to
-# resolve links later
-tags = (doc, lang, setup, file, symbols) ->
+tags = (doc, lang, setup, file) ->
   return unless lang
   md = stripIndent doc[2]
   code = doc[3]
@@ -249,9 +242,6 @@ tags = (doc, lang, setup, file, symbols) ->
   if spec.name
     for e in spec.name
       title = e.trim()
-  # register in symbol table
-#  if title
-#    symbols[title] = [ file, uslug title ]
   # deprecation warning
   if spec.deprecated
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"

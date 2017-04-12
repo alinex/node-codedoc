@@ -185,6 +185,7 @@ find = (work, setup, cb) ->
     ###########################################################################################################
 #    list = ['/home/alex/github/node-codedoc/README.md']
 #    list = ['/home/alex/github/node-codedoc/src/index.coffee']
+#    list = ['/home/alex/github/node-codedoc/src/helper/parser.coffee']
     work.files = list.map (e) ->
       source: e
       local: e[setup.input.length..]
@@ -222,7 +223,17 @@ createReport = (file, setup, cb) ->
   file.devel.markdown devel
   # create api doc
   api = devel
-  .replace /<!--\s*internal\s*-->[\s\S]*?<!--\s*end internal\s*-->/ig, ''
+  .replace ///
+    <!--\s*internal\s*-->
+    (?:           # alternative content
+      [\s\S]*?    # anything
+    |
+      (`{3,})     # 1: markdown code block
+      [\s\S]*?    # content
+      \1          # end code block
+    )
+    <!--\s*end internal\s*-->
+    ///ig, ''
   .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
   .trim()
   return cb() unless api
@@ -286,9 +297,14 @@ writeFile = (work, file, setup, cb) ->
             url: "#{path.relative path.dirname(file.local), e.local}.html"
             active: e.local is file.local
           # replace template variables
-          data = handlebars.compile(data)
+          match = data.match /^([\s\S]*?)(<!-- START CONTENT -->[\s\S]*<!-- END CONTENT -->)([\s\S]*)$/
+          match[1] = handlebars.compile(match[1])
             moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
+          match[3] = handlebars.compile(match[3])
+            moduleName: pages[0].title.replace /\s*[-:].*/, ''
+            pages: pages
+          data = match[1..3].join ''
         # write file
         dest = "#{setup.output}/#{format}/#{type}#{file.local}.#{format}"
         fs.mkdirs path.dirname(dest), (err) ->

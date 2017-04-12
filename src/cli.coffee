@@ -173,22 +173,20 @@ codedoc.setup (err) ->
   readExcludes argv.input, (err, list) ->
     alinex.exit err if err
     readResources argv.input, (err, res) ->
-      config.init (err) ->
+      Report.init (err) ->
         alinex.exit err if err
-        Report.init (err) ->
-          alinex.exit err if err
-          console.log "Output to #{argv.output}..."
-          codedoc.run
-            input: argv.input
-            find:
-              exclude: list
-            resources:
-              include: res
-            output: argv.output
-            style: argv.style
-            code: argv.code
-            parallel: argv.parallel
-            verbose: argv.verbose
-          , (err) ->
-            console.log 'Everything done.'
-            alinex.exit err
+        console.log "Output to #{argv.output}..."
+        codedoc.run
+          input: argv.input
+          find:
+            exclude: list
+          resources:
+            include: res
+          output: argv.output
+          style: argv.style
+          code: argv.code
+          parallel: argv.parallel
+          verbose: argv.verbose
+        , (err) ->
+          console.log 'Everything done.'
+          alinex.exit err
