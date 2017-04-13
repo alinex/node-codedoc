@@ -223,7 +223,10 @@ createReport = (file, setup, cb) ->
   api = devel
   devel = devel.replace /<!--\s*(end )?internal\s*-->/g, ''
   file.devel = new Report()
+  file.devel.toc()
   file.devel.markdown devel
+#  console.log devel if file.local.match /index.coffee$/
+#  console.log file.devel.tokens.data if file.local.match /codedoc$/
   # create api doc
   api = api.replace ///
     <!--\s*internal\s*-->
@@ -240,6 +243,7 @@ createReport = (file, setup, cb) ->
   .trim()
   return cb() unless api
   file.api = new Report()
+  file.api.toc()
   file.api.markdown api
   cb()
 

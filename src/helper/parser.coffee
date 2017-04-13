@@ -67,7 +67,7 @@ module.exports = (file, setup) ->
   # create out of api docs
   report = ''
   pos = 0
-#  console.log docs if file.local.match /codedoc$/
+#  console.log docs if file.local.match /index.coffee$/
   for doc in docs
     if pos < doc[0]
       # code block before doc
@@ -75,12 +75,12 @@ module.exports = (file, setup) ->
         report += """
           <!-- internal -->
           ``` #{lang.name}
-          #{stripIndent(code, lang.tab)}
+          #{stripIndent(code.replace(/^\n+/, ''), lang.tab)}
           ```
           """
         if pos # set correct line number
           line = content[0..pos].split('\n').length - 1
-          report += "<!-- {pre:style=\"counter-reset:line #{line}\"} -->"
+          report += "\n<!-- {code:style=\"counter-reset:line #{line}\"} -->"
         report +=  "\n<!-- end internal -->\n"
     # add doc block
     report += '<!-- internal -->' if doc[4]
@@ -101,7 +101,7 @@ module.exports = (file, setup) ->
         report += "\n<!-- {code:style=\"counter-reset:line #{line}\"} -->"
       report +=  "\n<!-- end internal -->\n"
   # return resulting doc
-#  console.log report if file.local.match /codedoc$/
+#  console.log report if file.local.match /index.coffee$/
   report
   .replace /\n#3 /g, '\n### ' # replace special syntax for coffee files
 
@@ -157,7 +157,6 @@ extractDocs = (file, content, setup, lang, symbols) ->
   for doc in docs
     from = content[0..doc[0]].split('\n').length
     to = content[0..doc[1]].split('\n').length - 1
-    doc.line = "line #{from}..#{to}"
     tags doc, lang.tags, setup, file, symbols
   # sort found sections
   docs.sort (a, b) ->
@@ -316,7 +315,7 @@ tags = (doc, lang, setup, file) ->
     if title and not check.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
       md = "### #{title}\n#{md}"
     # store changes
-    doc[2] = if doc[4] then "<!-- internal -->\n#{md}\n<!-- end internal -->" else md
+    doc[2] = md
   catch error
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
     \n     #{chalk.grey doc[2].replace /\n/g, '\n     '}"

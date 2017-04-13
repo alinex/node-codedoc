@@ -144,3 +144,5 @@ html:
     #  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css
     - report/default.css
     - codedoc/default.css
+  toc:
+    startLevel: 2
