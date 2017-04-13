@@ -5,7 +5,7 @@ Executable
 =========================================================
 
 This script will start the command line interface. See more at
-[/src/lib.coffee](../src/cli.coffee)
+{@link CLI Parser}
 */
 
 process.title = 'codedoc';

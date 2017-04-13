@@ -426,9 +426,9 @@ To use it use the transformator name as language in the markdown code block (wit
 the spaces between the backquotes):
 
 ```` markdown
-` ` ` coffee2js
+``` coffee2js
 x = (a) -> a*2
-` ` `
+```
 ````
 
 You may also add the code in a copy to show both versions. Here it is also put in tabbed
@@ -436,14 +436,14 @@ boxes by give the transformer an empty code:
 
 ```` markdown
 ### detail
-` ` ` coffee
+``` coffee
 x = (a) -> a*2
-` ` `
+```
 ###
 
 ### detail
-` ` ` coffee2js
-` ` `
+``` coffee2js
+```
 ###
 ````
 
