@@ -67,6 +67,7 @@ module.exports = (file, setup) ->
   # create out of api docs
   report = ''
   pos = 0
+#  console.log docs if file.local.match /codedoc$/
   for doc in docs
     if pos < doc[0]
       # code block before doc
@@ -82,7 +83,6 @@ module.exports = (file, setup) ->
           report += "<!-- {pre:style=\"counter-reset:line #{line}\"} -->"
         report +=  "\n<!-- end internal -->\n"
     # add doc block
-#    console.log doc if file.local.match /yml$/
     report += '<!-- internal -->' if doc[4]
     report += "\n#{doc[2].replace /\n\s*?$/, ''}\n"
     report += '<!-- end internal -->' if doc[4]
@@ -98,9 +98,10 @@ module.exports = (file, setup) ->
         """
       if pos # set correct line number
         line = content[0..pos].split('\n').length - 1
-        report += "<!-- {pre:style=\"counter-reset:line #{line}\"} -->"
+        report += "\n<!-- {code:style=\"counter-reset:line #{line}\"} -->"
       report +=  "\n<!-- end internal -->\n"
   # return resulting doc
+#  console.log report if file.local.match /codedoc$/
   report
   .replace /\n#3 /g, '\n### ' # replace special syntax for coffee files
 

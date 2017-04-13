@@ -221,7 +221,7 @@ createReport = (file, setup, cb) ->
     catch error
       return cb error
   api = devel
-  devel = devel.replace /<!--\s*(end )?internal\s*-->/, ''
+  devel = devel.replace /<!--\s*(end )?internal\s*-->/g, ''
   file.devel = new Report()
   file.devel.markdown devel
   # create api doc
