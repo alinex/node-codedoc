@@ -55,6 +55,7 @@ module.exports = (file, setup) ->
   # create report for undocumented code
   unless docs.length
     return """
+      <!-- internal -->
       # File: #{path.basename file.local}
 
       > Path: #{file.local}
