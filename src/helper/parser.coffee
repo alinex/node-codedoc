@@ -76,11 +76,16 @@ module.exports = (file, setup) ->
           ``` #{lang.name}
           #{stripIndent(code, lang.tab)}
           ```
-          <!-- end internal -->
-
           """
+        if pos # set correct line number
+          line = content[0..pos].split('\n').length - 1
+          report += "<!-- {pre:style=\"counter-reset:line #{line}\"} -->"
+        report +=  "\n<!-- end internal -->\n"
     # add doc block
+#    console.log doc if file.local.match /yml$/
+    report += '<!-- internal -->' if doc[4]
     report += "\n#{doc[2].replace /\n\s*?$/, ''}\n"
+    report += '<!-- end internal -->' if doc[4]
     pos = doc[1]
   if pos < content.length
     # last code block

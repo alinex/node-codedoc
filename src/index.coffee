@@ -220,11 +220,12 @@ createReport = (file, setup, cb) ->
       devel = parser file, setup
     catch error
       return cb error
+  api = devel
+  devel = devel.replace /<!--\s*(end )?internal\s*-->/, ''
   file.devel = new Report()
   file.devel.markdown devel
   # create api doc
-  api = devel
-  .replace ///
+  api = api.replace ///
     <!--\s*internal\s*-->
     (?:           # alternative content
       [\s\S]*?    # anything
@@ -309,12 +310,16 @@ writeFile = (work, file, setup, cb) ->
             (<!--\ START\ CONTENT\ -->[\s\S]*<!--\ END\ CONTENT\ -->)
             ([\s\S]*)$
             ///
-          match[1] = handlebars.compile(match[1])
+          context =
+            switch:
+              url: "#{path.basename pages[0].url}/../../\
+              #{if type is 'api' then 'devel' else 'api'}/#{pages[0].url}"
+              icon: if type is 'api' then 'code' else 'book'
+              title: "switch to #{if type is 'api' then 'internal' else 'api'} documentation"
             moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
-          match[3] = handlebars.compile(match[3])
-            moduleName: pages[0].title.replace /\s*[-:].*/, ''
-            pages: pages
+          match[1] = handlebars.compile(match[1]) context
+          match[3] = handlebars.compile(match[3]) context
           data = match[1..3].join ''
         # write file
         dest = "#{setup.output}/#{format}/#{type}#{file.local}.#{format}"
