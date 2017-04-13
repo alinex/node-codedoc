@@ -310,12 +310,17 @@ writeFile = (work, file, setup, cb) ->
             (<!--\ START\ CONTENT\ -->[\s\S]*<!--\ END\ CONTENT\ -->)
             ([\s\S]*)$
             ///
+          switchUrl = "../#{pages[0].url}".replace /(.*\.\.)/, \
+            "$1/#{if type is 'api' then 'devel' else 'api'}"
           context =
             switch:
-              url: "#{path.basename pages[0].url}/../../\
-              #{if type is 'api' then 'devel' else 'api'}/#{pages[0].url}"
+              url: switchUrl
               icon: if type is 'api' then 'code' else 'book'
-              title: "switch to #{if type is 'api' then 'internal' else 'api'} documentation"
+              name: if type is 'api' then 'Internal Documentation' else 'External API only'
+              title: if type is 'api'
+                  "switch to internal documentation with code"
+                else
+                  "switch to external api documentation"
             moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
           match[1] = handlebars.compile(match[1]) context

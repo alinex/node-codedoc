@@ -72,6 +72,9 @@ html:
                   </li>
                 {{/if}}
               {{/iterate}}
+              <li class="level0">
+                <a href="{{switch.url}}" class="btn btn-info" title="{{switch.title}}">{{switch.name}}</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -105,9 +108,7 @@ html:
             <ul class="nav nav-sidebar">
               <li class="header">
                 <a href="{{pages.0.url}}">{{moduleName}}</a>
-                {{#if switch}}
                 <a href="{{switch.url}}" class="docu-switch fa fa-{{switch.icon}} fa-lg" title="{{switch.title}}"></a>
-                {{/if}}
               </li>
               {{#iterate pages}}
                 {{#if value.active}}
