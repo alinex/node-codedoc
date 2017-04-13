@@ -33,6 +33,7 @@ comes before 'README.md' and the other files.
 
 # include base modules
 debug = require('debug') 'codedoc'
+debugProcess = require('debug') 'codedoc:process'
 chalk = require 'chalk'
 path = require 'path'
 async = require 'async'
@@ -48,13 +49,11 @@ require('alinex-handlebars').register handlebars
 language = require './helper/language'
 parser = require './helper/parser'
 
-render = require './helper/render'
-
 
 # Setup
 # -------------------------------------------------
 STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # files to copy
-
+TYPES = ['api', 'devel']
 
 ###
 Initialize Module
@@ -192,7 +191,7 @@ find = (work, setup, cb) ->
     cb()
 
 loadFile = (file, setup, cb) ->
-  debug chalk.grey "load #{file.source}"
+  debugProcess chalk.grey "load #{file.source}" if debugProcess.enabled
   fs.readFile file.source, (err, buffer) ->
     return cb err if err
     isBinaryFile buffer, buffer.length, (err, binary) ->
@@ -206,7 +205,8 @@ fileInfo = (file, setup, cb) ->
     (if setup.verbose then console.log else debug) \
       chalk.magenta "could not detect language of #{file.local}"
     return cb 'UNKNOWN'
-  debug chalk.grey "#{file.source}: detected as #{lang.name}"
+  if debugProcess.enabled
+    debugProcess chalk.grey "#{file.source}: detected as #{lang.name}"
   file.lang = lang
   cb()
 
@@ -215,7 +215,8 @@ createReport = (file, setup, cb) ->
     devel = file.content # don't change anything
   else
     try
-      debug chalk.grey "convert #{file.local} to markdown"
+      if debugProcess.enabled
+        debugProcess chalk.grey "convert #{file.local} to markdown"
       devel = parser file, setup
     catch error
       return cb error
@@ -244,7 +245,7 @@ createReport = (file, setup, cb) ->
 analyzePage = (file, setup, cb) ->
   file.links = {}
   file.title = {}
-  async.each ['api', 'devel'], (type, cb) ->
+  async.each TYPES, (type, cb) ->
     return cb() unless file[type]
     # convert to html and get title + links
     file[type].format 'html', (err) ->
@@ -259,7 +260,7 @@ analyzePage = (file, setup, cb) ->
 
 summarize = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "create complete index..."
-  for type in ['api', 'devel']
+  for type in TYPES
     work[type] =
       links: {}
       pages: []
@@ -275,15 +276,21 @@ summarize = (work, setup, cb) ->
         title: file.title[type]
     # sort pages
     work[type].pages = sortPages work[type].pages
+  # output resulting doc sources
+  for file in work.devel.pages
+    api = work.api.pages.filter (e) -> e.local is file.local
+    debug "add #{chalk.yellow file.local} to devel #{if api.length then 'and api' else ''}"
   cb()
 
 writeFile = (work, file, setup, cb) ->
-  async.each ['devel', 'api'], (type, cb) ->
+  async.each TYPES, (type, cb) ->
     return cb() unless file[type]
     async.each ['html', 'md'], (format, cb) ->
       return cb() unless file[type]
-      debug chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
+      if debugProcess.enabled
+        debugProcess chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].format format, (err, data) ->
+        return cb err if err
         if format is 'html'
           pages = work[type].pages.map (e) ->
             depth = e.parts.length - 1
@@ -297,7 +304,11 @@ writeFile = (work, file, setup, cb) ->
             url: "#{path.relative path.dirname(file.local), e.local}.html"
             active: e.local is file.local
           # replace template variables
-          match = data.match /^([\s\S]*?)(<!-- START CONTENT -->[\s\S]*<!-- END CONTENT -->)([\s\S]*)$/
+          match = data.match ///
+            ^([\s\S]*?)
+            (<!--\ START\ CONTENT\ -->[\s\S]*<!--\ END\ CONTENT\ -->)
+            ([\s\S]*)$
+            ///
           match[1] = handlebars.compile(match[1])
             moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
