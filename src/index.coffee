@@ -48,6 +48,7 @@ require('alinex-handlebars').register handlebars
 # internal methods
 language = require './helper/language'
 parser = require './helper/parser'
+optimizer = require './helper/optimizer'
 
 
 # Setup
@@ -153,12 +154,12 @@ exports.run = (setup, cb) ->
           cb err
       , cb
     (cb) -> summarize work, setup, cb
-    # replace links
     (cb) ->
       # each file in parallel
       (if setup.verbose > 1 then console.log else debug) "write docs..."
       async.each work.files, (file, cb) ->
         async.series [
+          (cb) -> optimize work, file, setup, cb
           (cb) -> writeFile work, file, setup, cb
         ], cb
       , cb
@@ -220,6 +221,7 @@ createReport = (file, setup, cb) ->
       devel = parser file, setup
     catch error
       return cb error
+  # store devel and use copy for api
   api = devel
   devel = devel.replace /<!--\s*(end )?internal\s*-->/g, ''
   file.devel = new Report()
@@ -266,26 +268,51 @@ analyzePage = (file, setup, cb) ->
 summarize = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "create complete index..."
   for type in TYPES
-    work[type] =
-      links: {}
-      pages: []
+    pages = []
+    symbols = {}
     for file in work.files
       continue unless file[type]
-      # get links
-      for n, l of file.links[type]
-        work[type].links[n] = [file.local, l]
       # get pages
-      work[type].pages.push
+      pages.push
         local: file.local
         parts: file.local[1..].toLowerCase().split /\//
         title: file.title[type]
-    # sort pages
-    work[type].pages = sortPages work[type].pages
+      # add links
+      for n, l of file.links[type]
+        symbols[n] = [file.local, l, n]
+        if n.match /\(\)$/
+          s = n.replace /\(\)$/, ''
+          symbols[s] = [file.local, l, n] unless symbols[s]
+      # add files
+      for page in pages
+        name = path.basename page.local
+        symbols[name] = [page.local, null, page.title] unless symbols[name]
+        console.log name
+    # store results
+    work[type] =
+      symbols: symbols
+      pages: sortPages pages
   # output resulting doc sources
   for file in work.devel.pages
     api = work.api.pages.filter (e) -> e.local is file.local
     debug "add #{chalk.yellow file.local} to devel #{if api.length then 'and api' else ''}"
   cb()
+
+optimize = (work, file, setup, cb) ->
+  debugProcess chalk.grey "optimize #{file.local}"
+  async.eachSeries TYPES, (type, cb) ->
+    return cb() unless file[type]
+    # optimize
+    file[type].format 'md', (err, md) ->
+      return cb err if err
+      ##### set search type per file
+      optimizer file, md, work[type].symbols, null, (err, md) ->
+        return cb err if err
+        # recreate report
+        file[type] = new Report()
+        file[type].markdown md
+        cb()
+  , cb
 
 writeFile = (work, file, setup, cb) ->
   async.each TYPES, (type, cb) ->

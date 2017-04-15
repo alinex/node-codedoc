@@ -184,7 +184,7 @@ stripIndent = (code, tab) ->
 # autodetected from code.
 #
 # @param {Array} doc markdown document as read from {@link extractDocs}
-# @param {Object} lang language definition structure from {@link language.coffe#exports}
+# @param {Object} lang language definition structure from {@link language.coffee#exports}
 # @param {Object} setup setup configuration from {@link run()} method
 # @param {String} file file name used for relative link creation
 tags = (doc, lang, setup, file) ->
