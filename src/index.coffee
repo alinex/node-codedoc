@@ -136,10 +136,8 @@ exports.run = (setup, cb) ->
   work = {}
   # run steps
   async.series [
-    (cb) -> mkdirs work, setup, cb
     (cb) -> find work, setup, cb
-    # find resources
-    # copy resources
+    (cb) -> copyResources work, setup, cb
     (cb) ->
       # each file in parallel
       (if setup.verbose > 1 then console.log else debug) "load file docs..."
@@ -163,18 +161,13 @@ exports.run = (setup, cb) ->
           (cb) -> writeFile work, file, setup, cb
         ], cb
       , cb
+    (cb) -> createIndex work, setup, cb
     # create index
-  ], (err) ->
-    return cb err if err
-#    console.log util.inspect work, {depth: null}
-    cb()
+  ], cb
 
 
 # Helper methods
 # --------------------------------------------------------
-
-mkdirs = (work, setup, cb) ->
-  fs.mkdirs setup.output, cb
 
 find = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "search files in #{setup.input}..."
@@ -190,6 +183,33 @@ find = (work, setup, cb) ->
       source: e
       local: e[setup.input.length..]
     cb()
+
+copyResources = (work, setup, cb) ->
+  # find resources
+  (if setup.verbose then console.log else debug) "copy static files from #{setup.input}"
+  filter = util.extend util.clone(setup.find),
+    include: STATIC_FILES
+  async.eachSeries TYPES, (type, cb) ->
+    async.eachSeries ['html', 'md'], (format, cb) ->
+      debug "-> #{setup.output}/#{format}/#{type}/"
+      fs.copy setup.input, "#{setup.output}/#{format}/#{type}/",
+        filter: filter
+        dereference: true
+        overwrite: true
+        noempty: true
+        ignoreErrors: true
+      , (err) ->
+        return cb err if err
+        return cb() unless setup.resources?.include
+        fs.copy setup.input, "#{setup.output}/#{format}/#{type}/",
+          filter: setup.resources
+          dereference: true
+          overwrite: true
+          noempty: true
+          ignoreErrors: true
+        , cb
+    , cb
+  , cb
 
 loadFile = (file, setup, cb) ->
   debugProcess chalk.grey "load #{file.source}" if debugProcess.enabled
@@ -266,7 +286,7 @@ analyzePage = (file, setup, cb) ->
   , cb
 
 summarize = (work, setup, cb) ->
-  (if setup.verbose then console.log else debug) "create complete index..."
+  (if setup.verbose then console.log else debug) "summarize files..."
   linksearch = {}
   for type in TYPES
     pages = []
@@ -331,7 +351,6 @@ writeFile = (work, file, setup, cb) ->
   async.each TYPES, (type, cb) ->
     return cb() unless file[type]
     async.each ['html', 'md'], (format, cb) ->
-      return cb() unless file[type]
       if debugProcess.enabled
         debugProcess chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].format format, (err, data) ->
@@ -378,6 +397,28 @@ writeFile = (work, file, setup, cb) ->
             data, 'utf8', cb
     , cb
   , cb
+
+createIndex = (work, setup, cb) ->
+  file = "#{setup.output}/html/index.html"
+  dest = "api#{work.api.pages[0].local}.html"
+  fs.exists file, (exists) ->
+    return cb() if exists
+    (if setup.verbose then console.log else debug) "create index..."
+    fs.writeFile file, """
+      <html>
+      <head>
+        <meta http-equiv="refresh" content="0; url=#{dest}" />
+        <script type="text/javascript">
+            window.location.href = "#{dest}"
+        </script>
+        <title>Page Redirection</title>
+      </head>
+      <body>
+        If you are not redirected automatically, follow the link to the
+        <a href='#{dest}'>README</a>.
+      </body>
+      </html>
+      """, cb
 
 
 # #3 Setup Page Order

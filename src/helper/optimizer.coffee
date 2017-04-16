@@ -23,7 +23,6 @@ validator = require 'alinex-validator'
 
 # Setup
 # -------------------------------------------------
-STATIC_FILES = /\.(html|gif|png|jpg|js|css)$/i # won't get .html extension
 PAGE_SEARCH = # define the possible settings and methods to use
   nodejs: ['nodejs', 'npm', 'mdn']
   javascript: ['mdn']
@@ -95,107 +94,6 @@ findSymbol = (uri, symbols, search, cb) ->
       return cb new Error "Could not resolve link to #{uri} in #{search} search. #{err}"
     cache["#{uri}##{anchor}"] = symbol = [res.url, anchor, res.title]
     cb null, symbol
-
-
-exports.optimize = (report, file, symbols, pages, search, cb) ->
-  debug "#{file}: optimize for html conversion" if debug.enabled
-  # find inline tags
-  report = report.replace /(\n\s*)#([1-6])(\s+)/g, (_, pre, num, post) ->
-    "#{pre}#{util.string.repeat '#', num}#{post}"
-  asyncReplace report, /([ \t]*)\{@(\w+) ([^ \t}]*)\s?([^}]*)?\}/g
-  , (source, indent, tag, uri, text, offset, all, cb) ->
-    switch tag
-      when 'link'
-        # search
-        if search
-          return searchLink uri, search, (err, res) ->
-            if err or not res?.url
-              console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
-              return cb null, text ? uri
-            cb null, "[#{text ? res.title ? uri}](#{res.url})"
-        # default
-        console.error chalk.magenta "Could not resolve link to #{uri} in #{file}"
-        cb null, text ? uri
-      when 'schema'
-        # get schema description
-        [uri, anchor] = uri.split /#/
-        uri = if uri then path.resolve path.dirname(file), uri else file
-        debug "analyze schema at #{uri}##{anchor}" if debug.enabled
-        unless coffee
-          coffee = require 'coffee-script'
-          coffee.register()
-        try
-          schema = require uri
-        catch error
-          console.error chalk.magenta "Could not parse #{uri} to get schema specification"
-          if debug.enabled
-            debug chalk.magenta "#{error.message}\n#{error.stack.split(/\n/)[1..5].join '\n'}"
-        schema = util.object.path schema, anchor if schema and anchor
-        debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
-        return cb null, source unless schema # broken if not parseable or not found
-        validator.describe
-          name: "#{path.basename uri}.#{anchor}"
-          schema: schema
-        , (err, md) ->
-          if err
-            md = """
-            :::alert Invalid Schema
-            The Schema could not be evaluated into a description:
-
-            __#{err.message}__
-            :::
-            """
-          cb null, indent + md.replace /\n/g, "\n#{indent}"
-      else
-        console.error chalk.magenta "Unknwn tag for transform in #{file}: #{source}"
-        cb null, source
-  , (err, report) ->
-    return cb err if err
-    # fill empty transform code from previous
-    report = report.replace ///
-      \n(\ *`{3,})\ *       # start1
-      (\w+)                 # lang1
-      ([^\n]*\n)            # addon1
-      ([\s\S]*?\n)          # code1
-      \1\ *\n               # end
-      ([\s\S]*?\n)          # other
-      (\ *`{3,})\ *       # start2
-      \2[2](\w+)            # lang2
-      ([^\n]*\n)            # addon2
-      \6\ *\n               # end
-    ///g, (_, start1, lang1, addon1, code1, other, start2, lang2, addon2) ->
-      "\n#{start1} #{lang1}#{addon1}#{code1}#{start1}\n#{other}\
-      #{start2} #{lang1}2#{lang2}#{addon2}#{code1}#{start2}\n"
-    # transform code
-    .replace ///
-      \n(\ *`{3,})\ *       # start
-      (\w+)2                # lang1
-      (\w+)                 # lang2
-      ([^\n]*\n)            # addon
-      ([\s\S]*?\n?)         # code
-      \1\ *\n               # end
-    ///g, (_, start, lang1, lang2, addon, code) ->
-      return '\nNo code given!\n' unless code.trim().length
-      unless transform["#{lang1}2#{lang2}"]
-        return cb new Error "No transformer for #{lang1}2#{lang2} found at #{file}"
-      transform["#{lang1}2#{lang2}"] start, addon, code
-    cb null, report
-
-# Transform code entries before interpreting.
-#
-# @type {Object<Function>} collection of transformer functions defined under
-# `<source-language>2<dest-language>` with the following parameters:
-# - `String` - `start` code tag with indention
-# - `String` - `addon` additional styles
-# - `String` - `code` content of the source code
-#
-# This will return the resulting markdown with the transformed code.
-transform =
-  coffee2js: (start, addon, code) ->
-    coffee ?= require 'coffee-script'
-    compiled = coffee.compile code,
-      bare: true
-    "\n#{start} js#{addon}#{compiled}#{start}\n"
 
 # Run internet search to find link destination.
 #
