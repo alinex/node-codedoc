@@ -53,7 +53,6 @@ module.exports = (file, md, symbols, search, cb) ->
     switch tag
       when 'link'
         # check in symbols
-        [uri, ext] = uri.split /\#/
         findSymbol uri, symbols, search, (err, symbol) ->
           if err
             console.error chalk.magenta "Link not found in #{file.local}:
@@ -61,12 +60,10 @@ module.exports = (file, md, symbols, search, cb) ->
             return cb null, source
           url = if symbol[0].match /https?:\/\// then symbol[0]
           else path.relative path.dirname(file.local), symbol[0]
-          if ext
-            url += "##{ext}"
-          else if symbol[1]
-            url += "##{symbol[1]}"
-          symbol[2] = "`symbol[2]`" if symbol[2]?.match /\(\)$/
-          title = if symbol[2] then " \"#{symbol[2]}\"" else ''
+          url += "##{symbol[1]}" if symbol[1]
+          title = if symbol[2] then " \"\
+          #{if symbol[2]?.match /\(\)$/ then 'Method: ' else ''}#{symbol[2]}\"" else ''
+          symbol[2] = "`#{symbol[2]}`" if symbol[2]?.match /\(\)$/
           debug chalk.green "  #{source.trim()} -> [#{text ? symbol[2] ? uri}](#{url + title})"
           cb null, "#{indent}[#{text ? symbol[2] ? uri}](#{url + title})"
       else
@@ -74,24 +71,30 @@ module.exports = (file, md, symbols, search, cb) ->
         cb null, source
   , cb
 
+cache = {}
+
 findSymbol = (uri, symbols, search, cb) ->
+  [uri, anchor] = uri.split /\#/
   # check in given symbols
   if symbol = symbols[uri]
-    return cb null, ["#{symbol[0]}.html", symbol[1], symbol[2]]
+    return cb null, ["#{symbol[0]}.html", symbol[1] ? anchor, symbol[2]]
   # alinex link
   if m = uri.match /^alinex-(.*)/
     m[1] += '.html' if m[1].match /\/./ and not m[1].match /\.(gif|html|png|jpg)$/
-    return cb null, ["https://alinex.github.io/node-#{m[1]}"]
+    return cb null, ["https://alinex.github.io/node-#{m[1]}", anchor]
   # urls
   if uri.match /^(https?):\/\//
-    return cb null, [uri]
+    return cb null, [uri, anchor]
   # internet search
   unless search
     return cb new Error "Unknown uri type to search for (no search defined)."
+  if symbol = cache["#{uri}##{anchor}"]
+    return cb null, symbol
   searchLink uri, search, (err, res) ->
     if err or not res?.url
       return cb new Error "Could not resolve link to #{uri} in #{search} search. #{err}"
-    cb null, [res.url, null, res.title]
+    cache["#{uri}##{anchor}"] = symbol = [res.url, anchor, res.title]
+    cb null, symbol
 
 
 exports.optimize = (report, file, symbols, pages, search, cb) ->

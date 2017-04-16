@@ -156,7 +156,7 @@ exports.run = (setup, cb) ->
     (cb) -> summarize work, setup, cb
     (cb) ->
       # each file in parallel
-      (if setup.verbose > 1 then console.log else debug) "write docs..."
+      (if setup.verbose > 1 then console.log else debug) "format and write docs..."
       async.each work.files, (file, cb) ->
         async.series [
           (cb) -> optimize work, file, setup, cb
@@ -267,6 +267,7 @@ analyzePage = (file, setup, cb) ->
 
 summarize = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "create complete index..."
+  linksearch = {}
   for type in TYPES
     pages = []
     symbols = {}
@@ -287,11 +288,21 @@ summarize = (work, setup, cb) ->
       for page in pages
         name = path.basename page.local
         symbols[name] = [page.local, null, page.title] unless symbols[name]
-        console.log name
+#        console.log name
+      if type is 'devel' and search = file.lang?.tags?.searchtype
+        linksearch[search] ?= 0
+        linksearch[search]++
     # store results
     work[type] =
       symbols: symbols
       pages: sortPages pages
+    linksearchDefault = null
+    max = 0
+    for type, num in linksearch
+      continue if num <= max
+      max = num
+      linksearchDefault = type
+    work.search = linksearchDefault
   # output resulting doc sources
   for file in work.devel.pages
     api = work.api.pages.filter (e) -> e.local is file.local
@@ -306,7 +317,9 @@ optimize = (work, file, setup, cb) ->
     file[type].format 'md', (err, md) ->
       return cb err if err
       ##### set search type per file
-      optimizer file, md, work[type].symbols, null, (err, md) ->
+      search = file.lang.tags?.searchtype
+      search = work.search if search is 'default' or not search
+      optimizer file, md, work[type].symbols, search, (err, md) ->
         return cb err if err
         # recreate report
         file[type] = new Report()
