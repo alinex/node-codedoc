@@ -42,22 +42,14 @@ and code highlighting. Read my own thoughts below to know why it is like it is.
 The main features are:
 
 - useable for any language
-- with easy markdown text
-- powerful options like graphs
+- written as easy markdown text
 - additional support for javadoc like formatting
 - responsive design through templates
+- show api and internal developer info with code
+- automatic generation helper
 
-To see what it will give you is shown here in [this documentation](https://alinex.github.io/node-codedoc)
-which is completely made with it.
-
-::: info Demo / Examples
-As an example of the two modes (public/internal view) you can check this documentation
-in both forms:
-- [public](https://alinex.github.io/node-codedoc/README.md.html) -
-  for all using the module on command line or through the API
-- [internal](https://alinex.github.io/code-codedoc/README.md.html) -
-  for developers which want to change this module (to extend or fix it)
-:::
+To see what it will give you see at this documentation which is completely made
+with itself.
 
 > It is one of the modules of the [Alinex Namespace](https://alinex.github.io/code.html)
 > following the code standards defined in the [General Docs](https://alinex.github.io/develop).
@@ -65,6 +57,12 @@ in both forms:
 __Read the complete documentation under
 [https://alinex.github.io/node-codedoc](https://alinex.github.io/node-codedoc).__
 <!-- {p: .hidden} -->
+
+### Alinex Layout
+You find the top bar which contains the alinex core links. The tree of pages on the left
+with an icon to switch between **User API Documentation** and **Developer Code Documentation**.
+
+To navigate within the page you may use the table-of-contents on the top right corner.
 
 
 Philosophy
@@ -101,82 +99,8 @@ to the general documentation I used different comment blocks in each language.
 I also mixed the docco/docker.js concept of doc + code for the internal documentation.
 
 
-Workflow
--------------------------------------------------
-
-$$$ plantuml {.right}
-interface "CodeDoc" as CLI
-
-folder "Input Directory" as Source {
-  [Markdown]
-  [CODE]
-  [resources]
-}
-
-node Analyze
-CLI -> Analyze
-Markdown -> Analyze
-CODE -> Analyze
-[languages] ..> Analyze
-
-package Data {
-  [pages]
-  [report]
-  [symbols]
-}
-Analyze ..> pages
-Analyze -> report
-Analyze ..> symbols
-
-node Transform
-[template] ..> Transform
-pages ..> Transform
-report -> Transform
-symbols ..> Transform
-
-folder "Output Directory" as Doc {
-  [index] ..> [html]
-  [other] <.. [html]
-}
-Transform -> index
-Transform -> html
-
-node Copy
-resources -> Copy
-Copy -> other
-
-skinparam node {
-	backgroundColor peachpuff
-}
-$$$
-
-Which files to use firstly depends on the selection of the input folder and the
-filter conditions. These filter conditions can be set indirectly using the `.docignore`
-or `.gitignore` files or be given in the API.
-Additional resources in other directories not included in code abalyzation can be
-given as `.docresource` list.
-
-All files matching this conditions will be **analyzed**. Depending if you generate the normal
-view or the developer view document elements are extracted. Therefore the predefined
-language syntax is used. If some document parts are found
-a report will be generated containing the documentation in markdown format and the page list
-and symbols table are filled up, too.
-
-The **transformation** will use the user definable template to make html reports.
-A table of contents will be build out of the pages list and inline `@link` tags
-will be replaced using the symbol table if possible. An index will also be created
-redirecting to the first page of documentation. Each html page will be standalone
-with all neccessary javascript, css and svg included. Only resources which are
-coming through the template (some CDN resources in the default) and the images
-you added as relative links are linked.
-
-Resources like images, html or stylesheets will be **copied** directly to the output folder.
-Because you may refer to them directly from your documentation.
-
-
 Install
 -------------------------------------------------
-
 [![NPM](https://nodei.co/npm/alinex-codedoc.png?downloads=true&downloadRank=true&stars=true)
  ![Downloads](https://nodei.co/npm-dl/alinex-codedoc.png?months=9&height=3)
 ](https://www.npmjs.com/package/alinex-codedoc)
@@ -207,22 +131,33 @@ sudo npm install --save alinex-codedoc
 Always have a look at the latest changes in the {@link Changelog.md}
 
 
-Usage
+CLI Usage
 -------------------------------------------------
-
-### CLI Tool
 
 After global installation you may directly call `codedoc` from anywhere to work
 in the current or defined directory.
 
-See the {@link codedoc.1.md} for explanation of the command line use
-and options.
+See the {@link codedoc.1.md} for explanation of the command line call and its
+options.
 
-### API Usage
+### Setup
+
+Which files to use firstly depends on the selection of the input folder and the
+filter conditions. These filter conditions can be set indirectly using the `.docignore`
+or `.gitignore` files.
+
+Resources like images, html or stylesheets will be **copied** directly to the output folder.
+Because you may refer to them directly from your documentation.
+Additional resources in other directories not included in code (ignored by above) can be
+given as `.docresource` list.
+
+
+API Usage
+-------------------------------------------------
 
 You have to
-1. include it into your project
-2. call the setup method
+1. include it into your project (as described above)
+2. call the {@link setup()} method
 3. call the {@link run()} method
 
 See the following example using CoffeeScript or JavaScript:
@@ -258,6 +193,27 @@ codedoc.setup (err) ->
 :::
 
 Find more information about calling the code documentation in the {@link index.coffee}.
+
+
+Workflow
+-------------------------------------------------
+
+All files matching this conditions will be **analyzed**. Depending if you generate the normal
+view or the developer view document elements are extracted. Therefore the predefined
+language syntax is used. If some document parts are found
+a report will be generated containing the documentation in markdown format and the page list
+and symbols table are filled up, too.
+
+The **transformation** will use the user definable template to make html reports.
+A table of contents will be build out of the pages list and inline `@link` tags
+will be replaced using the symbol table if possible. An index will also be created
+redirecting to the first page of documentation. Each html page will be standalone
+with all neccessary javascript, css and svg included. Only resources which are
+coming through the template (some CDN resources in the default) and the images
+you added as relative links are linked.
+
+
+
 
 ### Custom Layout / Style
 

@@ -175,7 +175,6 @@ find = (work, setup, cb) ->
     filter: setup.find
     dereference: true
   , (err, list) ->
-    ###########################################################################################################
 #    list = ['/home/alex/github/node-codedoc/README.md']
 #    list = ['/home/alex/github/node-codedoc/src/index.coffee']
 #    list = ['/home/alex/github/node-codedoc/src/helper/parser.coffee']
@@ -252,14 +251,14 @@ createReport = (file, setup, cb) ->
   # create api doc
   api = api.replace ///
     <!--\s*internal\s*-->
-    (?:           # alternative content
+#    (?:           # alternative content
+#      (`{3,})     # 1: markdown code block
+#      [\s\S]*?    # content
+#      \1          # end code block
+#    |
       [\s\S]*?    # anything
-    |
-      (`{3,})     # 1: markdown code block
-      [\s\S]*?    # content
-      \1          # end code block
-    )
-    <!--\s*end internal\s*-->
+#    )
+    <!--\s*end\ internal\s*-->
     ///ig, ''
   .replace /<!--\s*internal\s*-->[\s\S]*$/i, ''
   .trim()

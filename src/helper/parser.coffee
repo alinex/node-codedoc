@@ -55,7 +55,7 @@ module.exports = (file, setup) ->
   # create report for undocumented code
   unless docs.length
     return """
-      <!-- internal -->
+      <!--\ internal -->
       # File: #{path.basename file.local}
 
       > Path: #{file.local}
@@ -73,7 +73,7 @@ module.exports = (file, setup) ->
       # code block before doc
       if code = content[pos..doc[0]].replace /\s+$/, ''
         report += """
-          <!-- internal -->
+          <!--\ internal -->
           ``` #{lang.name}
           #{stripIndent(code.replace(/^\n+/, ''), lang.tab)}
           ```
@@ -81,17 +81,17 @@ module.exports = (file, setup) ->
         if pos # set correct line number
           line = content[0..pos].split('\n').length - 1
           report += "\n<!-- {code:style=\"counter-reset:line #{line}\"} -->"
-        report +=  "\n<!-- end internal -->\n"
+        report +=  "\n<!--\ end internal -->\n"
     # add doc block
-    report += '<!-- internal -->' if doc[4]
+    report += '<!--\ internal -->' if doc[4]
     report += "\n#{doc[2].replace /\n\s*?$/, ''}\n"
-    report += '<!-- end internal -->' if doc[4]
+    report += '<!--\ end internal -->' if doc[4]
     pos = doc[1]
   if pos < content.length
     # last code block
     if code = content[pos..].replace /\s+$/, ''
       report += """
-        <!-- internal -->
+        <!--\ internal -->
         ``` #{lang.name}
         #{stripIndent(code, lang.tab)}
         ```
@@ -99,7 +99,7 @@ module.exports = (file, setup) ->
       if pos # set correct line number
         line = content[0..pos].split('\n').length - 1
         report += "\n<!-- {code:style=\"counter-reset:line #{line}\"} -->"
-      report +=  "\n<!-- end internal -->\n"
+      report +=  "\n<!--\ end internal -->\n"
   # return resulting doc
 #  console.log report if file.local.match /index.coffee$/
   report
