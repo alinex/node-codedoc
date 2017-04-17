@@ -68,7 +68,55 @@ module.exports = (file, md, symbols, search, cb) ->
       else
         console.error chalk.magenta "Unknown tag for transform in #{file.local}: #{source.trim()}"
         cb null, source
-  , cb
+  , (err, md) ->
+    return cb err if err
+    # fill empty transform code from previous
+    md = md
+    # insert empty code from previous by transform name
+    .replace ///
+      \n(\ *`{3,})\ *       # 1: start1
+      (\w+)                 # 2: lang1
+      ([^\n]*\n)            # 3: addon1
+      ([\s\S]*?\n)          # 4: code1
+      \1\ *\n               # end
+      ([\s\S]*?\n)          # 5: other
+      (\ *`{3,})\ *         # 6: start2
+      \2[2](\w+)            # 7: lang2
+      ([^\n]*\n)            # 8: addon2
+      \6\ *\n               # end
+    ///g, (_, start1, lang1, addon1, code1, other, start2, lang2, addon2) ->
+      "\n#{start1} #{lang1}#{addon1}#{code1}#{start1}\n#{other}\
+      #{start2} #{lang1}2#{lang2}#{addon2}#{code1}#{start2}\n"
+    # transform code
+    .replace ///
+      \n(\ *`{3,})\ *       # 1: start
+      (\w+)2                # 2: lang1
+      (\w+)                 # 3: lang2
+      ([^\n]*\n)            # 4: addon
+      ([\s\S]*?\n?)         # 5: code
+      \1\ *\n               # end
+    ///g, (_, start, lang1, lang2, addon, code) ->
+      return '\nNo code given!\n' unless code.trim().length
+      unless transform["#{lang1}2#{lang2}"]
+        return cb new Error "No transformer for #{lang1}2#{lang2} found at #{file}"
+      transform["#{lang1}2#{lang2}"] start, addon, code
+    cb null, md
+
+# Transform code entries before interpreting.
+#
+# @type {Object<Function>} collection of transformer functions defined under
+# `<source-language>2<dest-language>` with the following parameters:
+# - `String` - `start` code tag with indention
+# - `String` - `addon` additional styles
+# - `String` - `code` content of the source code
+#
+# This will return the resulting markdown with the transformed code.
+transform =
+  coffee2js: (start, addon, code) ->
+    coffee ?= require 'coffee-script'
+    compiled = coffee.compile code,
+      bare: true
+    "\n#{start} js#{addon}#{compiled}#{start}\n"
 
 cache = {}
 

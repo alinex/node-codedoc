@@ -147,6 +147,7 @@ exports.optimize = (report, file, symbols, pages, search, cb) ->
   , (err, report) ->
     return cb err if err
     # fill empty transform code from previous
+    # empty code after filed one -> change language to <source>2<lang>
     report = report.replace ///
       \n(\ *`{3,})\ *       # start1
       (\w+)                 # lang1

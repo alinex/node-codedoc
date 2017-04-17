@@ -162,11 +162,16 @@ You have to
 
 See the following example using CoffeeScript or JavaScript:
 
-::: detail {size=max}
+::: detail CoffeeScript
 ``` coffee
+# load modules
 codedoc = require 'alinex-codedoc'
-# setup the template search paths
-codedoc.setup (err) ->
+config = require 'alinex-config'
+# setup the template search paths and config
+codedoc.setup (err) -> config.init (err) -> main()
+
+# running the document generation
+main = ->
   # do something on error like exit or reporting
   if err
     console.error err.message
@@ -185,12 +190,12 @@ codedoc.setup (err) ->
       process.exit 16  
     console.log 'Documents created.'
 ```
-:::
-
-::: detail
+::: detail JavaScript
+<!-- {selected} -->
 ``` coffee2js
 ```
 :::
+<!-- {container:size=max} -->
 
 Find more information about calling the code documentation in the {@link index.coffee}.
 
@@ -215,7 +220,10 @@ you added as relative links are linked.
 
 
 
-### Custom Layout / Style
+
+
+Custom Layout / Style
+-------------------------------------------------
 
 If you want to use your own style templates within your app's config directory
 and you're already using {@link alinex-config} you only have to register the
@@ -271,7 +279,7 @@ You can also combine them using comma or use only `DEBUG=*` to show all.
 License
 -------------------------------------------------
 
-(C) Copyright 2016 Alexander Schilling
+(C) Copyright 2016-2017 Alexander Schilling
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
