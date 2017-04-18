@@ -10,14 +10,14 @@ of each file is auto detected to know how to parse it. **Documents** like markdo
 are directly added to as full report.
 
 **Code** will be analyzed and documentation blocks will be identified and **extracted**.
-This contains the document comments, api comments and part of the code.
+This contains the document comments, API comments and part of the code.
 
-JsDoc like **tags** are interpreted and extended by autodetected information from
+JsDoc like **tags** are interpreted and extended by auto detected information from
 code. For the internal view the code will also be added with **syntax highlighting**.
-Alltogethher will go in an report.
+Altogether will go in an report.
 
 The reports will be **sorted**, some internal tags will be replaced and each report
-will be rendered as html and stored in output folder. An additional **index page** will
+will be rendered as HTML and stored in output folder. An additional **index page** will
 be created if missing.
 
 #3 Sorting
@@ -48,7 +48,8 @@ require('alinex-handlebars').register handlebars
 # internal methods
 language = require './helper/language'
 parser = require './helper/parser'
-optimizer = require './helper/optimizer'
+doctags = require './helper/doctags'
+transcode = require './helper/transcode'
 
 
 # Setup
@@ -338,12 +339,17 @@ optimize = (work, file, setup, cb) ->
       ##### set search type per file
       search = file.lang.tags?.searchtype
       search = work.search if search is 'default' or not search
-      optimizer file, md, work[type].symbols, search, (err, md) ->
+      doctags file, type, md, work[type].symbols, search, (err, md) ->
         return cb err if err
         # recreate report
         file[type] = new Report()
         file[type].markdown md
-        cb()
+        transcode file, type, md, (err, md) ->
+          return cb err if err
+          # recreate report
+          file[type] = new Report()
+          file[type].markdown md
+          cb()
   , cb
 
 writeFile = (work, file, setup, cb) ->
@@ -380,9 +386,9 @@ writeFile = (work, file, setup, cb) ->
               icon: if type is 'api' then 'code' else 'book'
               name: if type is 'api' then 'Internal Documentation' else 'External API only'
               title: if type is 'api'
-                  "switch to internal documentation with code"
-                else
-                  "switch to external api documentation"
+                "switch to internal documentation with code"
+              else
+                "switch to external api documentation"
             moduleName: pages[0].title.replace /\s*[-:].*/, ''
             pages: pages
           match[1] = handlebars.compile(match[1]) context

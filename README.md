@@ -192,7 +192,7 @@ main = ->
 ```
 ::: detail JavaScript
 <!-- {selected} -->
-``` coffee2js
+``` coffee2js lang
 ```
 :::
 <!-- {container:size=max} -->
