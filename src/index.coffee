@@ -144,7 +144,7 @@ exports.run = (setup, cb) ->
     (cb) -> copyResources work, setup, cb
     (cb) ->
       # each file in parallel
-      (if setup.verbose > 1 then console.log else debug) "load file docs..."
+      (if setup.verbose then console.log else debug) "load file docs..."
       async.each work.files, (file, cb) ->
         async.series [
           (cb) -> loadFile file, setup, cb
@@ -158,7 +158,7 @@ exports.run = (setup, cb) ->
     (cb) -> summarize work, setup, cb
     (cb) ->
       # each file in parallel
-      (if setup.verbose > 1 then console.log else debug) "format and write docs..."
+      (if setup.verbose then console.log else debug) "format and write docs..."
       async.each work.files, (file, cb) ->
         async.series [
           (cb) -> optimize work, file, setup, cb
@@ -166,6 +166,7 @@ exports.run = (setup, cb) ->
         ], cb
       , cb
     (cb) -> createIndex work, setup, cb
+    (cb) -> writeSymbols work, setup, cb
     # create index
   ], cb
 
@@ -177,16 +178,13 @@ clean = (work, setup, cb) ->
   return cb() unless setup.clean
   (if setup.verbose then console.log else debug) "cleanup output directory #{setup.output}..."
   fs.remove setup.output, cb
-  
+
 find = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "search files in #{setup.input}..."
   fs.find setup.input,
     filter: setup.find
     dereference: true
   , (err, list) ->
-#    list = ['/home/alex/github/node-codedoc/README.md']
-#    list = ['/home/alex/github/node-codedoc/src/index.coffee']
-#    list = ['/home/alex/github/node-codedoc/src/helper/parser.coffee']
     work.files = list.map (e) ->
       source: e
       local: e[setup.input.length..]
@@ -406,8 +404,7 @@ writeFile = (work, file, setup, cb) ->
         dest = "#{setup.output}/#{format}/#{type}#{file.local}.#{format}"
         fs.mkdirs path.dirname(dest), (err) ->
           return cb err if err
-          fs.writeFile dest,
-            data, 'utf8', cb
+          fs.writeFile dest, data, 'utf8', cb
     , cb
   , cb
 
@@ -432,6 +429,13 @@ createIndex = (work, setup, cb) ->
       </body>
       </html>
       """, cb
+
+writeSymbols = (work, setup, cb) ->
+  (if setup.verbose then console.log else debug) "write symbols..."
+  async.each TYPES, (type, cb) ->
+    fs.writeFile "#{setup.output}/html/#{type}-symbols.json",
+      JSON.stringify(work[type].symbols), 'utf8', cb
+  , cb
 
 
 # #3 Setup Page Order

@@ -11,8 +11,10 @@ path = require 'path'
 chalk = require 'chalk'
 asyncReplace = require 'async-replace'
 async = require 'async'
-# make caching method
 request = require 'request'
+# alinex modules
+util = require 'alinex-util'
+validator = 'alinex-validator'
 
 
 # Setup
@@ -49,7 +51,7 @@ module.exports = (file, type, md, symbols, search, cb) ->
     switch tag
       when 'link'
         # check in symbols
-        findSymbol uri, symbols, search, (err, symbol) ->
+        findSymbol uri, symbols, search, type, (err, symbol) ->
           if err
             console.error chalk.magenta "Link not found in #{file.local}:
               #{source.trim()} (#{err.message})"
@@ -60,8 +62,39 @@ module.exports = (file, type, md, symbols, search, cb) ->
           title = if symbol[2] then " \"\
           #{if symbol[2]?.match /\(\)$/ then 'Method: ' else ''}#{symbol[2]}\"" else ''
           symbol[2] = "`#{symbol[2]}`" if symbol[2]?.match /\(\)$/
-          debug chalk.green "  #{source.trim()} -> [#{text ? symbol[2] ? uri}](#{url + title})"
+          if debug.enabled
+            debug chalk.green "  #{source.trim()} -> [#{text ? symbol[2] ? uri}](#{url + title})"
           cb null, "#{indent}[#{text ? symbol[2] ? uri}](#{url + title})"
+      when 'schema'
+        # get schema description
+        [uri, anchor] = uri.split /#/
+        uri = if uri then path.resolve path.dirname(file), uri else file
+        debug "analyze schema at #{uri}##{anchor}" if debug.enabled
+        unless coffee
+          coffee = require 'coffee-script'
+          coffee.register()
+        try
+          schema = require uri
+        catch error
+          console.error chalk.magenta "Could not parse #{uri} to get schema specification"
+          if debug.enabled
+            debug chalk.magenta "#{error.message}\n#{error.stack.split(/\n/)[1..5].join '\n'}"
+        schema = util.object.path schema, anchor if schema and anchor
+        debug chalk.magenta "Could not find anchor #{uri}##{anchor}" unless schema
+        return cb null, source unless schema # broken if not parseable or not found
+        validator.describe
+          name: "#{path.basename uri}.#{anchor}"
+          schema: schema
+        , (err, md) ->
+          if err
+            md = """
+            :::alert Invalid Schema
+            The Schema could not be evaluated into a description:
+
+            __#{err.message}__
+            :::
+            """
+          cb null, indent + md.replace /\n/g, "\n#{indent}"
       else
         console.error chalk.magenta "Unknown tag for transform in #{file.local}: #{source.trim()}"
         cb null, source
@@ -69,28 +102,55 @@ module.exports = (file, type, md, symbols, search, cb) ->
 
 cache = {}
 
-findSymbol = (uri, symbols, search, cb) ->
+findSymbol = (uri, symbols, search, type, cb) ->
   [uri, anchor] = uri.split /\#/
   # check in given symbols
   if symbol = symbols[uri]
     return cb null, ["#{symbol[0]}.html", symbol[1] ? anchor, symbol[2]]
-  # alinex link
-  if m = uri.match /^alinex-(.*)/
-    m[1] += '.html' if m[1].match /\/./ and not m[1].match /\.(gif|html|png|jpg)$/
-    return cb null, ["https://alinex.github.io/node-#{m[1]}", anchor]
   # urls
   if uri.match /^(https?):\/\//
     return cb null, [uri, anchor]
-  # internet search
-  unless search
-    return cb new Error "Unknown uri type to search for (no search defined)."
-  if symbol = cache["#{uri}##{anchor}"]
-    return cb null, symbol
-  searchLink uri, search, (err, res) ->
-    if err or not res?.url
-      return cb new Error "Could not resolve link to #{uri} in #{search} search. #{err}"
-    cache["#{uri}##{anchor}"] = symbol = [res.url, anchor, res.title]
-    cb null, symbol
+  # alinex link
+  searchAlinex uri, anchor, type, (err, res) ->
+    return cb err if err
+    return cb null, res if res
+    # internet search
+    unless search
+      return cb new Error "Unknown uri type to search for (no search defined)."
+    if symbol = cache["#{uri}##{anchor}"]
+      return cb null, symbol
+    searchLink uri, search, (err, res) ->
+      if err or not res?.url
+        return cb new Error "Could not resolve link to #{uri} in #{search} search. #{err}"
+      cache["#{uri}##{anchor}"] = symbol = [res.url, anchor, res.title]
+      cb null, symbol
+
+searchAlinex = (uri, anchor, type, cb) ->
+  return cb() unless m = uri.match /^alinex-(\w+)(.*)/
+  # try to get symbols
+  loadAlinex m[1], type, (_, symbols) ->
+    if symbols
+      base = "https://alinex.github.io/node-#{name}/#{type}"
+      # 1. /.... path symbol
+      if m[2].length and symbol = symbols[m[2]]
+        return cb null, ["#{base}#{symbol[0]}.html", symbol[1] ? anchor, symbol[2]]
+      # 2. #...  title search
+      if anchor and symbol = symbols[anchor]
+        return cb null, ["#{base}#{symbol[0]}.html", symbol[1], symbol[2]]
+    # else
+    m[2] += '.html' if m[2].match /\/./ and not m[2].match /\.(gif|html|png|jpg)$/
+    return cb null, ["https://alinex.github.io/node-#{m[1]}#{m[2]}", anchor]
+
+alinex = {}
+loadAlinex = (name, type, cb) ->
+  return cb null, alinex["#{name}-#{type}"] if alinex["#{name}-#{type}"]
+  requestURL "https://alinex.github.io/node-#{name}/#{type}-symbols.json", (err, body) ->
+    if body
+      try
+        alinex["#{name}-#{type}"] = JSON.parse body
+    alinex["#{name}-#{type}"] ?= false
+    return cb null, alinex["#{name}-#{type}"]
+
 
 # Run internet search to find link destination.
 #
