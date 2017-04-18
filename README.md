@@ -218,10 +218,6 @@ coming through the template (some CDN resources in the default) and the images
 you added as relative links are linked.
 
 
-
-
-
-
 Custom Layout / Style
 -------------------------------------------------
 

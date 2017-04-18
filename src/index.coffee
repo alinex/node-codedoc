@@ -95,10 +95,11 @@ steps to make the documentation ready to browse in the local path.
 
 @param {object} setup defining the document creation
 - `input` - `String` path to read from
-- `òutput`- `String` output directory to store to
 - `find` - `Object` source search pattern
   - `include` - `String|RegExp|Array` files to include see {@link alinex-fs}
   - `exclude` - `String|RegExp|Array` files to exclude see {@link alinex-fs}
+- `òutput`- `String` output directory to store to
+- `format` - `Array<String>` format to generate like `html` or `md` (defaults to html only)
 - `verbose` - `Integer` level of verbose mode
 - `parallel` - `Integer` estimated max parallel runs (default is 100 or 1 if in
   debug mode)
@@ -133,10 +134,12 @@ exports.run = (setup, cb) ->
   setup.find ?= {}
   setup.find.type = 'file'
   setup.parallel ?= if debug.enabled then 1 else 100
+  setup.format ?= ['html']
   # work context
   work = {}
   # run steps
   async.series [
+    (cb) -> clean work, setup, cb
     (cb) -> find work, setup, cb
     (cb) -> copyResources work, setup, cb
     (cb) ->
@@ -170,13 +173,18 @@ exports.run = (setup, cb) ->
 # Helper methods
 # --------------------------------------------------------
 
+clean = (work, setup, cb) ->
+  return cb() unless setup.clean
+  (if setup.verbose then console.log else debug) "cleanup output directory #{setup.output}..."
+  fs.remove setup.output, cb
+  
 find = (work, setup, cb) ->
   (if setup.verbose then console.log else debug) "search files in #{setup.input}..."
   fs.find setup.input,
     filter: setup.find
     dereference: true
   , (err, list) ->
-    list = ['/home/alex/github/node-codedoc/README.md']
+#    list = ['/home/alex/github/node-codedoc/README.md']
 #    list = ['/home/alex/github/node-codedoc/src/index.coffee']
 #    list = ['/home/alex/github/node-codedoc/src/helper/parser.coffee']
     work.files = list.map (e) ->
@@ -190,7 +198,7 @@ copyResources = (work, setup, cb) ->
   filter = util.extend util.clone(setup.find),
     include: STATIC_FILES
   async.eachSeries TYPES, (type, cb) ->
-    async.eachSeries ['html', 'md'], (format, cb) ->
+    async.eachSeries setup.format, (format, cb) ->
       debug "-> #{setup.output}/#{format}/#{type}/"
       fs.copy setup.input, "#{setup.output}/#{format}/#{type}/",
         filter: filter
@@ -355,7 +363,7 @@ optimize = (work, file, setup, cb) ->
 writeFile = (work, file, setup, cb) ->
   async.each TYPES, (type, cb) ->
     return cb() unless file[type]
-    async.each ['html', 'md'], (format, cb) ->
+    async.each setup.format, (format, cb) ->
       if debugProcess.enabled
         debugProcess chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].format format, (err, data) ->
