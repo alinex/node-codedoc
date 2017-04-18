@@ -229,7 +229,7 @@ If you want to use your own style templates within your app's config directory
 and you're already using {@link alinex-config} you only have to register the
 template type on it by putting the following on top:
 
-::: detail
+::: detail CoffeeScript
 ``` coffee
 config = require 'alinex-config'
 # set module search path
@@ -238,17 +238,9 @@ config.register 'codedoc', __dirname,
   folder: 'template'
   type: 'template'
 ```
-:::
-
-::: detail
-``` js
-config = require('alinex-config');
-// set module search path
-// (with paths for calling in the upper directory)
-config.register('codedoc', __dirname, {
-  folder: 'template',
-  type: 'template'
-});
+::: detail JavaScript
+<!-- {selected} -->
+``` coffee2js
 ```
 :::
 
@@ -268,9 +260,14 @@ Call it with the `DEBUG` environment variable set to the types you want to debug
 The most valueable flags will be:
 
 ``` sh
-DEBUG=codedoc* codedoc  # more information what goes on
-DEBUG=config* codedoc   # registering paths for template search
-DEBUG=report* codedoc   # conversion into html
+DEBUG=codedoc codedoc           # general steps in document creation
+DEBUG=codedoc:parser codedoc    # parsing of source files and code tags
+DEBUG=codedoc:process codedoc   # detailed file processing information
+DEBUG=codedoc:doctags codedoc   # transforming document wide tags
+DEBUG=codedoc:transcode codedoc # transforming code
+# look into required modules:
+DEBUG=config codedoc   # registering paths for template search
+DEBUG=report codedoc   # conversion into html
 ```
 
 You can also combine them using comma or use only `DEBUG=*` to show all.

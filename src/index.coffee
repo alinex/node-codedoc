@@ -176,7 +176,7 @@ find = (work, setup, cb) ->
     filter: setup.find
     dereference: true
   , (err, list) ->
-#    list = ['/home/alex/github/node-codedoc/README.md']
+    list = ['/home/alex/github/node-codedoc/README.md']
 #    list = ['/home/alex/github/node-codedoc/src/index.coffee']
 #    list = ['/home/alex/github/node-codedoc/src/helper/parser.coffee']
     work.files = list.map (e) ->
