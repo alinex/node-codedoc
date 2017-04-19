@@ -159,7 +159,7 @@ exports.run = (setup, cb) ->
     (cb) ->
       # each file in parallel
       (if setup.verbose then console.log else debug) "format and write docs..."
-      async.each work.files, (file, cb) ->
+      async.eachLimit work.files, 5, (file, cb) ->
         async.series [
           (cb) -> optimize work, file, setup, cb
           (cb) -> writeFile work, file, setup, cb
@@ -185,6 +185,7 @@ find = (work, setup, cb) ->
     filter: setup.find
     dereference: true
   , (err, list) ->
+    work.files = ['/home/alex/github/node-codedoc/src/index.coffee']
     work.files = list.map (e) ->
       source: e
       local: e[setup.input.length..]
@@ -365,6 +366,7 @@ writeFile = (work, file, setup, cb) ->
       if debugProcess.enabled
         debugProcess chalk.grey "write #{setup.output}/#{format}/#{type}#{file.local}.#{format}"
       file[type].format format, (err, data) ->
+        file[type] = null # no longer needed
         return cb err if err
         if format is 'html'
           pages = work[type].pages.map (e) ->

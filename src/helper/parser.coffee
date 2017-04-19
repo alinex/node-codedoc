@@ -253,6 +253,13 @@ tags = (doc, lang, setup, file) ->
     md += "\n::: warning\n**Deprecated!** #{spec.deprecated.join ' '}\n:::\n"
   try
     # create usage line
+    delete spec.construct unless spec.construct
+    inDetail = false
+    if title and (spec.access?.join('') isnt 'public' or spec.private or
+    spec.protected or spec.constant or
+    spec.static or spec.construct or spec.param)
+      inDetail = true
+      md += '\n::: info Method Call'
     if title and (spec.access?.join('') isnt 'public' or spec.private or
     spec.protected or spec.constant or
     spec.static or spec.construct or spec.param)
@@ -271,7 +278,7 @@ tags = (doc, lang, setup, file) ->
         md += "(#{spec.param.map((e) -> e[1]).join ', '})"
       else if spec.construct
         md += '()' unless md.match /\(.*\)/
-      md += "`\n{.api-usage}\n"
+      md += "`\n<!-- {.api-usage} -->\n"
     # method definitions
     md += tagParamEvent spec.param, 'Parameter' if spec.param
     if spec.type
@@ -307,6 +314,8 @@ tags = (doc, lang, setup, file) ->
       if spec.license
         md += "- License: #{spec.license.join ' '} "
       md += "\n\n<!-- {p:.api-signature} -->\n"
+    if inDetail
+      md += ":::\n"
     # additional text
     md += "\n#{spec.description.join ' '}\n" if spec.description
     if spec.internal and setup.code
@@ -315,6 +324,7 @@ tags = (doc, lang, setup, file) ->
     if title and not check.match /(^|\n)(#{1,3}[^#]|[^\n]+\n[-=]{3,})/
       md = "### #{title}\n#{md}"
     # store changes
+#    console.log md
     doc[2] = md
   catch error
     console.error chalk.magenta "Document error: #{error.message} at #{file}:
