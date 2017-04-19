@@ -13,7 +13,7 @@ First things always are the general files:
 - [Changelog.md](https://raw.githubusercontent.com/alinex/node-codedoc/master/Changelog.md) - \
   the changes per each version
 
-Next you should add the main headding with some explanation:
+Next you should add the main heading with some explanation:
 
 ``` coffee
 ###
@@ -111,7 +111,7 @@ tag to add it yourself:
 @param {String|Buffer} path local path to check
 @param {function(err, stats)} cb callback which gets an `Error` or a `Stats` object.
 ###
-module.exports.stat = memoizee fs.stat
+module.exports.stat = fs.stat
 ```
 
 ### Internal Parameters

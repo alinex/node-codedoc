@@ -14,7 +14,7 @@ async = require 'async'
 request = require 'request'
 # alinex modules
 util = require 'alinex-util'
-validator = 'alinex-validator'
+validator = require 'alinex-validator'
 
 
 # Setup
