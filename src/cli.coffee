@@ -13,7 +13,6 @@ path = require 'path'
 # include alinex modules
 fs = require 'alinex-fs'
 alinex = require 'alinex-core'
-config = require 'alinex-config'
 Report = require 'alinex-report'
 # include classes and helpers
 codedoc = require './index'
@@ -137,15 +136,15 @@ codedoc.setup (err) ->
       description: "directory to write html site to"
       type: 'string'
       default: './doc'
-    style:
-      alias: 's'
-      description: "set layout style to use"
-      type: 'string'
-    code:
-      alias: 'c'
-      description: "add highlighted code"
+    markdown:
+      alias: 'm'
+      description: "also create markdown format"
       type: 'boolean'
-  .group ['i', 'o', 's', 'c'], 'Document Options:'
+    clean:
+      alias: 'c'
+      description: "clean output folder before"
+      type: 'boolean'
+  .group ['i', 'o', 'm'], 'Document Options:'
   # help
   yargs.help 'help'
   .updateStrings
@@ -176,6 +175,8 @@ codedoc.setup (err) ->
       Report.init (err) ->
         alinex.exit err if err
         console.log "Output to #{argv.output}..."
+        format = ['html']
+        format.push 'md' if argv.markdown
         codedoc.run
           input: argv.input
           find:
@@ -183,8 +184,8 @@ codedoc.setup (err) ->
           resources:
             include: res
           output: argv.output
-          style: argv.style
-          code: argv.code
+          format: format
+          clean: argv.clean
           parallel: argv.parallel
           verbose: argv.verbose
         , (err) ->

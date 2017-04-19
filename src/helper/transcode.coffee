@@ -71,7 +71,8 @@ transform =
     coffee ?= require 'coffee-script'
     # convert single line comments to keep them
     code = code
-    .replace /(^|\n\s*)#([^#].*)\n/g, '$1###$2 ###\n'
+    .replace /(^|\n\s*)#([^#].*)(?=\n)/g, '$1###$2 ###'
+    .replace /\#{3}\n(\s*)\#{3}/g, '\n$1 *'
     compiled = coffee.compile code,
       bare: true
     .replace /\*\/[ \t]*\n\n(?!\/\*)/g, '*/\n'

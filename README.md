@@ -203,7 +203,7 @@ Find more information about calling the code documentation in the {@link index.c
 Workflow
 -------------------------------------------------
 Firstly all pages will be found and it's documentation extracted into two versions:
-- api documentation only contains documentation codeblocks and documentation code not marked as 'internal'
+- api documentation only contains documentation code blocks and documentation code not marked as 'internal'
 - developer documentation with code
 
 Next the API doc will be parsed and converted to markdown as all other parts of the
@@ -258,9 +258,14 @@ Call it with the `DEBUG` environment variable set to the types you want to debug
 The most valueable flags will be:
 
 ``` sh
-DEBUG=codedoc* codedoc  # more information what goes on
-DEBUG=config* codedoc   # registering paths for template search
-DEBUG=report* codedoc   # conversion into html
+DEBUG=codedoc codedoc           # general steps in document creation
+DEBUG=codedoc:parser codedoc    # parsing of source files and code tags
+DEBUG=codedoc:process codedoc   # detailed file processing information
+DEBUG=codedoc:doctags codedoc   # transforming document wide tags
+DEBUG=codedoc:transcode codedoc # transforming code
+# look into required modules:
+DEBUG=config codedoc   # registering paths for template search
+DEBUG=report codedoc   # conversion into html
 ```
 
 You can also combine them using comma or use only `DEBUG=*` to show all.
