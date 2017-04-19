@@ -202,24 +202,22 @@ Find more information about calling the code documentation in the {@link index.c
 
 Workflow
 -------------------------------------------------
+Firstly all pages will be found and it's documentation extracted into two versions:
+- api documentation only contains documentation codeblocks and documentation code not marked as 'internal'
+- developer documentation with code
 
-All files matching this conditions will be **analyzed**. Depending if you generate the normal
-view or the developer view document elements are extracted. Therefore the predefined
-language syntax is used. If some document parts are found
-a report will be generated containing the documentation in markdown format and the page list
-and symbols table are filled up, too.
+Next the API doc will be parsed and converted to markdown as all other parts of the
+documentation and put together. In an first attempt it will be converted to html
+to extract structural information out of it.
 
-The **transformation** will use the user definable template to make html reports.
-A table of contents will be build out of the pages list and inline `@link` tags
-will be replaced using the symbol table if possible. An index will also be created
-redirecting to the first page of documentation. Each html page will be standalone
-with all neccessary javascript, css and svg included. Only resources which are
-coming through the template (some CDN resources in the default) and the images
-you added as relative links are linked.
+Out of the structural information a page tree and symbol lookup table will be build
+for optimization. This is used firstly to resolve document tags like `@link` into markdown.
+Additionally automatic code conversion will take place.
+In the final step the complete reports are build and written to file with the structural
+information for the html page tree.
 
-
-
-
+Also the static files like images... will be copied to the documentation folder. As far as
+possible these steps are done in parallel.
 
 
 Custom Layout / Style
@@ -229,7 +227,7 @@ If you want to use your own style templates within your app's config directory
 and you're already using {@link alinex-config} you only have to register the
 template type on it by putting the following on top:
 
-::: detail
+::: detail CoffeeScript
 ``` coffee
 config = require 'alinex-config'
 # set module search path
@@ -238,17 +236,9 @@ config.register 'codedoc', __dirname,
   folder: 'template'
   type: 'template'
 ```
-:::
-
-::: detail
-``` js
-config = require('alinex-config');
-// set module search path
-// (with paths for calling in the upper directory)
-config.register('codedoc', __dirname, {
-  folder: 'template',
-  type: 'template'
-});
+::: detail JavaScript
+<!-- {selected} -->
+``` coffee2js
 ```
 :::
 
